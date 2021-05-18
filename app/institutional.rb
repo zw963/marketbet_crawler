@@ -4,7 +4,7 @@ class Institutional
 
   def initialize
     # self.instance = Ferrum::Browser.new(headless: false, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
-    self.instance = Ferrum::Browser.new(headless: true, browser_options: { 'no-sandbox': nil })
+    # self.instance = Ferrum::Browser.new(headless: true, browser_options: { 'no-sandbox': nil })
   end
 
   def parse
@@ -37,6 +37,7 @@ class Institutional
           tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
           # puts Terminal::Table.new :rows => tables
 
+          puts "-"*100
           puts "Stock: #{symbol}"
           print_table(tables)
         end
