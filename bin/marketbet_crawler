@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8; mode: ruby; -*-
+
+require 'bundler'
+Bundler.require(:default)
+loader = Zeitwerk::Loader.new
+loader.push_dir(File.expand_path('../app', __dir__))
+loader.setup
+
+a = Institutional.instance
+
+# symbols = %w(nasdaq/fldm nasdaq/arry)
+symbols = %w(nasdaq/arry)
+a.symbols = symbols
+a.parse
+
+# symbols.each do |symbol|
+#   a.symbol = symbol
+#   a.parse
+# end
