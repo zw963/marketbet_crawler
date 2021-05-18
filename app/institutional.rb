@@ -4,7 +4,7 @@ class Institutional
 
   def initialize
     # self.instance = Ferrum::Browser.new(headless: false, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
-    self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_path: "/usr/bin/google-chrome-stable")
+    self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_path: "/usr/bin/google-chrome-stable", process_timeout: 20)
   end
 
   def parse
