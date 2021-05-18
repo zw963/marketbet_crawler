@@ -36,6 +36,8 @@ class Institutional
         if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
           tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
           # puts Terminal::Table.new :rows => tables
+
+          puts "Stock: #{symbol}"
           print_table(tables)
         end
 
