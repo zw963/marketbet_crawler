@@ -14,7 +14,7 @@ class Institutional
       Thread.new(instance) do |browser|
         context = browser.contexts.create
         page = context.create_page
-        puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership"
+        sleep rand(100)/100.0
         page.go_to("https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
 
         tries = 0

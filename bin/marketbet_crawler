@@ -10,7 +10,7 @@ loader.setup
 a = Institutional.instance
 
 # symbols = %w(nasdaq/fldm nasdaq/arry)
-symbols = %w(nasdaq/arry)
+symbols = %w(nasdaq/arry nasdaq/fldm)
 a.symbols = symbols
 a.parse
 
