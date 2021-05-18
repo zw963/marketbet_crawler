@@ -1,9 +1,9 @@
 class Institutional
   include Singleton
-  attr_accessor :symbols, :instance
+  attr_accessor :symbols, :instance, :page
 
   def initialize
-    # self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
+    # self.instance = Ferrum::Browser.new(headless: false, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
     self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080])
   end
 
@@ -33,7 +33,7 @@ class Institutional
         #   ele.evaluate("closeIframeModal();return false;")
         # end
 
-        if (table_ele = instance.at_css('.scroll-table-wrapper-wrapper'))
+        if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
           tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
           # puts Terminal::Table.new :rows => tables
           print_table(tables)
@@ -46,7 +46,7 @@ class Institutional
     instance.quit
   end
 
-    def print_table(table_ary)
+  def print_table(table_ary)
     heading = [
       "日期",
       "机构名称",
