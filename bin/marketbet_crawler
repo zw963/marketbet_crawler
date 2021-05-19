@@ -13,8 +13,3 @@ a = Institutional.instance
 symbols = %w(nasdaq/arry nasdaq/fldm nasdaq/dada)
 a.symbols = symbols
 a.parse
-
-# symbols.each do |symbol|
-#   a.symbol = symbol
-#   a.parse
-# end
