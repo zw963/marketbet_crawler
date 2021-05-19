@@ -36,34 +36,19 @@ class Institutional
         if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
           tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
           # puts Terminal::Table.new :rows => tables
-          # print_table(tables, symbol)
-          file = File.open('1.txt', 'w')
-          file.write(table_ele.inner_text)
-          file.close
+          print_table(tables, symbol)
         end
 
-          context.dispose
+        context.dispose
       end
     end.each(&:join)
 
     instance.quit
   end
 
-  def print_table(table_ary, symbol)
-    heading = [
-      "日期",
-      "股票",
-      "机构名称",
-      "持有数量",
-      "市场价值",
-      "占股票百分比",
-      "占机构百分比",
-      "机构季度变动百分比",
-      "机构季度变动数量",
-    ]
-
+  def save_to_institutions(text, symbol)
+    table_ary = text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
     matched_date = [Date.today, Date.today-1].map {|x| x.to_time.strftime('%-m/%d/%Y') }
-
     latest_data = table_ary[1..-1].select {|x| matched_date.include? x[0] }
 
     data = latest_data.map do |e|
@@ -79,23 +64,66 @@ class Institutional
         value = $1.to_f
       end
 
-      x = value.divmod(10000)
-      value = x[0].to_f + x[1]/10000.to_f
+      number_of_holding = e[2].tr(',', '').to_i
+      quarterly_changed_share_percent = e[5].tr('%', '').to_f/100
+      quarterly_changes = number_of_holding.to_i - ((number_of_holding)/(1+quarterly_changed_share_percent)).to_i
 
-      current_share_total = e[2].tr(',', '').to_i
-      quarterly_changed_share_percent = e[5].chop.to_f/100
-      shared_changed = current_share_total - ((current_share_total)/(1+quarterly_changed_share_percent)).to_i
+      Institution.find_or_create(
+        name: e[1],
+        date: Date.strptime(e[0], '%m/%d/%Y'),
+        stock_name: symbol,
+        number_of_holding: number_of_holding,
+        market_value: value,
+        market_value_dollar_string: e[3],
+        percent_of_shares_for_stock: e[6].tr('%', '').to_f/100,
+        percent_of_shares_for_institution: e[4].tr('%', '').to_f/100,
+        quarterly_changes_percent: quarterly_changed_share_percent,
+        quarterly_changes: quarterly_changes,
+        holding_cost: sprintf("%.2f", value.to_f/number_of_holding)
+      )
+    end
+  end
+
+  def print_table(symbol)
+    heading = [
+      "股票",
+      "日期",
+      "机构名称",
+      "持有数量",
+      "市场价值",
+      "占股票百分比",
+      "占机构百分比",
+      "机构季度变动百分比",
+      "机构季度变动数量",
+      "机构平均成本"
+    ]
+
+    matched_date = [Date.today, Date.today-1]
+    result = Institution.where(stock_name: symbol, date: matched_date).all
+
+    data = result.map do |x|
+      x1 = x.market_value .divmod(10000)
+      value = x1[0].to_f + x1[1]/10000.to_f
+
+      if x.quarterly_changes_percent == 0.0
+        value1 = 'NA'
+        value2 = 'NA'
+      else
+        value1 = (x.quarterly_changes_percent*100).to_f.to_s + "%"
+        value2 = x.quarterly_changes
+      end
 
       [
-        e[0],
         symbol,
-        e[1],
-        e[2],
-        value.to_s + "万(#{e[3]})",
-        e[6],
-        e[4],
-        e[5],
-        shared_changed,
+        x.date.to_s,
+        x.name,
+        x.number_of_holding,
+        "#{value}万(#{x.market_value_dollar_string})",
+        (x.percent_of_shares_for_stock*100).to_f.to_s + "%",
+        (x.percent_of_shares_for_institution*100).to_f.to_s + "%",
+        value1,
+        value2,
+        x.holding_cost.to_f
       ]
     end
 

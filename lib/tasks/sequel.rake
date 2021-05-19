@@ -12,7 +12,7 @@ namespace :db do
   task :drop => [:create_db_conn] do |t, args|
     database = @conn.opts[:database]
     if @conn.database_type == :sqlite
-      FileUtils.rm(database)
+      FileUtils.rm_f(database)
     else
       @conn.execute("DROP DATABASE IF EXISTS #{database}")
     end
@@ -28,5 +28,16 @@ namespace :db do
   desc "Dump database"
   task :dump => [:create_db_conn] do |t, args|
     sh "bundle exec sequel -d #{@db} > db/schema.rb"
+  end
+
+  desc "Reset database"
+  task :reset => [:create_db_conn] do |t, args|
+    Rake::Task["db:drop"].invoke
+    sleep 3
+    Rake::Task["db:migrate"].reenable
+    Rake::Task["db:migrate"].invoke
+    # task('db:drop').invoke
+    # sleep 3
+    # task('db:migrate').invoke
   end
 end

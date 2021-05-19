@@ -10,6 +10,9 @@ Sequel.migration do
       BigDecimal :quarterly_changes_percent
       Integer :quarterly_changes
       String :stock_name, :size=>255, :null=>false
+      String :market_value_dollar_string, :size=>255, :null=>false
+      BigDecimal :holding_cost, :null=>false
+      Date :date, :null=>false
     end
     
     create_table(:schema_migrations) do
