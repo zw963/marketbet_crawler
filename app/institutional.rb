@@ -36,17 +36,20 @@ class Institutional
         if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
           tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
           # puts Terminal::Table.new :rows => tables
-          print_table(tables)
+          # print_table(tables, symbol)
+          file = File.open('1.txt', 'w')
+          file.write(table_ele.inner_text)
+          file.close
         end
 
-        context.dispose
+          context.dispose
       end
     end.each(&:join)
 
     instance.quit
   end
 
-  def print_table(table_ary)
+  def print_table(table_ary, symbol)
     heading = [
       "日期",
       "股票",
@@ -85,6 +88,7 @@ class Institutional
 
       [
         e[0],
+        symbol,
         e[1],
         e[2],
         value.to_s + "万(#{e[3]})",
