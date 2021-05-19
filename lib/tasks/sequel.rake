@@ -22,5 +22,11 @@ namespace :db do
   task :migrate, [:version] => [:create_db_conn] do |t, args|
     version = args[:version].to_i if args[:version]
     Sequel::Migrator.run(@conn, "db/migrations", target: version)
+    task('db:dump').invoke
+  end
+
+  desc "Dump database"
+  task :dump => [:create_db_conn] do |t, args|
+    sh "bundle exec sequel -d #{@db} > db/schema.rb"
   end
 end

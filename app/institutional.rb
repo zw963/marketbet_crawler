@@ -36,9 +36,6 @@ class Institutional
         if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
           tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
           # puts Terminal::Table.new :rows => tables
-
-          puts "-"*100
-          puts "Stock: #{symbol}"
           print_table(tables)
         end
 
@@ -52,6 +49,7 @@ class Institutional
   def print_table(table_ary)
     heading = [
       "日期",
+      "股票",
       "机构名称",
       "持有数量",
       "市场价值",
