@@ -91,6 +91,8 @@ class Institutional
         holding_cost: sprintf("%.2f", value.to_f/number_of_holding)
       }
 
+      binding.irb unless Institution.find(x)
+
       Institution.find_or_create(
         x
       )
