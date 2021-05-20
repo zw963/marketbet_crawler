@@ -17,7 +17,7 @@ heading = [
 
 matched_date = [Date.today, Date.today-1]
 
-result = Institution.where(date: matched_date).all
+result = Institution.where(stock_name: 'eh').all
 
 data = result.map do |x|
   x1 = x.market_value .divmod(10000)

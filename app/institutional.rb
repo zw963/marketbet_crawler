@@ -54,7 +54,7 @@ class Institutional
 
     data = table_ary[1..].map do |e|
       e[3] =~ /\$([\d.,]+)(.?)/
-      market_value = BigDecimal($1)
+      market_value = $1.to_f
       case
       when $2 == "K"
         value = market_value * 1000
