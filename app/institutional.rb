@@ -10,7 +10,7 @@ class Institutional
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
-    symbols.each_slice(1) do |symbol_group|
+    symbols.each_slice(3) do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
           context = browser.contexts.create
