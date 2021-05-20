@@ -50,9 +50,9 @@ class Institutional
 
   def save_to_institutions(table_ary, symbol)
     matched_date = [Date.today, Date.today-1].map {|x| x.to_time.strftime('%-m/%d/%Y') }
-    latest_data = table_ary[1..-1].select {|x| matched_date.include? x[0] }
+    latest_data = table_ary[1..].select {|x| matched_date.include? x[0] }
 
-    data = table_ary.map do |e|
+    data = table_ary[1..].map do |e|
       e[3] =~ /\$([\d.,]+)(.?)/
       case
       when $2 == "K"
