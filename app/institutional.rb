@@ -67,7 +67,12 @@ class Institutional
 
       number_of_holding = e[2].tr(',', '').to_i
       quarterly_changed_share_percent = p2b(e[5])
-      quarterly_changes = number_of_holding.to_i - ((number_of_holding)/(1+quarterly_changed_share_percent)).to_i
+
+      if quarterly_changed_share_percent.nil?
+        quarterly_changes = nil
+      else
+        quarterly_changes = number_of_holding.to_i - ((number_of_holding)/(1+quarterly_changed_share_percent)).to_i
+      end
 
       stock_exchange, stock_name = symbol.split('/')
 
@@ -91,7 +96,7 @@ class Institutional
   def p2b(percent)
     f = percent.tr('%', '').tr(',', '')
     if f == "N/A"
-      BigDecimal('NaN')
+      nil
     elsif f == "No Change"
       BigDecimal('0.0')
     else
