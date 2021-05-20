@@ -1,19 +1,19 @@
 #!/usr/bin/env ruby
-# -*- coding: utf-8; mode: ruby; -*-
+# -*- coding: utf-8; mode: enh-ruby; -*-
 
 require_relative '../config/environment.rb'
 
 ins = Institutional.instance
 
-# symbols = %w(nasdaq/fldm nasdaq/arry)
 symbols = %w(
-nasdaq/arry nasdaq/fldm nyse/beke nasdaq/lizi nasdaq/momo
-nyse/stm  otcmkts/dlaky otcmkts/rycey nasdaq/niu nyse/lu
-nyse/umc nyse/nclh nasdaq/cron nyse/pltr nasdaq/ttcf
-nasdaq/kopn nasdaq/afrm nasdaq/cree nasdaq/dada nasdaq/fami
-nyse/dao nasdaq/ino nasdaq/tour nyse/tme nyse/ai
-nasdaq/eh otcmkts/wcagy
+  nasdaq/arry nasdaq/fldm nyse/beke nasdaq/lizi nasdaq/momo
+  nyse/stm  otcmkts/dlaky otcmkts/rycey nasdaq/niu nyse/lu
+  nyse/umc nyse/nclh nasdaq/cron nyse/pltr nasdaq/ttcf
+  nasdaq/kopn nasdaq/afrm nasdaq/cree nasdaq/dada nasdaq/fami
+  nyse/dao nasdaq/ino nasdaq/tour nyse/tme nyse/ai
+  nasdaq/eh otcmkts/wcagy
 )
+# symbols = %w(nyse/lu)
 ins.symbols = symbols
 ins.parse
 
