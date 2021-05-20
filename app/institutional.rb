@@ -91,6 +91,8 @@ class Institutional
   def p2b(percent)
     f = percent.tr('%', '').tr(',', '')
     if f == "N/A"
+      BigDecimal('NaN')
+    elsif f == "No Change"
       BigDecimal('0.0')
     else
       BigDecimal(f)/100
