@@ -10,12 +10,13 @@ class Institutional
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
-    symbols.each_slice(5) do |symbol_group|
+    symbols.each_slice(3) do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
           context = browser.contexts.create
           page = context.create_page
           sleep rand(100)/100.0
+          puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership"
           page.go_to("https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
 
           tries = 0
