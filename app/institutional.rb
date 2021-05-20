@@ -10,44 +10,46 @@ class Institutional
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
-    symbols.map do |symbol|
-      Thread.new(instance) do |browser|
-        context = browser.contexts.create
-        page = context.create_page
-        sleep rand(100)/100.0
-        page.go_to("https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
+    symbols.each_slice(5) do |symbol_group|
+      symbol_group.map do |symbol|
+        Thread.new(instance) do |browser|
+          context = browser.contexts.create
+          page = context.create_page
+          sleep rand(100)/100.0
+          page.go_to("https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
 
-        tries = 0
-        begin
-          tries += 1
-          page.network.wait_for_idle(timeout: 30)
-        rescue Ferrum::TimeoutError
-          puts 'Retrying'
-          if (tries < 4)
-            sleep(2**tries)
-            retry
+          tries = 0
+          begin
+            tries += 1
+            page.network.wait_for_idle(timeout: 30)
+          rescue Ferrum::TimeoutError
+            puts 'Retrying'
+            if (tries < 4)
+              sleep(2**tries)
+              retry
+            end
           end
+
+          # if (ele = browser.at_css('#optinform-modal'))
+          #   ele.evaluate("closeIframeModal();return false;")
+          # end
+
+          if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
+            tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
+            save_to_institutions(tables, symbol)
+          end
+
+          context.dispose
         end
-
-        # if (ele = browser.at_css('#optinform-modal'))
-        #   ele.evaluate("closeIframeModal();return false;")
-        # end
-
-        if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
-          tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
-          # puts Terminal::Table.new :rows => tables
-          print_table(tables, symbol)
-        end
-
-        context.dispose
-      end
-    end.each(&:join)
+      end.each(&:join)
+    end
 
     instance.quit
   end
 
-  def save_to_institutions(text, symbol)
-    table_ary = text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
+  def save_to_institutions(table_ary, symbol)
+    # text = File.open('1.txt').read
+    # table_ary = text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
     matched_date = [Date.today, Date.today-1].map {|x| x.to_time.strftime('%-m/%d/%Y') }
     latest_data = table_ary[1..-1].select {|x| matched_date.include? x[0] }
 

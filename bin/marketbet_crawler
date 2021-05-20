@@ -3,15 +3,13 @@
 
 require_relative '../config/environment.rb'
 
-a = Institutional.instance
+ins = Institutional.instance
 
 # symbols = %w(nasdaq/fldm nasdaq/arry)
-# symbols = %w(nasdaq/arry)
-# a.symbols = symbols
-# a.parse
+symbols = %w(nasdaq/arry)
+ins.symbols = symbols
+ins.parse
 
-file = File.open('1.txt').read
-a.save_to_institutions(file, 'nasdaq/arry')
-a.print_table('nasdaq/arry')
+# a.print_table('nasdaq/arry')
 
 # tables = file.split("\n").reject(&:empty?).map {|x| x.split("\t") }
