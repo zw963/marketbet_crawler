@@ -49,12 +49,10 @@ class Institutional
   end
 
   def save_to_institutions(table_ary, symbol)
-    # text = File.open('1.txt').read
-    # table_ary = text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
     matched_date = [Date.today, Date.today-1].map {|x| x.to_time.strftime('%-m/%d/%Y') }
     latest_data = table_ary[1..-1].select {|x| matched_date.include? x[0] }
 
-    data = latest_data.map do |e|
+    data = table_ary.map do |e|
       e[3] =~ /\$([\d.,]+)(.?)/
       case
       when $2 == "K"
