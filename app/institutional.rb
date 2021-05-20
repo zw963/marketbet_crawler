@@ -3,8 +3,8 @@ class Institutional
   attr_accessor :symbols, :instance, :page
 
   def initialize
-    # self.instance = Ferrum::Browser.new(headless: false, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
-    self.instance = Ferrum::Browser.new(headless: true, browser_options: { 'no-sandbox': nil })
+    self.instance = Ferrum::Browser.new(headless: false, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
+    # self.instance = Ferrum::Browser.new(headless: true, browser_options: { 'no-sandbox': nil })
   end
 
   def parse
@@ -70,10 +70,13 @@ class Institutional
       quarterly_changed_share_percent = e[5].tr('%', '').to_f/100
       quarterly_changes = number_of_holding.to_i - ((number_of_holding)/(1+quarterly_changed_share_percent)).to_i
 
+      stock_exchange, stock_name = symbol.split('/')
+
       Institution.find_or_create(
         name: e[1],
         date: Date.strptime(e[0], '%m/%d/%Y'),
-        stock_name: symbol,
+        stock_name: stock_name,
+        stock_exchange: stock_exchange,
         number_of_holding: number_of_holding,
         market_value: value,
         market_value_dollar_string: e[3],
@@ -100,8 +103,14 @@ class Institutional
       "机构平均成本"
     ]
 
+    stock_exchange, stock_name = symbol.split('/')
+
     matched_date = [Date.today, Date.today-1]
-    result = Institution.where(stock_name: symbol, date: matched_date).all
+    result = Institution.where(
+      stock_name: stock_name,
+      stock_exchange: stock_exchange,
+      date: matched_date
+    ).all
 
     data = result.map do |x|
       x1 = x.market_value .divmod(10000)

@@ -13,6 +13,7 @@ Sequel.migration do
       String :market_value_dollar_string, :size=>255, :null=>false
       BigDecimal :holding_cost, :null=>false
       Date :date, :null=>false
+      String :stock_exchange, :size=>255, :null=>false
     end
     
     create_table(:schema_migrations) do
