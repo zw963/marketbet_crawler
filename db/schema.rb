@@ -14,6 +14,7 @@ Sequel.migration do
       BigDecimal :holding_cost
       Date :date
       String :stock_exchange, :size=>255
+      DateTime :created_at
     end
     
     create_table(:schema_migrations) do
