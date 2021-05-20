@@ -2,6 +2,8 @@
 
 require_relative '../config/environment'
 
+system('scp root@152.32.169.103:marketbet_crawler/db/marketbet_crawler.db db/')
+
 heading = [
   "ID",
   "股票",
@@ -14,13 +16,10 @@ heading = [
   "机构季度变动百分比",
   "机构季度变动数量",
   "机构平均成本",
+  "创建时间"
 ]
 
-matched_date = [Date.today, Date.today-1]
-
-result = Institution.where(stock_name: 'eh').all
-
-data = result.map do |x|
+data = Institution.where(date: [Date.today, Date.today-1]).map do |x|
   x1 = x.market_value .divmod(10000)
   value = x1[0].to_f + x1[1]/10000.to_f
 
@@ -46,7 +45,8 @@ data = result.map do |x|
     (x.percent_of_shares_for_institution*100).to_f.to_s + "%",
     value1,
     value2,
-    x.holding_cost.to_f
+    x.holding_cost.to_f,
+    x.created_at.strftime("%m-%d %H:%M")
   ]
 end
 

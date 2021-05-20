@@ -16,11 +16,3 @@ symbols = %w(
 # symbols = %w(nasdaq/eh)
 ins.symbols = symbols
 ins.parse
-
-#    rr.
-#  ttcf, kopn, afrm, cree, dada,
-# fami, dao, ino, tour, tme, arry, ai, eh,
-
-# a.print_table('nasdaq/arry')
-
-# tables = file.split("\n").reject(&:empty?).map {|x| x.split("\t") }
