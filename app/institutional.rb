@@ -89,7 +89,7 @@ class Institutional
   end
 
   def p2b(percent)
-    f = percent.tr('%', '')
+    f = percent.tr('%', '').tr(',', '')
     if f == "N/A"
       BigDecimal('0.0')
     else
