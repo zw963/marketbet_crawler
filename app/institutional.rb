@@ -54,15 +54,16 @@ class Institutional
 
     data = table_ary[1..].map do |e|
       e[3] =~ /\$([\d.,]+)(.?)/
+      market_value = BigDecimal($1)
       case
       when $2 == "K"
-        value = $1.to_f * 1000
+        value = market_value * 1000
       when $2 == "M"
-        value = $1.to_f * 1000000
+        value = market_value * 1000000
       when $2 == "B"
-        value = $1.to_f * 1000000000
+        value = market_value * 1000000000
       else
-        value = $1.to_f
+        value = market_value
       end
 
       number_of_holding = e[2].tr(',', '').to_i
