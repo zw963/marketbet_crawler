@@ -21,6 +21,7 @@ namespace :db do
   desc "Run migrations"
   task :migrate, [:version] => [:create_db_conn] do |t, args|
     version = args[:version].to_i if args[:version]
+    puts @db
     Sequel::Migrator.run(@conn, "db/migrations", target: version)
     task('db:dump').invoke
   end
