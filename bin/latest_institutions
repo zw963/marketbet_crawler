@@ -23,9 +23,12 @@ data = result.map do |x|
   x1 = x.market_value .divmod(10000)
   value = x1[0].to_f + x1[1]/10000.to_f
 
-  if x.quarterly_changes_percent == 0.0
-    value1 = 'NA'
-    value2 = 'NA'
+  if x.quarterly_changes_percent.nil?
+    value1 = 'N/A'
+    value2 = 'N/A'
+  elsif x.quarterly_changes_percent == 0
+    value1 = 'No Change'
+    value2 = 'No Change'
   else
     value1 = (x.quarterly_changes_percent*100).to_f.to_s + "%"
     value2 = x.quarterly_changes

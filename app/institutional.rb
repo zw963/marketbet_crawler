@@ -75,8 +75,7 @@ class Institutional
       end
 
       stock_exchange, stock_name = symbol.split('/')
-
-      Institution.find_or_create(
+      x = {
         name: e[1],
         date: Date.strptime(e[0], '%m/%d/%Y'),
         stock_name: stock_name,
@@ -89,6 +88,10 @@ class Institutional
         quarterly_changes_percent: quarterly_changed_share_percent,
         quarterly_changes: quarterly_changes,
         holding_cost: sprintf("%.2f", value.to_f/number_of_holding)
+      }
+
+      Institution.find_or_create(
+        x
       )
     end
   end
