@@ -3,6 +3,7 @@
 require_relative '../config/environment'
 
 heading = [
+  "ID",
   "股票",
   "日期",
   "机构名称",
@@ -35,6 +36,7 @@ data = result.map do |x|
   end
 
   [
+    x.id,
     "#{x.stock_exchange}/#{x.stock_name}",
     x.date.to_s,
     x.name,

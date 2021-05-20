@@ -54,7 +54,7 @@ class Institutional
 
     data = table_ary[1..].map do |e|
       e[3] =~ /\$([\d.,]+)(.?)/
-      market_value = $1.to_f
+      market_value = BigDecimal($1)
       case
       when $2 == "K"
         value = market_value * 1000
@@ -76,25 +76,22 @@ class Institutional
       end
 
       stock_exchange, stock_name = symbol.split('/')
-      x = {
-        name: e[1],
-        date: Date.strptime(e[0], '%m/%d/%Y'),
-        stock_name: stock_name,
-        stock_exchange: stock_exchange,
-        number_of_holding: number_of_holding,
-        market_value: value,
-        market_value_dollar_string: e[3],
-        percent_of_shares_for_stock: p2b(e[6]),
-        percent_of_shares_for_institution: p2b(e[4]),
-        quarterly_changes_percent: quarterly_changed_share_percent,
-        quarterly_changes: quarterly_changes,
-        holding_cost: sprintf("%.2f", value.to_f/number_of_holding)
-      }
-
-      binding.irb unless Institution.find(x)
 
       Institution.find_or_create(
-        x
+        {
+          name: e[1],
+          date: Date.strptime(e[0], '%m/%d/%Y'),
+          stock_name: stock_name,
+          stock_exchange: stock_exchange,
+          number_of_holding: number_of_holding,
+          market_value: value,
+          market_value_dollar_string: e[3],
+          percent_of_shares_for_stock: p2b(e[6]),
+          percent_of_shares_for_institution: p2b(e[4]),
+          quarterly_changes_percent: quarterly_changed_share_percent,
+          quarterly_changes: quarterly_changes,
+          holding_cost: sprintf("%.2f", value.to_f/number_of_holding)
+        }
       )
     end
   end
