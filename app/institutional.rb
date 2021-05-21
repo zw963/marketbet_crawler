@@ -88,6 +88,8 @@ class Institutional
         xx = -1
       elsif e[3] == 'Buy'
         xx = 1
+      elsif e[3] == 'Issued'
+        xx = -1
       end
 
       Insider.find_or_create(
