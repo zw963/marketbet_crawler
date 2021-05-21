@@ -14,5 +14,5 @@ symbols = %w(
   nasdaq/eh otcmkts/wcagy
 )
 # symbols = %w(nasdaq/eh)
-# ins.symbols = symbols
-# ins.parse
+ins.symbols = symbols
+ins.parse
