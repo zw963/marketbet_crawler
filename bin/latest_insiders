@@ -8,45 +8,23 @@ heading = [
   "ID",
   "股票",
   "日期",
-  "机构名称",
-  "持有数量",
-  "市场价值",
-  "占股票百分比",
-  "占机构百分比",
-  "机构季度变动百分比",
-  "机构季度变动数量",
-  "机构平均成本",
-  "创建时间"
+  "名称",
+  "职位",
+  "股票数量",
+  "平均价格",
+  "交易价格"
 ]
 
-data = Institution.where(date: [Date.today, Date.today-1]).map do |x|
-  x1 = x.market_value .divmod(10000)
-  value = x1[0].to_f + x1[1]/10000.to_f
-
-  if x.quarterly_changes_percent.nil?
-    value1 = 'N/A'
-    value2 = 'N/A'
-  elsif x.quarterly_changes_percent == 0
-    value1 = 'No Change'
-    value2 = 'No Change'
-  else
-    value1 = (x.quarterly_changes_percent*100).to_f.to_s + "%"
-    value2 = x.quarterly_changes
-  end
-
+data = Insider.map do |x|
   [
     x.id,
-    "#{x.stock_exchange}/#{x.stock_name}",
+    "#{x.stock.exchange.name}/#{x.stock.name}",
     x.date.to_s,
     x.name,
-    x.number_of_holding,
-    "#{value}万(#{x.market_value_dollar_string})",
-    (x.percent_of_shares_for_stock*100).to_f.to_s + "%",
-    (x.percent_of_shares_for_institution*100).to_f.to_s + "%",
-    value1,
-    value2,
-    x.holding_cost.to_f,
-    x.created_at.strftime("%m-%d %H:%M")
+    x.title,
+    x.number_of_shares,
+    x.average_price,
+    x.share_total_price
   ]
 end
 
