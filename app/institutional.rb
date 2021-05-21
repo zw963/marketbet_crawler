@@ -16,28 +16,25 @@ class Institutional
           context = browser.contexts.create
           page = context.create_page
           sleep rand(100)/100.0
-          puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership"
-          page.go_to("https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
 
-          try_again(page)
-
-          # if (ele = browser.at_css('#optinform-modal'))
-          #   ele.evaluate("closeIframeModal();return false;")
-          # end
-
-          if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
-            tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
-            save_to_institutions(tables, symbol)
-          end
-
-          # puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades/"
-          # page.goto("https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades/")
+          # puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership"
+          # page.go_to("https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
           # try_again(page)
 
-          # if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
+          # if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
           #   tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
-          #   save_to_insiders(tables, symbol)
+          #   save_to_institutions(tables, symbol)
           # end
+
+          sleep rand(100)/100.0
+          puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades/"
+          page.goto("https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades/")
+          try_again(page)
+
+          if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
+            tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
+            save_to_insiders(tables, symbol)
+          end
 
           context.dispose
         end

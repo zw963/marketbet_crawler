@@ -13,6 +13,6 @@ symbols = %w(
   nyse/dao nasdaq/ino nasdaq/tour nyse/tme nyse/ai
   nasdaq/eh otcmkts/wcagy
 )
-# symbols = %w(nasdaq/eh)
+symbols = %w(nasdaq/eh)
 ins.symbols = symbols
 ins.parse
