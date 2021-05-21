@@ -3,8 +3,8 @@ class Institutional
   attr_accessor :symbols, :instance, :page
 
   def initialize
-    self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
-    # self.instance = Ferrum::Browser.new(headless: true, browser_options: { 'no-sandbox': nil })
+    # self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
+    self.instance = Ferrum::Browser.new(headless: true, browser_options: { 'no-sandbox': nil })
   end
 
   def parse
