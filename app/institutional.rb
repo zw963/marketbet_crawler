@@ -81,7 +81,7 @@ class Institutional
         "Insider" => "内部人士"
       }
 
-      number_of_holding = e[7] == "" ? nil : [7].to_i
+      number_of_holding = e[7] == "" ? nil : e[7].to_i
 
       if e[3] == 'Sell'
         xx = -1
