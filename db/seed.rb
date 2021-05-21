@@ -1,9 +1,4 @@
-#!/usr/bin/env ruby
-# -*- coding: utf-8; mode: enh-ruby; -*-
-
 require_relative '../config/environment.rb'
-
-ins = Institutional.instance
 
 symbols = %w(
   nasdaq/arry nasdaq/fldm nyse/beke nasdaq/lizi nasdaq/momo
@@ -13,6 +8,12 @@ symbols = %w(
   nyse/dao nasdaq/ino nasdaq/tour nyse/tme nyse/ai
   nasdaq/eh otcmkts/wcagy
 )
-# symbols = %w(nasdaq/eh)
-# ins.symbols = symbols
-# ins.parse
+
+symbols.each do |e|
+  exchange, stock = e.split('/')
+  exchange = Exchange.find_or_create(name: exchange)
+
+  if not Stock.find(name: stock, exchange: exchange)
+    Stock.create(name: stock, exchange: exchange)
+  end
+end

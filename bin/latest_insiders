@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+
+require_relative '../config/environment'
+
+system('rsync -a root@152.32.169.103:marketbet_crawler/db/marketbet_crawler.db db/')
+
+heading = [
+  "ID",
+  "股票",
+  "日期",
+  "机构名称",
+  "持有数量",
+  "市场价值",
+  "占股票百分比",
+  "占机构百分比",
+  "机构季度变动百分比",
+  "机构季度变动数量",
+  "机构平均成本",
+  "创建时间"
+]
+
+data = Institution.where(date: [Date.today, Date.today-1]).map do |x|
+  x1 = x.market_value .divmod(10000)
+  value = x1[0].to_f + x1[1]/10000.to_f
+
+  if x.quarterly_changes_percent.nil?
+    value1 = 'N/A'
+    value2 = 'N/A'
+  elsif x.quarterly_changes_percent == 0
+    value1 = 'No Change'
+    value2 = 'No Change'
+  else
+    value1 = (x.quarterly_changes_percent*100).to_f.to_s + "%"
+    value2 = x.quarterly_changes
+  end
+
+  [
+    x.id,
+    "#{x.stock_exchange}/#{x.stock_name}",
+    x.date.to_s,
+    x.name,
+    x.number_of_holding,
+    "#{value}万(#{x.market_value_dollar_string})",
+    (x.percent_of_shares_for_stock*100).to_f.to_s + "%",
+    (x.percent_of_shares_for_institution*100).to_f.to_s + "%",
+    value1,
+    value2,
+    x.holding_cost.to_f,
+    x.created_at.strftime("%m-%d %H:%M")
+  ]
+end
+
+table = Terminal::Table.new do |t|
+  t.style = { :border => :unicode_round }
+  t.headings = heading
+  data.each {|e| t.add_row(e) }
+  t.style = {:all_separators => true}
+end
+
+puts table

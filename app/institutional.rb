@@ -17,6 +17,10 @@ class Institutional
           page = context.create_page
           sleep rand(100)/100.0
 
+          stock_exchange, stock_name = symbol.split('/')
+          exchange = Exchange.find_or_create(name: stock_exchange)
+          stock = Stock.find_or_create(name: stock_name, exchange: exchange)
+
           # puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership"
           # page.go_to("https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
           # try_again(page)
@@ -33,7 +37,7 @@ class Institutional
 
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
-            save_to_insiders(tables, symbol)
+            save_to_insiders(tables, stock)
           end
 
           context.dispose
@@ -44,7 +48,7 @@ class Institutional
     instance.quit
   end
 
-  def save_to_insiders(table_ary, symbol)
+  def save_to_insiders(table_ary, stock)
     # matched_date = [Date.today, Date.today-1].map {|x| x.to_time.strftime('%-m/%d/%Y') }
     # latest_data = table_ary[1..].select {|x| matched_date.include? x[0] }
 
@@ -94,7 +98,8 @@ class Institutional
           number_of_holding: number_of_holding,
           number_of_shares: e[4].tr(',', '').to_i*xx,
           average_price: d2b(e[5]),
-          share_total_price: d2b(e[6])
+          share_total_price: d2b(e[6]),
+          stock: stock
         }
       )
     end
