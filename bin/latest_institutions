@@ -2,7 +2,7 @@
 
 require_relative '../config/environment'
 
-system('rsync -a -zz root@152.32.169.103:marketbet_crawler/db/marketbet_crawler.db db/')
+system('rsync -a root@152.32.169.103:marketbet_crawler.production/db/marketbet_crawler.db db/')
 
 heading = [
   "ID",
