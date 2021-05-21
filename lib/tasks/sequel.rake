@@ -20,7 +20,6 @@ namespace :db do
 
   desc "Run migrations"
   task :migrate, [:version] => [:create_db_conn] do |t, args|
-    puts '1'*100
     version = args[:version].to_i if args[:version]
     puts @db
     Sequel::Migrator.run(@conn, "db/migrations", target: version)

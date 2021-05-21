@@ -95,7 +95,7 @@ class Institutional
           name:  e[1],
           title: e[2],
           number_of_holding: number_of_holding,
-          number_of_share: e[4].tr(',', '').to_i*xx,
+          number_of_shares: e[4].tr(',', '').to_i*xx,
           average_price: d2b(e[5]),
           share_total_price: d2b(e[6])
         }

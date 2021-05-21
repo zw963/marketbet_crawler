@@ -6,7 +6,7 @@ Sequel.migration do
       String :name, null: false
       String :title, null: false
       Integer :number_of_holding, null: false
-      Integer :number_of_shares, null: false
+      Integer :number_of_shares
       BigDecimal :average_price, null: false
       BigDecimal :share_total_price, null: false
       DateTime :created_at, null: false
