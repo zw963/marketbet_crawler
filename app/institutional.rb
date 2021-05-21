@@ -25,7 +25,7 @@ class Institutional
           #   ele.evaluate("closeIframeModal();return false;")
           # end
 
-          if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
+          if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
             save_to_institutions(tables, symbol)
           end
