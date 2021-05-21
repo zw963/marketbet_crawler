@@ -35,7 +35,7 @@ class Institutional
           page.goto("https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades/")
           try_again(page)
 
-          if (table_ele = page.at_css('.scroll-table-wrapper-wrapper'))
+          if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
             save_to_insiders(tables, stock)
           end
