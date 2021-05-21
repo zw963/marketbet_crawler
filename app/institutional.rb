@@ -53,35 +53,6 @@ class Institutional
     # latest_data = table_ary[1..].select {|x| matched_date.include? x[0] }
 
     table_ary[1..].each do |e|
-      # e[3] =~ /\$([\d.,]+)(.?)/
-      # market_value = BigDecimal($1)
-      # case
-      # when $2 == "K"
-      #   value = market_value * 1000
-      # when $2 == "M"
-      #   value = market_value * 1000000
-      # when $2 == "B"
-      #   value = market_value * 1000000000
-      # else
-      #   value = market_value
-      # end
-
-      # number_of_holding = e[2].tr(',', '').to_i
-      # quarterly_changed_share_percent = p2b(e[5])
-
-      # if quarterly_changed_share_percent.nil?
-      #   quarterly_changes = nil
-      # else
-      #   quarterly_changes = number_of_holding.to_i - ((number_of_holding)/(1+quarterly_changed_share_percent)).to_i
-      # end
-
-      # stock_exchange, stock_name = symbol.split('/')
-
-      mapping = {
-        'Major Shareholder' => "大股东",
-        "Insider" => "内部人士"
-      }
-
       number_of_holding = e[7] == "" ? nil : e[7].to_i
 
       if e[3] == 'Sell'

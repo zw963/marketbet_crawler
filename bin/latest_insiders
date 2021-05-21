@@ -1,38 +1,7 @@
-#!/usr/bin/env ruby
+#!/bin/bash
 
-require_relative '../config/environment'
+rsync -a root@152.32.169.103:marketbet_crawler/db/marketbet_crawler.db db/
 
-system('rsync -a root@152.32.169.103:marketbet_crawler/db/marketbet_crawler.db db/')
+ROOT=${0%/*}
 
-heading = [
-  "ID",
-  "股票",
-  "日期",
-  "名称",
-  "职位",
-  "股票数量",
-  "平均价格",
-  "交易价格"
-]
-
-data = Insider.map do |x|
-  [
-    x.id,
-    "#{x.stock.exchange.name}/#{x.stock.name}",
-    x.date.to_s,
-    x.name,
-    x.title,
-    x.number_of_shares,
-    x.average_price,
-    x.share_total_price
-  ]
-end
-
-table = Terminal::Table.new do |t|
-  t.style = { :border => :unicode_round }
-  t.headings = heading
-  data.each {|e| t.add_row(e) }
-  t.style = {:all_separators => true}
-end
-
-puts table
+$ROOT/../exe/latest_insiders
