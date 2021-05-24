@@ -13,6 +13,16 @@ heading = [
   "交易价格"
 ]
 
+day = Integer(ARGV[0]) rescue nil
+
+if day.nil?
+  if Date.today.monday?
+    day = 4
+  else
+    day = 1
+  end
+end
+
 data = Insider.map do |x|
   mapping = {
     'major shareholder' => "大股东",

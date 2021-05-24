@@ -4,4 +4,4 @@ rsync -a root@152.32.169.103:marketbet_crawler.production/db/marketbet_crawler.d
 
 ROOT=${0%/*}
 
-$ROOT/../exe/latest_institutions
+$ROOT/../exe/latest_institutions "$@"

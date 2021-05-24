@@ -17,7 +17,17 @@ heading = [
   "创建时间"
 ]
 
-data = Institution.where(date: [Date.today, Date.today-1]).map do |x|
+day = Integer(ARGV[0]) rescue nil
+
+if day.nil?
+  if Date.today.monday?
+    day = 4
+  else
+    day = 1
+  end
+end
+
+data = Institution.where(date: (Date.today-day)..Date.today).map do |x|
   x1 = x.market_value .divmod(10000)
   value = x1[0].to_f + x1[1]/10000.to_f
 
