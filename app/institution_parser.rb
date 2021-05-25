@@ -3,12 +3,15 @@ class InstitutionParser
   attr_accessor :symbols, :instance, :page
 
   def initialize
-    # self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
     self.instance = Ferrum::Browser.new(headless: true, browser_options: { 'no-sandbox': nil })
   end
 
   def parse
     raise 'symbols must be exists' if symbols.nil?
+
+    stock_exchange, stock_name = symbol.split('/')
+    exchange = Exchange.find_or_create(name: stock_exchange)
+    stock = Stock.find_or_create(name: stock_name, exchange: exchange)
 
     symbols.uniq.each_slice(2) do |symbol_group|
       symbol_group.map do |symbol|
@@ -22,7 +25,7 @@ class InstitutionParser
 
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
-            save_to_institutions(tables, symbol)
+            save_to_institutions(tables, stock)
           end
           context.dispose
         end
@@ -32,7 +35,7 @@ class InstitutionParser
     instance.quit
   end
 
-  def save_to_institutions(table_ary, symbol)
+  def save_to_institutions(table_ary, stock)
     matched_date = [Date.today, Date.today-1].map {|x| x.to_time.strftime('%-m/%d/%Y') }
     latest_data = table_ary[1..].select {|x| matched_date.include? x[0] }
 
@@ -59,14 +62,11 @@ class InstitutionParser
         quarterly_changes = number_of_holding.to_i - ((number_of_holding)/(1+quarterly_changed_share_percent)).to_i
       end
 
-      stock_exchange, stock_name = symbol.split('/')
-
       Institution.find_or_create(
         {
           name: e[1],
           date: Date.strptime(e[0], '%m/%d/%Y'),
-          stock_name: stock_name,
-          stock_exchange: stock_exchange,
+          stock: stock,
           number_of_holding: number_of_holding,
           market_value: value,
           market_value_dollar_string: e[3],
