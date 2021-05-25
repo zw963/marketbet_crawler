@@ -47,7 +47,7 @@ data = Institution
 
   [
     x.id,
-    "#{x.stock_exchange}/#{x.stock_name}",
+    "#{x.stock.exchange.name}/#{x.stock.name}",
     x.date.to_s,
     x.name,
     x.number_of_holding,
