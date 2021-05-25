@@ -82,7 +82,7 @@ class InsiderParser
   end
 
   def d2b(dollar)
-    BigDecimal(dollar.tr(',', '').tr('$', ''))
+    BigDecimal(dollar.tr(',', '').sub(/GBX|$|£/, ''))
   end
 
     def try_again(page)
