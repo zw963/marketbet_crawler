@@ -17,13 +17,13 @@ day = Integer(ARGV[0]) rescue nil
 
 if day.nil?
   if Date.today.monday?
-    day = 4
+    day = 7
   else
-    day = 1
+    day = 3
   end
 end
 
-data = Insider.map do |x|
+data = Insider.where(date: (Date.today-day)..Date.today).map do |x|
   mapping = {
     'major shareholder' => "大股东",
     "insider" => "内部人士",
@@ -56,8 +56,8 @@ data = Insider.map do |x|
     x.name,
     title,
     x.number_of_shares,
-    x.average_price,
-    x.share_total_price
+    x.average_price.to_f,
+    x.share_total_price.to_f
   ]
 end
 

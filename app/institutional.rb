@@ -63,7 +63,6 @@ class Institutional
         xx = -1
       end
 
-      binding.irb if stock.nil?
       Insider.find_or_create(
         {
           date: Date.strptime(e[0], '%m/%d/%Y'),
