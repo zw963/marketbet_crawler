@@ -20,7 +20,7 @@ class InsiderParser
           stock_exchange, stock_name = symbol.split('/')
           exchange = Exchange.find_or_create(name: stock_exchange)
           stock = Stock.find_or_create(name: stock_name, exchange: exchange)
-          sleep rand(100)/100.0
+
           puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades"
           page.goto("https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades")
           try_again(page)

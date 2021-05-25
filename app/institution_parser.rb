@@ -9,16 +9,17 @@ class InstitutionParser
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
-    stock_exchange, stock_name = symbol.split('/')
-    exchange = Exchange.find_or_create(name: stock_exchange)
-    stock = Stock.find_or_create(name: stock_name, exchange: exchange)
-
     symbols.uniq.each_slice(2) do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
           context = browser.contexts.create
           page = context.create_page
           sleep rand(100)/100.0
+
+          stock_exchange, stock_name = symbol.split('/')
+          exchange = Exchange.find_or_create(name: stock_exchange)
+          stock = Stock.find_or_create(name: stock_name, exchange: exchange)
+
           puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership"
           page.go_to("https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
           try_again(page)
@@ -27,6 +28,7 @@ class InstitutionParser
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
             save_to_institutions(tables, stock)
           end
+
           context.dispose
         end
       end.each(&:join)
