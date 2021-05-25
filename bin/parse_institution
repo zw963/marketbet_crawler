@@ -3,7 +3,7 @@
 
 require_relative '../config/environment.rb'
 
-ins = Institutional.instance
+ins = InstitutionParser.instance
 
 symbols = %w(
   nasdaq/arry nasdaq/fldm nyse/beke nasdaq/lizi nasdaq/momo
