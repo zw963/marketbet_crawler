@@ -42,6 +42,8 @@ class InsiderParser
     matched_date = [Date.today, Date.today-1].map {|x| x.to_time.strftime('%-m/%d/%Y') }
     latest_data = table_ary[1..].select {|x| matched_date.include? x[0] }
 
+    latest_data = table_ary[1..]
+
     latest_data.each do |e|
       number_of_holding = e[7] == "" ? nil : e[7].to_i
 
