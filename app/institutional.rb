@@ -31,8 +31,8 @@ class Institutional
           end
 
           sleep rand(100)/100.0
-          puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades/"
-          page.goto("https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades/")
+          puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades"
+          page.goto("https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades")
           try_again(page)
 
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
@@ -145,7 +145,7 @@ class Institutional
     tries = 0
     begin
       tries += 1
-      page.network.wait_for_idle(timeout: 30)
+      page.network.wait_for_idle(timeout: 5)
     rescue Ferrum::TimeoutError
       puts 'Retrying'
       if (tries < 4)
