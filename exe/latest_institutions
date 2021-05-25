@@ -27,11 +27,14 @@ if day.nil?
   end
 end
 
-data = Institution.where(date: (Date.today-day)..Date.today).map do |x|
-  x1 = x.market_value .divmod(10000)
-  value = x1[0].to_f + x1[1]/10000.to_f
+data = Institution
+  .where(date: (Date.today-day)..Date.today)
+  .order(:stock_name)
+  .map do |x|
+    x1 = x.market_value .divmod(10000)
+    value = x1[0].to_f + x1[1]/10000.to_f
 
-  if x.quarterly_changes_percent.nil?
+    if x.quarterly_changes_percent.nil?
     value1 = 'N/A'
     value2 = 'N/A'
   elsif x.quarterly_changes_percent == 0
