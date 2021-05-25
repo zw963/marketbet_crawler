@@ -10,7 +10,7 @@ class Institutional
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
-    symbols.each_slice(1) do |symbol_group|
+    symbols.each_slice(2) do |symbol_group|
         symbol_group.map do |symbol|
           Thread.new(instance) do |browser|
             context = browser.contexts.create
@@ -21,14 +21,14 @@ class Institutional
           exchange = Exchange.find_or_create(name: stock_exchange)
           stock = Stock.find_or_create(name: stock_name, exchange: exchange)
 
-          # puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership"
-          # page.go_to("https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
-          # try_again(page)
+          puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership"
+          page.go_to("https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
+          try_again(page)
 
-          # if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
-          #   tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
-          #   save_to_institutions(tables, symbol)
-          # end
+          if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
+            tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
+            save_to_institutions(tables, symbol)
+          end
 
           sleep rand(100)/100.0
           puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades/"
