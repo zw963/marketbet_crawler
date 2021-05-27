@@ -23,29 +23,32 @@ if day.nil?
   end
 end
 
-data = Insider.where(date: (Date.today-day)..Date.today).map do |x|
-  mapping = {
-    'major shareholder' => "大股东",
-    "insider" => "内部人士",
-    "ceo" => "CEO",
-    "director" => "董事",
-    "cto" => "CTO",
-    "cfo" => "CFO",
-    "coo" => "首席运营官",
-    "general counsel" => "顾问",
-    "svp" => "高级副总裁",
-    "vp" => "副总裁",
-    "evp" => "执行副总裁",
-    "cao" => "首席行政官",
-    "vice chairman" => "副董事長",
-    "chairman" => "董事長",
-    "cmo" => "首席市场官"
-  }
+data = Insider
+  .where(date: (Date.today-day)..Date.today)
+  .order(:stock_id)
+  .map do |x|
+    mapping = {
+      'major shareholder' => "大股东",
+      "insider" => "内部人士",
+      "ceo" => "CEO",
+      "director" => "董事",
+      "cto" => "CTO",
+      "cfo" => "CFO",
+      "coo" => "首席运营官",
+      "general counsel" => "顾问",
+      "svp" => "高级副总裁",
+      "vp" => "副总裁",
+      "evp" => "执行副总裁",
+      "cao" => "首席行政官",
+      "vice chairman" => "副董事長",
+      "chairman" => "董事長",
+      "cmo" => "首席市场官"
+    }
 
-  title = x.title
-  title1 = mapping[title.downcase]
+    title = x.title
+    title1 = mapping[title.downcase]
 
-  unless title1.downcase == title.downcase
+    unless title1.downcase == title.downcase
     title = "#{title}(#{mapping[title.downcase]})"
   end
 

@@ -29,7 +29,7 @@ end
 
 data = Institution
   .where(date: (Date.today-day)..Date.today)
-  .order(:stock_name)
+  .order(:stock_id)
   .map do |x|
     x1 = x.market_value .divmod(10000)
     value = x1[0].to_f + x1[1]/10000.to_f
