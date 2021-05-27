@@ -43,11 +43,9 @@ Sequel.migration do
       BigDecimal :percent_of_shares_for_institution
       BigDecimal :quarterly_changes_percent
       Integer :quarterly_changes
-      String :stock_name, :size=>255
       String :market_value_dollar_string, :size=>255
       BigDecimal :holding_cost
       Date :date
-      String :stock_exchange, :size=>255
       DateTime :created_at
       foreign_key :stock_id, :stocks
     end
