@@ -15,13 +15,15 @@ heading = [
 
 day = Integer(ARGV[0]) rescue nil
 
-if day.nil?
-  if Date.today.monday?
-    day = 7
-  else
-    day = 3
-  end
-end
+# if day.nil?
+#   if Date.today.monday?
+#     day = 7
+#   else
+#     day = 3
+#   end
+# end
+
+day = 7 if day.nil?
 
 data = Insider
   .where(date: (Date.today-day)..Date.today)
