@@ -17,17 +17,13 @@ class InsiderParser
           page = context.create_page
           sleep rand(100)/100.0
 
-          stock_exchange, stock_name = symbol.split('/')
-          exchange = Exchange.find_or_create(name: stock_exchange)
-          stock = Stock.find_or_create(name: stock_name, exchange: exchange)
-
           puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades"
           page.goto("https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades")
           try_again(page)
 
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
-            save_to_insiders(tables, stock)
+            save_to_insiders(tables, symbol)
           end
 
           context.dispose
@@ -38,9 +34,18 @@ class InsiderParser
     instance.quit
   end
 
-  def save_to_insiders(table_ary, stock)
-    matched_date = [Date.today, Date.today-1].map {|x| x.to_time.strftime('%-m/%d/%Y') }
-    latest_data = table_ary[1..].select {|x| matched_date.include? x[0] }
+  def save_to_insiders(table_ary, symbol)
+    stock_exchange, stock_name = symbol.split('/')
+    exchange = Exchange.find_or_create(name: stock_exchange)
+    stock = Stock.find(name: stock_name, exchange: exchange)
+
+    if stock
+      matched_date = [Date.today, Date.today-1].map {|x| x.to_time.strftime('%-m/%d/%Y') }
+      latest_data = table_ary[1..].select {|x| matched_date.include? x[0] }
+    else
+      stock = Stock.create(name: stock_name, exchange: exchange)
+      latest_data = table_ary[1..]
+    end
 
     latest_data.each do |e|
       number_of_holding = e[7] == "" ? nil : e[7].to_i
