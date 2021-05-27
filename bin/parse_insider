@@ -9,7 +9,7 @@ symbols = %w(
   nasdaq/arry nasdaq/fldm nasdaq/momo
   nyse/stm nyse/nclh nasdaq/cron nyse/pltr nasdaq/ttcf
   nasdaq/kopn nasdaq/afrm nasdaq/cree nasdaq/ino nyse/ai
-  otcmkts/wcagy nyse/cnk lon/rr
+  otcmkts/wcagy nyse/cnk lon/rr nyse/ge
 )
 ins.symbols = symbols
 ins.parse
