@@ -17,6 +17,7 @@ Sequel.migration do
       primary_key :id
       String :name, :size=>255, :null=>false
       foreign_key :exchange_id, :exchanges
+      BigDecimal :percent_of_institutions
       
       index [:name], :name=>:sqlite_autoindex_stocks_1, :unique=>true
     end

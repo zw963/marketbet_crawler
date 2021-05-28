@@ -3,6 +3,7 @@ class InstitutionParser
   attr_accessor :symbols, :instance, :page
 
   def initialize
+    # self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080])
     self.instance = Ferrum::Browser.new(headless: true, browser_options: { 'no-sandbox': nil })
   end
 
@@ -22,7 +23,28 @@ class InstitutionParser
 
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
-            save_to_institutions(tables, symbol)
+
+            stock_exchange, stock_name = symbol.split('/')
+            exchange = Exchange.find_or_create(name: stock_exchange)
+            stock = Stock.find(name: stock_name, exchange: exchange)
+
+            if stock
+              matched_date = [Date.today, Date.today-1].map {|x| x.to_time.strftime('%-m/%d/%Y') }
+              latest_data = tables[1..].select {|x| matched_date.include? x[0] }
+            else
+              stock = Stock.create(name: stock_name, exchange: exchange)
+              latest_data = tables[1..]
+            end
+
+            div = page.at_css('div#cphPrimaryContent_tabInstitutionalOwnership')
+            percent = div.at_xpath('.//strong/..').inner_text[/([\d.]+)%/,1]
+
+            unless percent.nil?
+              stock.percent_of_institutions = BigDecimal(percent)/100
+              stock.save
+            end
+
+            save_to_institutions(latest_data, stock)
           end
 
           context.dispose
@@ -33,19 +55,7 @@ class InstitutionParser
     instance.quit
   end
 
-  def save_to_institutions(table_ary, symbol)
-    stock_exchange, stock_name = symbol.split('/')
-    exchange = Exchange.find_or_create(name: stock_exchange)
-    stock = Stock.find(name: stock_name, exchange: exchange)
-
-    if stock
-      matched_date = [Date.today, Date.today-1].map {|x| x.to_time.strftime('%-m/%d/%Y') }
-      latest_data = table_ary[1..].select {|x| matched_date.include? x[0] }
-    else
-      stock = Stock.create(name: stock_name, exchange: exchange)
-      latest_data = table_ary[1..]
-    end
-
+  def save_to_institutions(latest_data, stock)
     latest_data.each do |e|
       e[3] =~ /\$([\d.,]+)(.?)/
       market_value = BigDecimal($1)
