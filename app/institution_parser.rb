@@ -37,11 +37,11 @@ class InstitutionParser
             end
 
             div = page.at_css('div#cphPrimaryContent_tabInstitutionalOwnership')
-            percent = div.at_xpath('.//strong/..').inner_text[/([\d.]+)%/,1]
+            percent_ele = div.at_xpath('.//strong[contains(text(), "Institutional Ownership Percentage:")]/..')
 
-            unless percent.nil?
-              stock.percent_of_institutions = BigDecimal(percent)/100
-              stock.save
+            unless percent_ele.nil?
+              percent = percent_ele.inner_text[/([\d.]+)%/, 1]
+              stock.update(percent_of_institutions: BigDecimal(percent)/100)
             end
 
             save_to_institutions(latest_data, stock)
