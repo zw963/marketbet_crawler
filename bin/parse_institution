@@ -14,6 +14,6 @@ symbols = %w(
   nasdaq/eh otcmkts/wcagy nyse/fubo nyse/yala nyse/cnk nyse/jks
   nyse/ge
 )
-symbols = %w(nasdaq/arry)
+# symbols = %w(nasdaq/arry)
 ins.symbols = symbols
 ins.parse
