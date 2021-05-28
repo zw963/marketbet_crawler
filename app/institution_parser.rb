@@ -40,6 +40,7 @@ class InstitutionParser
             percent_ele = div.at_xpath('.//strong[contains(text(), "Institutional Ownership Percentage:")]/..')
 
             unless percent_ele.nil?
+              puts 'go into percent'
               percent = percent_ele.inner_text[/([\d.]+)%/, 1]
               stock.update(percent_of_institutions: BigDecimal(percent)/100)
             end
