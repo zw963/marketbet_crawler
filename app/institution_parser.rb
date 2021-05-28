@@ -3,7 +3,6 @@ class InstitutionParser
   attr_accessor :symbols, :instance, :page
 
   def initialize
-    # self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080])
     self.instance = Ferrum::Browser.new(headless: true, browser_options: { 'no-sandbox': nil })
   end
 
@@ -40,7 +39,6 @@ class InstitutionParser
             percent_ele = div.at_xpath('.//strong[contains(text(), "Institutional Ownership Percentage:")]/..')
 
             unless percent_ele.nil?
-              puts 'go into percent'
               percent = percent_ele.inner_text[/([\d.]+)%/, 1]
               stock.update(percent_of_institutions: BigDecimal(percent)/100)
             end
