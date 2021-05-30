@@ -16,9 +16,9 @@ ins.parse
 
 file = File.open('/tmp/parse_insider_done',  'a')
 file.puts '*'*100
-file.puts "Start" + Time.now.strftime('%Y-%m-%d %H:%M:%S %A')
+file.puts "Start " + Time.now.strftime('%Y-%m-%d %H:%M:%S %A')
 
 ins.parse
 
-file.puts "End" + Time.now.strftime('%Y-%m-%d %H:%M:%S %A')
+file.puts "End " + Time.now.strftime('%Y-%m-%d %H:%M:%S %A')
 file.close
