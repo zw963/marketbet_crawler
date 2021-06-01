@@ -1,7 +1,5 @@
 require 'bundler'
-# Bundler.require(:default, ENV.fetch('RACK_ENV', "development"))
-
-Bundler.require(:default)
+Bundler.require(:default, ENV.fetch('RACK_ENV', "development"))
 
 loader = Zeitwerk::Loader.new
 loader.push_dir("#{__dir__}/../app")
