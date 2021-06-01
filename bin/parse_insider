@@ -12,7 +12,6 @@ symbols = %w(
   otcmkts/wcagy nyse/cnk lon/rr nyse/ge
 )
 ins.symbols = symbols
-ins.parse
 
 file = File.open('/tmp/parse_insider_done',  'a')
 file.puts '*'*100

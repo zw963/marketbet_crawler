@@ -14,6 +14,10 @@ GEM
       cliver (~> 0.3)
       concurrent-ruby (~> 1.1)
       websocket-driver (>= 0.6, < 0.8)
+    gruff (0.13.0)
+      histogram
+      rmagick
+    histogram (0.2.4.1)
     interception (0.5)
     method_source (1.0.0)
     pry (0.14.1)
@@ -23,6 +27,7 @@ GEM
       interception (>= 0.5)
       pry (>= 0.12.0)
     public_suffix (4.0.6)
+    rmagick (4.2.2)
     sequel (5.44.0)
     sqlite3 (1.4.2)
     terminal-table (3.0.1)
@@ -41,6 +46,7 @@ PLATFORMS
 DEPENDENCIES
   easy_translate
   ferrum
+  gruff
   pry-rescue
   sequel
   sqlite3
