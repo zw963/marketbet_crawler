@@ -11,4 +11,4 @@ gem 'easy_translate'
 gem 'zeitwerk'
 gem 'sqlite3'
 gem 'pry-rescue'
-gem 'gruff'
+gem 'gruff', group: :development
