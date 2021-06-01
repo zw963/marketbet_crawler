@@ -95,7 +95,7 @@ class InsiderParser
       page.network.wait_for_idle(timeout: 5)
     rescue Ferrum::TimeoutError
       puts 'Retrying'
-      if (tries < 4)
+      if (tries < 10)
         sleep(2**tries)
         retry
       end
