@@ -3,6 +3,7 @@ require 'bundler'
 # Bundler.setup(:default, :development)
 Bundler.setup(:default)
 
+# gruff gem was wrapped into :development group.
 puts $LOAD_PATH.grep(/gruff/)
 
 # loader = Zeitwerk::Loader.new
