@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+
+require_relative '../config/environment'
+
+heading = [
+  "ID",
+  "股票",
+  "日期",
+  "名称",
+  "职位",
+  "股票数量",
+  "平均价格",
+  "交易价格"
+]
+
+day = Integer(ARGV[0]) rescue nil
+
+# if day.nil?
+#   if Date.today.monday?
+#     day = 7
+#   else
+#     day = 3
+#   end
+# end
+
+day = 7 if day.nil?
+
+data = Insider
+  .where(date: (Date.today-day)..Date.today)
+  .order(:stock_id)
+  .map do |x|
+    mapping = {
+      'major shareholder' => "大股东",
+      "insider" => "内部人士",
+      "ceo" => "CEO",
+      "director" => "董事",
+      "cto" => "CTO",
+      "cfo" => "CFO",
+      "coo" => "首席运营官",
+      "general counsel" => "顾问",
+      "svp" => "高级副总裁",
+      "vp" => "副总裁",
+      "evp" => "执行副总裁",
+      "cao" => "首席行政官",
+      "vice chairman" => "副董事長",
+      "chairman" => "董事長",
+      "cmo" => "首席市场官"
+    }
+
+    title = x.title
+    title1 = mapping[title.downcase]
+
+    unless title1.downcase == title.downcase
+    title = "#{title}(#{mapping[title.downcase]})"
+  end
+
+  [
+    x.id,
+    "#{x.stock.exchange.name}/#{x.stock.name}",
+    x.date.to_s,
+    x.name,
+    title,
+    x.number_of_shares,
+    x.average_price.to_f,
+    x.share_total_price.to_f
+  ]
+end
+
+table = Terminal::Table.new do |t|
+  t.style = { :border => :unicode_round }
+  t.headings = heading
+  data.each {|e| t.add_row(e) }
+  t.style = {:all_separators => true}
+end
+
+puts table

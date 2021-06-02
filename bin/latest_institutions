@@ -1,0 +1,7 @@
+#!/bin/bash
+
+rsync -a root@${hk}:marketbet_crawler.production/db/marketbet_crawler.db db/
+
+ROOT=${0%/*}
+
+$ROOT/../exe/latest_institutions "$@"
