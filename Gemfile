@@ -11,3 +11,4 @@ gem 'zeitwerk'
 gem 'sqlite3'
 gem 'pry-rescue'
 gem 'gruff', group: :development
+gem 'activerecord', require: 'active_record'

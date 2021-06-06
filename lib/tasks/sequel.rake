@@ -1,28 +1,28 @@
 require 'logger'
+require "sequel/core"
+require_relative '../../config/environment'
 
 namespace :db do
   task :create_db_conn do |t, args|
-    require "sequel/core"
     Sequel.extension :migration
-    @db = ENV.fetch "DATABASE_URL"
-    @conn = Sequel.connect(@db, logger: Logger.new($stderr))
+    DB.logger = Logger.new($stderr)
   end
 
   desc "Create database"
   task :drop => [:create_db_conn] do |t, args|
-    database = @conn.opts[:database]
-    if @conn.database_type == :sqlite
+    database = DB.opts[:database]
+    if DB.database_type == :sqlite
       FileUtils.rm_f(database)
     else
-      @conn.execute("DROP DATABASE IF EXISTS #{database}")
+      DB.execute("DROP DATABASE IF EXISTS #{database}")
     end
   end
 
   desc "Run migrations"
   task :migrate, [:version] => [:create_db_conn] do |t, args|
     version = args[:version].to_i if args[:version]
-    puts @db
-    Sequel::Migrator.run(@conn, "db/migrations", target: version)
+    puts DB.url
+    Sequel::Migrator.run(DB, "db/migrations", target: version)
     task('db:dump').invoke
   end
 
@@ -34,7 +34,7 @@ namespace :db do
 
   desc "Dump database"
   task :dump => [:create_db_conn] do |t, args|
-    sh "bundle exec sequel -d #{@db} > db/schema.rb"
+    sh "bundle exec sequel -d #{DB.url} > db/schema.rb"
   end
 
   desc "Reset database"

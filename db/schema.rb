@@ -7,6 +7,13 @@ Sequel.migration do
       index [:name], :name=>:sqlite_autoindex_exchanges_1, :unique=>true
     end
     
+    create_table(:new_stocks) do
+      Integer :id
+      String :name, :text=>true
+      Integer :exchange_id
+      String :percent_of_institutions
+    end
+    
     create_table(:schema_migrations) do
       String :filename, :size=>255, :null=>false
       
