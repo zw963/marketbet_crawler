@@ -74,7 +74,7 @@ class InsiderParser
   end
 
   def p2b(percent)
-    f = percent.tr('%', '').tr(',', '').tr('$', '')
+    f = percent.tr('%', '').delete(',').delete('$')
     if f == "N/A"
       nil
     elsif f == "No Change"
@@ -85,7 +85,7 @@ class InsiderParser
   end
 
   def d2b(dollar)
-    BigDecimal(dollar.tr(',', '').sub(/GBX|\$|£/, ''))
+    BigDecimal(dollar.gsub(/GBX|\$|£|,/, ''))
   end
 
     def try_again(page)
