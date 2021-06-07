@@ -26,7 +26,7 @@ day = Integer(ARGV[0]) rescue nil
 day = 7 if day.nil?
 
 data = Insider
-  .where(date: (Date.today-day)..Date.today)
+  .where(Sequel.or(date: Date.today-day..Date.today, created_at: DateTime.now.beginning_of_day..DateTime.now.end_of_day))
   .order(:stock_id)
   .map do |x|
     mapping = {

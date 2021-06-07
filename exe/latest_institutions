@@ -28,16 +28,16 @@ if day.nil?
 end
 
 data = Institution
-  .where(date: (Date.today-day)..Date.today)
+  .where(Sequel.or(date: Date.today-day..Date.today, created_at: DateTime.now.beginning_of_day..DateTime.now.end_of_day))
   .order(:stock_id)
   .map do |x|
     x1 = x.market_value .divmod(10000)
     value = x1[0].to_f + x1[1]/10000.to_f
 
     if x.quarterly_changes_percent.nil?
-    value1 = 'N/A'
-    value2 = 'N/A'
-  elsif x.quarterly_changes_percent == 0
+      value1 = 'N/A'
+      value2 = 'N/A'
+    elsif x.quarterly_changes_percent == 0
     value1 = 'No Change'
     value2 = 'No Change'
   else
