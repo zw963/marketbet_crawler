@@ -10,7 +10,7 @@ class InsiderParser
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
-    symbols.uniq.each_slice(1) do |symbol_group|
+    symbols.uniq.each_slice(2).to_a.shuffle do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
           context = browser.contexts.create
