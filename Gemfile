@@ -9,6 +9,8 @@ gem 'terminal-table'
 gem 'sequel'
 gem 'zeitwerk'
 gem 'sqlite3'
-gem 'pry-rescue'
-gem 'gruff', group: :development
-gem 'activerecord', require: 'active_record'
+gem 'thamble'
+gem 'roda'
+# gem 'pry-rescue'
+# gem 'gruff', group: :development
+# gem 'activerecord', require: 'active_record'
