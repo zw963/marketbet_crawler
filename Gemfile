@@ -11,6 +11,10 @@ gem 'zeitwerk'
 gem 'sqlite3'
 gem 'thamble'
 gem 'roda'
-# gem 'pry-rescue'
-# gem 'gruff', group: :development
-# gem 'activerecord', require: 'active_record'
+gem 'hot_reloader'
+gem 'pry-rescue', require: false
+
+group :development do
+  gem 'gruff', group: :development
+  gem 'activerecord', require: 'active_record'
+end
