@@ -1,17 +1,21 @@
 require 'logger'
-require "sequel/core"
-require_relative '../../config/environment'
 
 namespace :db do
-  task :create_db_conn do |t, args|
+  task :init do |t, args|
+    require "sequel/core"
+    require_relative '../../config/environment'
+
     Sequel.extension :migration
-    DB.logger = Logger.new($stderr)
+    unless ENV['RACK_ENV'] == 'test'
+      DB.loggers << Logger.new($stdout) if DB.loggers.empty?
+    end
   end
 
-  desc "Create database"
-  task :drop => [:create_db_conn] do |t, args|
+  desc "Drop database"
+  task :drop => [:init] do |t, args|
     database = DB.opts[:database]
     if DB.database_type == :sqlite
+      puts "rm -f #{database}"
       FileUtils.rm_f(database)
     else
       DB.execute("DROP DATABASE IF EXISTS #{database}")
@@ -19,26 +23,28 @@ namespace :db do
   end
 
   desc "Run migrations"
-  task :migrate, [:version] => [:create_db_conn] do |t, args|
+  task :migrate, [:version] => [:init] do |t, args|
     version = args[:version].to_i if args[:version]
     puts DB.url
-    Sequel::Migrator.run(DB, "db/migrations", target: version)
-    task('db:dump').invoke
+    if !Sequel::Migrator.is_current?(DB, 'db/migrations') and version.nil?
+      Sequel::Migrator.run(DB, "db/migrations", target: version)
+      task('db:dump').invoke
+    end
   end
 
   desc "Rollback the last migrate"
-  task :rollback => [:create_db_conn] do |t, args|
+  task :rollback => [:init] do |t, args|
     version=`ls -1v db/migrations/*.rb |tail -n2 |head -n1|rev|cut -d'/' -f1|rev|cut -d'_' -f1`.chomp
     task('db:migrate').invoke(version)
   end
 
   desc "Dump database"
-  task :dump => [:create_db_conn] do |t, args|
+  task :dump => [:init] do |t, args|
     sh "bundle exec sequel -d #{DB.url} > db/schema.rb"
   end
 
   desc "Reset database"
-  task :reset => [:create_db_conn] do |t, args|
+  task :reset => [:init] do |t, args|
     Rake::Task["db:drop"].invoke
     sleep 3
     Rake::Task["db:migrate"].reenable
