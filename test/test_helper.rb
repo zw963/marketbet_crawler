@@ -1,9 +1,8 @@
+ENV['RACK_ENV'] = 'test'
 require "rack/test"
 require 'sequel/core'
 require 'database_cleaner-sequel'
 require_relative '../config/environment'
-
-ENV['RACK_ENV'] = 'test'
 
 Sequel.extension :migration
 Sequel::Migrator.check_current(DB, 'db/migrations')

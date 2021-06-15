@@ -3,16 +3,16 @@ require 'test_helper'
 class AppTest < Minitest::Test
   def test_stocks
     exchange = Exchange.create(name: 'nyse')
-    Stock.create(name: 'ge', exchange: exchange)
-    Stock.create(name: 'lu', exchange: exchange)
+    Stock.create(name: 'ge', exchange: exchange, percent_of_institutions: 0.5525)
+    Stock.create(name: 'lu', exchange: exchange, percent_of_institutions: 0.2233)
     get "/stocks"
     assert_equal <<-'HEREDOC', last_response.body
 <table>
 <colgroup>
-<col width="10" />
-<col width="20" />
+<col width="50" />
 <col width="100" />
-<col width="10" />
+<col width="100" />
+<col width="100" />
 </colgroup>
 <thead>
 <tr>
