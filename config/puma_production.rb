@@ -8,6 +8,7 @@ FileUtils.mkdir_p('tmp/pids')
 pidfile "tmp/pids/#{file}.pid"
 state_path "tmp/pids/#{file}.state"
 
+FileUtils.mkdir_p('log')
 stdout_redirect "log/production.log", "log/#{file}_err.log", true unless ENV['RACK_LOG_TO_STDOUT']
 
 workers Integer(ENV['WEB_CONCURRENCY'] || 2)
