@@ -2,6 +2,7 @@ threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
 threads 1, threads_count
 port ENV.fetch("PORT") { 3000 }
 environment ENV.fetch("RACK_ENV") { "production" }
+log_requests true
 
 file = 'puma'
 FileUtils.mkdir_p('tmp/pids')
@@ -13,5 +14,6 @@ stdout_redirect "log/production.log", "log/#{file}_err.log", true unless ENV['RA
 
 workers Integer(ENV['WEB_CONCURRENCY'] || 2)
 prune_bundler
+preload_app!
 
 plugin :tmp_restart
