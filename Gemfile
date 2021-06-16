@@ -12,6 +12,7 @@ gem 'sqlite3'
 gem 'pry-rescue', require: false
 
 gem 'roda'
+gem 'puma'
 gem 'tilt'
 gem 'erubi', '>= 1.5'
 gem 'thamble'

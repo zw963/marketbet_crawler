@@ -9,7 +9,7 @@ class App < Roda
           x[:id],
           x[:name],
           x[:exchange_name],
-          x[:percent_of_institutions] ? "#{x[:percent_of_institutions]*100}%" : ""
+          x[:percent_of_institutions] ? "#{(x[:percent_of_institutions]*100).to_f}%" : ""
         ]
       end
     Thamble.table(stocks, headers: ['ID', '股票名称', '交易所名称', '机构持股占比'], widths: [50, 100, 100, 100])
