@@ -1,7 +1,6 @@
 Rake.add_rakelib 'lib/tasks'
 
 require 'rake/testtask'
-
 Rake::TestTask.new do |t|
   t.libs = ['lib', 'test']
   t.ruby_opts = ['-rminitest/autorun', '-rminitest/pride']
