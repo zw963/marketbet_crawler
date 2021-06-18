@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'irb'
+require_relative '../config/models'
+
+IRB.start(__FILE__)
