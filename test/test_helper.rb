@@ -3,8 +3,10 @@ require "rack/test"
 require 'database_cleaner-sequel'
 require_relative '../config/db.rb'
 
-Sequel.extension :migration
-Sequel::Migrator.check_current(DB, 'db/migrations')
+if not Dir.empty?('db/migrations')
+  Sequel.extension :migration
+  Sequel::Migrator.check_current(DB, 'db/migrations')
+end
 
 DatabaseCleaner[:sequel].strategy = :transaction
 
