@@ -1,14 +1,7 @@
-require 'logger'
-
 namespace :db do
   task :init do |t, args|
-    require "sequel/core"
-    require_relative '../../config/environment'
-
+    require_relative '../../config/models'
     Sequel.extension :migration
-    unless ENV['RACK_ENV'] == 'test'
-      DB.loggers << Logger.new($stdout) if DB.loggers.empty?
-    end
   end
 
   desc "Drop database"

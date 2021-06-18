@@ -1,4 +1,4 @@
-require_relative 'db'
+require_relative 'models'
 
 Sequel::Model.plugin :timestamps
 Sequel.extension :symbol_aref
