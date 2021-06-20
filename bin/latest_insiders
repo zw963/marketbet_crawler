@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# export RACK_ENV=production
+
 rsync -a root@${hk}:marketbet_crawler.production/db/marketbet_crawler.db db/
 
 ROOT=${0%/*}

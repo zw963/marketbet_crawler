@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require_relative '../config/environment'
+require 'date'
 
 heading = [
   "ID",
@@ -17,21 +18,24 @@ heading = [
   "创建时间"
 ]
 
-day = Integer(ARGV[0]) rescue nil
+days = Integer(ARGV[0]) rescue nil
 
-if day.nil?
+if days.nil?
   if Date.today.monday?
-    day = 4
+    days = 4
   else
-    day = 1
+    days = 1
   end
 end
 
+today = Date.today
+now = today.to_datetime
+
 data = Institution
-  .where(Sequel.or(date: Date.today-day..Date.today, created_at: DateTime.now.beginning_of_day..DateTime.now.end_of_day))
+  .where(Sequel.or(date: today-days..today, created_at: now...(today + 1).to_datetime))
   .order(:stock_id)
   .map do |x|
-    x1 = x.market_value .divmod(10000)
+    x1 = x.market_value.divmod(10000)
     value = x1[0].to_f + x1[1]/10000.to_f
 
     if x.quarterly_changes_percent.nil?

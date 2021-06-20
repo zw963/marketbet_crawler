@@ -7,8 +7,8 @@ loader.ignore("#{__dir__}/../app/ar")
 loader.collapse("#{__dir__}/../app/parsers")
 loader.inflector.inflect "ar" => "AR"
 
-if ENV['RACK_ENV'] == 'production'
-  HotReloader.eager_load(loader)
-else
+if ENV['RACK_ENV'] == 'development'
   HotReloader.will_listen(loader)
+else
+  HotReloader.eager_load(loader)
 end

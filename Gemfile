@@ -24,7 +24,7 @@ gem 'rack-test', require: false
 
 group :development do
   gem 'gruff', group: :development
-  gem 'activerecord', require: 'active_record'
+  # gem 'activerecord', require: 'active_record'
 end
 
 group :test do
