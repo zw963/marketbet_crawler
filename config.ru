@@ -1,7 +1,7 @@
 require_relative './config/environment'
 
-if ENV['RACK_ENV'] == 'production'
-  run App.freeze.app
-else
+if ENV['RACK_ENV'] == 'development'
   run ->(env) { App.call(env) }
+else
+  run App.freeze.app
 end
