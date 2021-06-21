@@ -12,7 +12,8 @@ symbols = %w(
   nasdaq/kopn nasdaq/afrm nasdaq/cree nasdaq/dada nasdaq/fami
   nyse/dao nasdaq/ino nasdaq/tour nyse/tme nyse/ai
   nasdaq/eh otcmkts/wcagy nyse/fubo nyse/yala nyse/cnk nyse/jks
-  nyse/ge nasdaq/bmbl nyse/yq nyse/gotu nyse/fsly
+  nyse/ge nasdaq/bmbl nyse/yq nyse/gotu nyse/fsly nasdaq/wish
+  nyse/dash
 )
 # symbols = %w(nasdaq/arry)
 ins.symbols = symbols
