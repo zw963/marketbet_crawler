@@ -4,19 +4,19 @@ For scrap the public stocks data in marketbet.com, and show them.
 
 ## Technology stack
 
-[Roda](https://github.com/jeremyevans/roda)
+[Roda](https://github.com/jeremyevans/roda) with plugins.
 
-[Sequel](https://github.com/jeremyevans/sequel)
+[Sequel](https://github.com/jeremyevans/sequel) with plugins.
 
 [hot_reloader](https://github.com/zw963/hot_reloader)
 
 [puma](https://github.com/puma/puma)
 
-Test driven by:
-
 [minitest](https://github.com/seattlerb/minitest), ruby builtin.
 
 [rack-test](https://github.com/rack/rack-test)
+
+<!-- [ferrum](https://github.com/rubycdp/ferrum), for used with chrome headless. -->
 
 ## Folder structure
 
@@ -57,15 +57,16 @@ Create Sequel db connection, we require this in test/test_helper, for check if c
 
 Require by others components for support auto reloader(development mode) and eagerload(in production).
 
-### How to start app.
+### Rakefile, lib/tasks/sequel.rake
 
-start app is easy.
+1. Add tasks for run tests in test/ folder. just run `rake` or `rake test`.
+2. Add tasks for run specs in spec/ folder. run `rake spec`.
+3. Add tasks for run sequel db tasks,  e.g. `rake db:migrate`
 
-1. ensure set correct `RACK_ENV` environment variable.
-2. run `rake db:migrate` to create tables.
-2. run `bundle exec puma` to start app.
-3. if you use `foreman` like tools, you can start use it too.
+## How to start app.
 
-### How to TDD
-
-Run `rake`, will run tests in test/, or `rake spec` will run specs in spec/.
+1. run `bundle`
+2. set correct `RACK_ENV` environment variable.
+3. set correct `DEVELOPMENT_DATABASE_URL`, `TEST_DATABASE_URL` environment variable.
+4. run `rake db:migrate` if `db/migrations` any.
+5. run `bundle exec puma` to start this app. (or use forman/procodile if you like)
