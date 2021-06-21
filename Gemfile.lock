@@ -29,6 +29,9 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     method_source (1.0.0)
+    minitest (5.14.4)
+    minitest-global_expectations (1.0.1)
+      minitest (> 5)
     nio4r (2.5.7)
     pry (0.14.1)
       coderay (~> 1.1)
@@ -71,6 +74,7 @@ DEPENDENCIES
   ferrum
   gruff
   hot_reloader
+  minitest-global_expectations
   pry-rescue
   puma
   rack-test

@@ -29,4 +29,5 @@ end
 
 group :test do
   gem 'database_cleaner-sequel'
+  gem 'minitest-global_expectations'
 end

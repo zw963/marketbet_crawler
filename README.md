@@ -1,4 +1,4 @@
-## An attempt to build a project using roda and sequel toolkit.
+## An attempt to build a project using roda and sequel toolkit, for Simplicity, less gems.
 
 For scrap the public stocks data in marketbet.com, and show them.
 
@@ -10,11 +10,13 @@ For scrap the public stocks data in marketbet.com, and show them.
 
 [hot_reloader](https://github.com/zw963/hot_reloader)
 
-[ferrum](https://github.com/rubycdp/ferrum)
-
 [puma](https://github.com/puma/puma)
 
-Test driven by [rack-test](https://github.com/rack/rack-test)
+Test driven by:
+
+[minitest](https://github.com/seattlerb/minitest), ruby builtin.
+
+[rack-test](https://github.com/rack/rack-test)
 
 ## Folder structure
 
@@ -60,14 +62,10 @@ Require by others components for support auto reloader(development mode) and eag
 start app is easy.
 
 1. ensure set correct `RACK_ENV` environment variable.
+2. run `rake db:migrate` to create tables.
 2. run `bundle exec puma` to start app.
 3. if you use `foreman` like tools, you can start use it too.
 
 ### How to TDD
 
-Just run `rake`.
-
-
-
-
-
+Run `rake`, will run tests in test/, or `rake spec` will run specs in spec/.

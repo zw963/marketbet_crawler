@@ -88,7 +88,7 @@ class InsiderParser
     BigDecimal(dollar.gsub(/GBX|\$|£|,/, ''))
   end
 
-    def try_again(page)
+  def try_again(page)
     tries = 0
     begin
       tries += 1
