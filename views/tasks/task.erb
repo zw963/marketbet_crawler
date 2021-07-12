@@ -1,0 +1,5 @@
+<% @page_title = "The task" %>
+
+<h2><%= @task.upcase %></h2>
+<span class="done">[DONE]</span>
+<h3>Due Date: <%= Time.now.strftime("%v") %></h3>

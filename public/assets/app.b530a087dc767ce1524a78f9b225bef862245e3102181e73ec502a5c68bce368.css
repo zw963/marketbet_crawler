@@ -1,0 +1,8 @@
+ul {
+  list-style: none; }
+
+ul .todo {
+  color: red; }
+
+ul .done {
+  color: green; }

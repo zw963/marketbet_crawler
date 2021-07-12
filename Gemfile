@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+# source "https://rubygems.org"
+
+source "https://gems.ruby-china.com"
+
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
@@ -17,6 +20,7 @@ gem 'tilt'
 gem 'erubi', '>= 1.5'
 gem 'thamble'
 gem 'rake'
+gem 'sassc'
 # gem 'awesome_print'
 gem 'rack-test', require: false
 # gem 'http'

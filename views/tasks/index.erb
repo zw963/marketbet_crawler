@@ -1,0 +1,16 @@
+<% @page_title = "All Tasks" %>
+
+<h2>Tasks</h2>
+<ul>
+  <% @tasks.each do |task| %>
+    <li>
+      <%= task %>
+    </li>
+  <% end %>
+</ul>
+
+<%# [1, 2, 3] %>
+
+<% content_for(:footer) do %>
+  There are <%= @tasks.length %> tasks total.
+<% end %>

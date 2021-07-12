@@ -13,6 +13,13 @@ Sequel.migration do
       primary_key [:filename]
     end
     
+    create_table(:tasks) do
+      primary_key :id
+      String :title, :size=>255
+      TrueClass :is_done
+      DateTime :due
+    end
+    
     create_table(:new_stocks) do
       primary_key :id
       String :name, :size=>255, :null=>false

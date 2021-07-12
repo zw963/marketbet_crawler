@@ -1,0 +1,15 @@
+<a @page_title = "All Tasks" %>
+
+<h2>Tasks</h2>
+<ul>
+  <% @tasks.each do |task| %>
+    <li class="<%= task.done? ? :done : :todo %>">
+      <input type="checkbox"<%= " checked" if task.done? %>></input>
+      <%= task.title %>
+    </li>
+  <% end %>
+</ul>
+
+<% content_for(:footer) do %>
+  There are <%= @tasks.length %> tasks total.
+<% end %>

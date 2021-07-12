@@ -1,0 +1,12 @@
+ul {
+  & {
+    list-style: none;
+  }
+  .todo {
+    color: red;
+  }
+
+  .done {
+    color: green;
+  }
+}
