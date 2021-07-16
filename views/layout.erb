@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <title><%= @page_title || "To-Do or not To-Do" %></title>
+    <%== assets(:css) %>
+  </head>
+  <body>
+    <h1>To-Do or not To-Do</h1>
+    <%== yield %>
+    <div class="footer">
+      <%= content_for(:footer) || render("footer") %>
+    </div>
+    <%== assets(:js) %>
+  </body>
+</html>

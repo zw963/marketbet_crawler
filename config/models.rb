@@ -22,5 +22,3 @@ unless ENV['RACK_ENV'] == 'development'
   Sequel::Model.freeze_descendents
   DB.freeze
 end
-
-require_relative 'hot_reloader' unless defined? HotReloader

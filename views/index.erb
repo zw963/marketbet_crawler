@@ -1,0 +1,24 @@
+<a @page_title = "All Tasks" %>
+
+<h2>Tasks</h2>
+<ul>
+  <% @tasks.each do |task| %>
+    <li class="<%= task.done? ? :done : :todo %>">
+      <input type="checkbox"<%= " checked" if task.done? %>></input>
+      <%= task.title %>
+    </li>
+  <% end %>
+</ul>
+
+<form action="/add" method="post">
+  <%== csrf_tag('/add') %>
+  <div class="input-group">
+    <input type="text" name="item" class="form-input"/>
+    <input type="submit" value="Add item!"
+      class="btn btn-primary input-group-btn"/>
+  </div>
+</form>
+
+<% content_for(:footer) do %>
+  There are <%= @tasks.length %> tasks total.
+<% end %>

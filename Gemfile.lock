@@ -28,7 +28,10 @@ GEM
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    mail (2.7.1)
+      mini_mime (>= 0.1.1)
     method_source (1.0.0)
+    mini_mime (1.1.0)
     minitest (5.14.4)
     minitest-global_expectations (1.0.1)
       minitest (> 5)
@@ -52,6 +55,8 @@ GEM
     rmagick (4.2.2)
     roda (3.46.0)
       rack
+    sassc (2.4.0)
+      ffi (~> 1.9)
     sequel (5.46.0)
     sqlite3 (1.4.2)
     terminal-table (3.0.1)
@@ -74,12 +79,14 @@ DEPENDENCIES
   ferrum
   gruff
   hot_reloader
+  mail
   minitest-global_expectations
   pry-rescue
   puma
   rack-test
   rake
   roda
+  sassc
   sequel
   sqlite3
   terminal-table

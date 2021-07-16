@@ -17,10 +17,12 @@ gem 'tilt'
 gem 'erubi', '>= 1.5'
 gem 'thamble'
 gem 'rake'
+gem 'sassc'
 # gem 'awesome_print'
 gem 'rack-test', require: false
 # gem 'http'
 # gem 'faraday'
+gem 'mail'
 
 group :development do
   gem 'gruff', group: :development
