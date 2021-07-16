@@ -5,8 +5,8 @@ class App::Mailer < Roda
     r.on "tasks", Integer do |id|
       no_mail! unless @task = Task[id]
 
-      from "zw963@163.com"
-      to "vil963@gmail.com"
+      from "root@zw963.online"
+      to "zw963@163.com"
 
       r.mail "updated" do
         subject "Task ##{id} Updated."
