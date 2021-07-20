@@ -10,7 +10,7 @@ symbols = %w(
   nyse/stm nyse/nclh nasdaq/cron nyse/pltr nasdaq/ttcf
   nasdaq/kopn nasdaq/afrm nasdaq/cree nasdaq/ino nyse/ai
   otcmkts/wcagy nyse/cnk lon/rr nyse/ge nasdaq/bmbl
-  nyse/fsly nasdaq/wish nyse/dash nyse/qs
+  nyse/fsly nasdaq/wish nyse/dash nyse/qs nyseamerican/eman
 )
 ins.symbols = symbols
 
