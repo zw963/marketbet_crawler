@@ -9,7 +9,7 @@ class InstitutionParser
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
-    symbols.uniq.each_slice(2).to_a.shuffle.each do |symbol_group|
+    symbols.uniq.each_slice(1).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
           context = browser.contexts.create
@@ -115,10 +115,10 @@ class InstitutionParser
     tries = 0
     begin
       tries += 1
-      page.network.wait_for_idle(timeout: 5)
+      page.network.wait_for_idle(timeout: 10)
     rescue Ferrum::TimeoutError
       puts 'Retrying'
-      if (tries < 7)
+      if (tries < 5)
         sleep(2**tries)
         retry
       end

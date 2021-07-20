@@ -15,7 +15,7 @@ class InsiderParser
         Thread.new(instance) do |browser|
           context = browser.contexts.create
           page = context.create_page
-          sleep rand(100)/100.0
+          sleep rand(3)
 
           puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades"
           page.goto("https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades")
