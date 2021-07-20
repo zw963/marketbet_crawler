@@ -36,7 +36,7 @@ class InstitutionParser
             end
 
             div = page.at_css('div#cphPrimaryContent_tabInstitutionalOwnership')
-            percent_ele = div.at_xpath('.//strong[contains(text(), "Institutional Ownership Percentage:")]/..')
+            percent_ele = div&.at_xpath('.//strong[contains(text(), "Institutional Ownership Percentage:")]/..')
 
             unless percent_ele.nil?
               percent = percent_ele.inner_text[/([\d.]+)%/, 1]
