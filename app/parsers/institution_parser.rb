@@ -75,7 +75,7 @@ class InstitutionParser
       if quarterly_changed_share_percent.nil?
         quarterly_changes = nil
       else
-        quarterly_changes = number_of_holding.to_i - ((number_of_holding)/(1+quarterly_changed_share_percent)).to_i
+        quarterly_changes = number_of_holding - ((number_of_holding)/(1+quarterly_changed_share_percent)).to_i
       end
 
       Institution.find_or_create(
@@ -118,7 +118,7 @@ class InstitutionParser
       page.network.wait_for_idle(timeout: 5)
     rescue Ferrum::TimeoutError
       puts 'Retrying'
-      if (tries < 4)
+      if (tries < 7)
         sleep(2**tries)
         retry
       end
