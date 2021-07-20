@@ -1,6 +1,7 @@
 namespace :db do
   task :init do |t, args|
     require_relative '../../config/models'
+    # Dir.glob('../../app/models/*.rb').each {|m| require m }
     Sequel.extension :migration
   end
 

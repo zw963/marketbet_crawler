@@ -9,16 +9,15 @@ class InstitutionParser
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
-    symbols.uniq.each_slice(1).to_a.shuffle.each do |symbol_group|
+    symbols.uniq.each_slice(2).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
           context = browser.contexts.create
           page = context.create_page
-          sleep rand(100)/100.0
+          sleep rand(3)
 
           puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership"
-          page.go_to("https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
-          try_again(page)
+          try_again(page, "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
 
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
@@ -111,12 +110,13 @@ class InstitutionParser
     BigDecimal(dollar.tr(',', '').tr('$', ''))
   end
 
-  def try_again(page)
+  def try_again(page, url)
     tries = 0
     begin
       tries += 1
+      page.goto(url)
       page.network.wait_for_idle(timeout: 10)
-    rescue Ferrum::TimeoutError
+    rescue Ferrum::PendingConnectionsError, Ferrum::TimeoutError
       puts 'Retrying'
       if (tries < 5)
         sleep(2**tries)
