@@ -10,3 +10,10 @@ ENV['RACK_ENV'] = ENV['RACK_ENV'] || 'development'
 
 database_url_name="#{ENV['RACK_ENV']}_database_url".upcase # e.g DEVELOPMENT_DATABASE_URL
 DB = Sequel.connect(ENV.delete(database_url_name) || ENV.delete('DATABASE_URL'), timeout: 10000)
+
+if ENV['RACK_ENV'] == 'development' || ENV['RACK_ENV'] == 'test'
+  require 'logger'
+  LOGGER = Logger.new($stdout)
+  LOGGER.level = Logger::FATAL if ENV['RACK_ENV'] == 'test'
+  DB.loggers << LOGGER
+end
