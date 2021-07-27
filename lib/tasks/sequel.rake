@@ -1,6 +1,7 @@
 namespace :db do
   task :init do |t, args|
-    require_relative '../../config/models'
+    # require_relative 'hot_reloader' unless defined? HotReloader
+    require_relative '../../config/db'
     Sequel.extension :migration
   end
 

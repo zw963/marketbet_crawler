@@ -4,12 +4,12 @@ source "https://rubygems.org"
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
+gem 'pry-rescue', require: false
 gem 'hot_reloader'
 gem "ferrum"
 gem 'terminal-table'
 gem 'sequel'
 gem 'sqlite3'
-gem 'pry-rescue', require: false
 
 gem 'roda'
 gem 'puma'
@@ -30,4 +30,9 @@ end
 group :test do
   gem 'database_cleaner-sequel'
   gem 'minitest-global_expectations'
+end
+
+group :production, :development do
+  gem 'capistrano'
+  gem 'capistrano-bundler'
 end
