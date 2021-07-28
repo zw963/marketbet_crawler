@@ -1,23 +1,26 @@
 namespace :db do
-  task :init do |t, args|
+  task :init_db do |t, args|
+    require_relative '../../config/db'
+  end
+
+  task :init_models => [:init_db] do |t, args|
     require_relative '../../config/models'
-    # Dir.glob('../../app/models/*.rb').each {|m| require m }
-    Sequel.extension :migration
+    Dir['app/models/**/*.rb'].each {|m| load m }
   end
 
   desc "Drop database"
-  task :drop => [:init] do |t, args|
+  task :drop => [:init_db] do |t, args|
     database = DB.opts[:database]
     if DB.database_type == :sqlite
-      puts "rm -f #{database}"
-      FileUtils.rm_f(database)
+      FileUtils.rm_f(database, verbose: true)
     else
       DB.execute("DROP DATABASE IF EXISTS #{database}")
     end
   end
 
   desc "Run migrations"
-  task :migrate, [:version] => [:init] do |t, args|
+  task :migrate, [:version] => [:init_db] do |t, args|
+    Sequel.extension :migration
     version = args[:version].to_i if args[:version]
     puts DB.url
     if !Sequel::Migrator.is_current?(DB, 'db/migrations') and version.nil?
@@ -27,18 +30,18 @@ namespace :db do
   end
 
   desc "Rollback the last migrate"
-  task :rollback => [:init] do |t, args|
+  task :rollback => [:init_db] do |t, args|
     version=`ls -1v db/migrations/*.rb |tail -n2 |head -n1|rev|cut -d'/' -f1|rev|cut -d'_' -f1`.chomp
     task('db:migrate').invoke(version)
   end
 
   desc "Dump database"
-  task :dump => [:init] do |t, args|
+  task :dump => [:init_db] do |t, args|
     sh "bundle exec sequel -d #{DB.url} > db/schema.rb"
   end
 
   desc "Reset database"
-  task :reset => [:init] do |t, args|
+  task :reset => [:init_db] do |t, args|
     Rake::Task["db:drop"].invoke
     sleep 3
     Rake::Task["db:migrate"].reenable
@@ -46,5 +49,11 @@ namespace :db do
     # task('db:drop').invoke
     # sleep 3
     # task('db:migrate').invoke
+  end
+
+  desc "Update model annotations"
+  task :annotate => [:init_models] do
+    require 'sequel/annotate'
+    Sequel::Annotate.annotate(Dir['app/models/**/*.rb'], border: true)
   end
 end
