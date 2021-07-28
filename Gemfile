@@ -9,6 +9,7 @@ gem 'hot_reloader'
 gem "ferrum"
 gem 'terminal-table'
 gem 'sequel'
+gem 'sequel-annotate'
 gem 'sqlite3'
 
 gem 'roda'
