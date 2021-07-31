@@ -34,8 +34,10 @@ namespace :procodile do
     end
   end
 
-  def rvm_run(command)
-    execute "rvm #{fetch(:rvm_ruby_version)} do #{command}"
+  def rvm_run(command, gemset='all')
+    # 这里的 all 就是 default gem set.
+    # 事实上这里的代码，直接 execute command 也工作的。
+    execute "rvm #{fetch(:rvm_ruby_version, gemset)} do #{command}"
   end
 end
 
