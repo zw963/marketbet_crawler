@@ -1,6 +1,4 @@
 app_name: marketbet_crawler
-log_root: log
-root: /home/deployer/apps/marketbet_crawler_production/current
 
 env:
   RACK_ENV: 'production'
