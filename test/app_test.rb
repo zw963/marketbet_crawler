@@ -27,13 +27,13 @@ class AppTest < Minitest::Test
 <td>1</td>
 <td>ge</td>
 <td>nyse</td>
-<td></td>
+<td>55.25%</td>
 </tr>
 <tr>
 <td>2</td>
 <td>lu</td>
 <td>nyse</td>
-<td></td>
+<td>22.33%</td>
 </tr>
 </tbody>
 </table>
