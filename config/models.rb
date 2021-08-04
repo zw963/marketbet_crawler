@@ -3,7 +3,10 @@ require 'sequel/model'
 
 Sequel::Model.plugin :timestamps
 Sequel.extension :symbol_aref
-require 'sequel/extensions/blank'
+
+def present?
+  !blank?
+end
 
 Sequel::Model.plugin :subclasses unless ENV['RACK_ENV'] == 'development'
 

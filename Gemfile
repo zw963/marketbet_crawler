@@ -11,6 +11,7 @@ gem 'terminal-table'
 gem 'sequel'
 gem 'sequel-annotate'
 gem 'sqlite3'
+gem 'only_blank'
 
 gem 'roda'
 gem 'puma'
