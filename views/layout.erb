@@ -1,0 +1,10 @@
+<html>
+  <head>
+    <title><%= content_for(:title) || "Stocks" %></title>
+  </head>
+  <body>
+    <h1><%= content_for(:title) || "Stocks" %></h1>
+    <%== yield %>
+    <%= content_for(:footer) || render("footer") %>
+  </body>
+</html>

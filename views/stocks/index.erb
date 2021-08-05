@@ -1,0 +1,21 @@
+<table>
+  <thead>
+    <tr>
+      <th><%== stocks_link_path('ID', 'id', sort_column, sort_direction) %></th>
+      <th><%== stocks_link_path('股票名称', 'name', sort_column, sort_direction) %></th>
+      <th><%== stocks_link_path('交易所名称', 'exchange_name', sort_column, sort_direction) %></th>
+      <th><%== stocks_link_path('机构持股占比', 'percent_of_institutions', sort_column, sort_direction) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%== each_partial(@stocks, "stocks/stock") %>
+  </tbody>
+</table>
+
+<% content_for(:footer) do %>
+  We have <%= @stocks.count %> stocks.
+<% end %>
+
+<% content_for(:title) do %>
+  Stock list
+<% end %>

@@ -17,12 +17,8 @@ gem 'roda'
 gem 'puma'
 gem 'tilt'
 gem 'erubi', '>= 1.5'
-gem 'thamble'
 gem 'rake'
-# gem 'awesome_print'
 gem 'rack-test', require: false
-# gem 'http'
-# gem 'faraday'
 
 group :development do
   gem 'gruff', group: :development
