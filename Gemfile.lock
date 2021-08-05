@@ -78,8 +78,6 @@ GEM
       net-ssh (>= 2.8.0)
     terminal-table (3.0.1)
       unicode-display_width (>= 1.1.1, < 3)
-    thamble (1.1.0)
-      rack
     tilt (2.0.10)
     unicode-display_width (2.0.0)
     websocket-driver (0.7.5)
@@ -109,7 +107,6 @@ DEPENDENCIES
   sequel-annotate
   sqlite3
   terminal-table
-  thamble
   tilt
 
 BUNDLED WITH

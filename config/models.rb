@@ -4,10 +4,6 @@ require 'sequel/model'
 Sequel::Model.plugin :timestamps
 Sequel.extension :symbol_aref
 
-def present?
-  !blank?
-end
-
 Sequel::Model.plugin :subclasses unless ENV['RACK_ENV'] == 'development'
 
 if ENV['RACK_ENV'] == 'development'

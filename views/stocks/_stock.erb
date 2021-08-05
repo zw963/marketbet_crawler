@@ -1,0 +1,6 @@
+<tr>
+  <td><%= stock[:id] %></td>
+  <td><%= stock[:name] %></td>
+  <td><%= stock[:exchange_name] %></td>
+  <td><%= stock[:percent_of_institutions] ? "#{(stock[:percent_of_institutions]*100).to_f}%" : "0.00%" %></td>
+</tr>
