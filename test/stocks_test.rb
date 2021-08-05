@@ -1,13 +1,14 @@
 require 'test_helper'
 
-class AppTest < Minitest::Test
-  def test_stocks
+describe 'test /stocks' do
+  it 'test /stocks return a stock lists' do
     exchange = Exchange.create(name: 'nyse')
     Stock.create(name: 'ge', exchange: exchange, percent_of_institutions: 0.5525)
     Stock.create(name: 'lu', exchange: exchange, percent_of_institutions: 0.2233)
 
     get "/stocks"
-    assert_equal <<-'HEREDOC', last_response.body
+
+    last_response.body.must_equal <<-'HEREDOC'
 <html>
   <head>
     <title>  Stock list
