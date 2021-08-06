@@ -10,10 +10,13 @@ end
 
 DatabaseCleaner[:sequel].strategy = :transaction
 
-OUTER_APP = Rack::Builder.parse_file("config.ru").first.freeze
+OUTER_APP = Rack::Builder.parse_file("config.ru").first.freeze.app
 
 class Minitest::Test
   include Rack::Test::Methods
+  Fabrication::Support.find_definitions
+  alias_method :create, :Fabricate
+
   def app
     OUTER_APP
   end
