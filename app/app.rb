@@ -40,7 +40,7 @@ class App < Roda
 
       if @sort_column.present?
         order = case @sort_column
-                when /^(id|stock_id|date)$/
+                when /^(id|stock_id|date|name)$/
                   :institutions[@sort_column.to_sym]
                 end
       end
@@ -55,6 +55,7 @@ class App < Roda
         view 'institutions/index'
       else
         @error_message = result.message
+        @error_message = "#{@error_message} 最后一次爬虫时间为: #{@log.finished_at}" if @log.present?
         r.halt
       end
     end
