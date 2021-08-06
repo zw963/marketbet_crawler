@@ -4,7 +4,7 @@ class RetrieveLatestInstitutions
   def call
     today = Date.today
     now = today.to_datetime
-    days = context.days
+    days = context.days.to_i
 
     institutions = Institution.where(
       Sequel.or(

@@ -32,8 +32,8 @@ class App < Roda
     end
 
     r.is 'latest-institutions' do
-      days = r.params['days'].presence || 30
-      result = RetrieveLatestInstitutions.call(days: days.to_i)
+      days = r.params['days'].presence || 3
+      result = RetrieveLatestInstitutions.call(days: days)
       if result.success?
         @institutions = result.institutions
         view 'institutions/index'
