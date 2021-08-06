@@ -32,6 +32,7 @@ namespace :db do
   desc "Rollback the last migrate"
   task :rollback => [:init_db] do |t, args|
     version=`ls -1v db/migrations/*.rb |tail -n2 |head -n1|rev|cut -d'/' -f1|rev|cut -d'_' -f1`.chomp
+    puts version
     task('db:migrate').invoke(version)
   end
 

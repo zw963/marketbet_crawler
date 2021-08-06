@@ -9,6 +9,7 @@ class InstitutionParser
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
+    log = Log.create(type: 'institution_parser')
     symbols.uniq.each_slice(2).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
@@ -49,6 +50,8 @@ class InstitutionParser
         end
       end.each(&:join)
     end
+
+    log.update(finished_at: Time.now)
 
     instance.quit
   end

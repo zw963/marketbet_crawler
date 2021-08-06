@@ -7,6 +7,13 @@ Sequel.migration do
       index [:name], :name=>:sqlite_autoindex_exchanges_1, :unique=>true
     end
     
+    create_table(:logs) do
+      primary_key :id
+      String :type, :size=>255, :null=>false
+      DateTime :finished_at
+      DateTime :created_at, :null=>false
+    end
+    
     create_table(:schema_migrations) do
       String :filename, :size=>255, :null=>false
       
