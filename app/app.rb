@@ -11,28 +11,30 @@ class App < Roda
   route do |r|
     r.is 'stocks' do
       r.get do
-        sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
+        @sort_column, @sort_direction = r.params.values_at('sort_column', 'sort_direction')
 
-        if sort_column.present?
-          order = case sort_column
+        if @sort_column.present?
+          order = case @sort_column
                   when /^(id|name|percent_of_institutions)$/
-                    :stocks[sort_column.to_sym]
+                    :stocks[@sort_column.to_sym]
                   when /^exchange_name$/
                     :exchange[:name]
                   end
         end
 
-        if sort_direction == 'desc'
+        if @sort_direction == 'desc'
           order = order.desc
         end
 
         @stocks = Stock.association_join(:exchange).qualify.select_append(:exchange[:name].as(:exchange_name)).order(order)
-        view 'stocks/index', locals: {sort_column: sort_column, sort_direction: sort_direction}
+        view 'stocks/index'
       end
     end
 
     r.is 'latest-institutions' do
       days = r.params['days'].presence || 3
+
+      @log = Log.last(type: 'institution_parser')
 
       @sort_column, @sort_direction = r.params.values_at('sort_column', 'sort_direction')
 
