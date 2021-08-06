@@ -4,6 +4,9 @@ class App < Roda
   plugin :content_for
   plugin :partials
   plugin :path
+  plugin :not_found do
+    view('error', layout: false)
+  end
 
   route do |r|
     r.is 'stocks' do
@@ -25,6 +28,18 @@ class App < Roda
 
         @stocks = Stock.association_join(:exchange).qualify.select_append(:exchange[:name].as(:exchange_name)).order(order)
         view 'stocks/index', locals: {sort_column: sort_column, sort_direction: sort_direction}
+      end
+    end
+
+    r.is 'latest-institutions' do
+      days = r.params['days'].presence || 30
+      result = RetrieveLatestInstitutions.call(days: days.to_i)
+      if result.success?
+        @institutions = result.institutions
+        view 'institutions/index'
+      else
+        @error_message = result.message
+        r.halt
       end
     end
   end

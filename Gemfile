@@ -12,6 +12,7 @@ gem 'sequel'
 gem 'sequel-annotate'
 gem 'sqlite3'
 gem 'only_blank'
+gem 'interactor'
 
 gem 'roda'
 gem 'puma'
@@ -28,6 +29,8 @@ end
 group :test do
   gem 'database_cleaner-sequel'
   gem 'minitest-global_expectations'
+  gem 'timecop'
+  gem 'fabrication'
 end
 
 group :production, :development do
