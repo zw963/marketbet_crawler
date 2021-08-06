@@ -32,7 +32,7 @@ class App < Roda
     end
 
     r.is 'latest-institutions' do
-      days = r.params['days'].presence || 3
+      days = r.params['days'].presence || Date.today.monday? ? 3 : 1
 
       @log = Log.last(type: 'institution_parser')
 
