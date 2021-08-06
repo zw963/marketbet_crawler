@@ -1,10 +1,10 @@
 <table>
   <thead>
     <tr>
-      <th><%== stocks_link_path('ID', 'id', sort_column, sort_direction) %></th>
-      <th><%== stocks_link_path('股票名称', 'name', sort_column, sort_direction) %></th>
-      <th><%== stocks_link_path('交易所名称', 'exchange_name', sort_column, sort_direction) %></th>
-      <th><%== stocks_link_path('机构持股占比', 'percent_of_institutions', sort_column, sort_direction) %></th>
+      <th><%== link_path('/stocks', 'ID', 'id', sort_column, sort_direction) %></th>
+      <th><%== link_path('/stocks', '股票名称', 'name', sort_column, sort_direction) %></th>
+      <th><%== link_path('/stocks', '交易所名称', 'exchange_name', sort_column, sort_direction) %></th>
+      <th><%== link_path('/stocks', '机构持股占比', 'percent_of_institutions', sort_column, sort_direction) %></th>
     </tr>
   </thead>
   <tbody>
