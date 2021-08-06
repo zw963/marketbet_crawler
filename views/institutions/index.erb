@@ -25,3 +25,7 @@
     <%== each_partial(@institutions, "institutions/institution") %>
   </tbody>
 </table>
+
+<% content_for(:footer) do %>
+  We have <%= @@institutions.count %> institutions information.
+<% end %>
