@@ -33,7 +33,21 @@ class App < Roda
 
     r.is 'latest-institutions' do
       days = r.params['days'].presence || 3
-      result = RetrieveLatestInstitutions.call(days: days)
+
+      @sort_column, @sort_direction = r.params.values_at('sort_column', 'sort_direction')
+
+      if @sort_column.present?
+        order = case @sort_column
+                when /^(id|stock_id|date)$/
+                  :institutions[@sort_column.to_sym]
+                end
+      end
+
+      if @sort_direction == 'desc'
+        order = order.desc
+      end
+
+      result = RetrieveLatestInstitutions.call(days: days, order: order)
       if result.success?
         @institutions = result.institutions
         view 'institutions/index'
@@ -44,9 +58,7 @@ class App < Roda
     end
   end
 
-  path :stocks_link do |title, current_column, sort_column, sort_direction|
-    href = "/stocks"
-
+  path :link do |href, title, current_column, sort_column, sort_direction|
     direction = (current_column == sort_column && sort_direction == 'desc') ? 'asc' : 'desc'
     query_string = URI.encode_www_form(sort_column: current_column, sort_direction: direction)
     href = "#{href}?#{query_string}" if query_string.present?
