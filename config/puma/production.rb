@@ -1,7 +1,6 @@
 threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
 threads 1, threads_count
 port ENV.fetch("PORT") { 3000 }
-environment ENV.fetch("RACK_ENV") { "production" }
 log_requests true
 
 file = 'puma'
