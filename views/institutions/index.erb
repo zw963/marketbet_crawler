@@ -7,10 +7,10 @@
 <table>
   <thead>
     <tr>
-      <th><%== link_path('/latest-institutions', 'ID', 'id', @sort_column, @sort_direction) %></th>
-      <th><%== link_path('/latest-institutions', '股票', 'stock_id', @sort_column, @sort_direction) %></th>
-      <th><%== link_path('/latest-institutions', '日期', 'date', @sort_column, @sort_direction) %></th>
-      <th><%== link_path('/latest-institutions', '机构名称', 'name', @sort_column, @sort_direction) %></th>
+      <th><%== link_path('/latest-institutions', 'ID', 'id', @params) %></th>
+      <th><%== link_path('/latest-institutions', '股票', 'stock_id', @params) %></th>
+      <th><%== link_path('/latest-institutions', '日期', 'date', @params) %></th>
+      <th><%== link_path('/latest-institutions', '机构名称', 'name', @params) %></th>
       <th>机构持有数量</th>
       <th>市场价值</th>
       <th>占股票百分比</th>
