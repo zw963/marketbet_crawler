@@ -1,4 +1,4 @@
 .env
 .env.local
 *.png
-db/*.db
+db/files/*.db
