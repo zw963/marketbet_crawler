@@ -1,4 +1,4 @@
 set :application, 'marketbet_crawler'
 set :repo_url, 'git@github.com:zw963/marketbet_crawler'
-set :linked_dirs, %w{log tmp pids}
-set :linked_files, %w{.rvmrc Procfile.local db/marketbet_crawler_production.db}
+set :linked_dirs, %w{log tmp pids db/files}
+set :linked_files, %w{.rvmrc Procfile.local}
