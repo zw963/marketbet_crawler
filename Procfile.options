@@ -1,5 +1,4 @@
 app_name: marketbet_crawler
 
 env:
-  RACK_ENV: 'production'
   APP_SESSION_SECRET: "a692909f017cc94c96f8a1aff843d95920485376f4c997143cc3c39ca945c883ec88e310a2177a69b8b714d22af1b5fd7864833568b6bf93fc3bc811bcf6e112"
