@@ -4,12 +4,14 @@ class App < Roda
   plugin :content_for
   plugin :partials
   plugin :path
+  plugin :assets, css: ['app.scss'], js: ['app.js']
   plugin :not_found do
     view('error', layout: false)
   end
 
   route do |r|
-    @params = r.params
+    r.assets
+
     r.is 'stocks' do
       r.get do
         @sort_column, @sort_direction = r.params.values_at('sort_column', 'sort_direction')

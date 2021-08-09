@@ -71,6 +71,10 @@ GEM
     rmagick (4.2.2)
     roda (3.46.0)
       rack
+    sassc (2.4.0)
+      ffi (~> 1.9)
+    semantic-ui-sass (2.4.4.0)
+      sassc
     sequel (5.46.0)
     sequel-annotate (1.7.0)
       sequel (>= 4)
@@ -108,6 +112,7 @@ DEPENDENCIES
   rack-test
   rake
   roda
+  semantic-ui-sass
   sequel
   sequel-annotate
   sqlite3
@@ -116,4 +121,4 @@ DEPENDENCIES
   timecop
 
 BUNDLED WITH
-   2.2.3
+   2.2.22
