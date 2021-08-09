@@ -20,7 +20,7 @@ gem 'tilt'
 gem 'erubi', '>= 1.5'
 gem 'rake'
 gem 'rack-test', require: false
-gem 'semantic-ui-sass'
+gem 'sassc'
 
 group :development do
   gem 'gruff', group: :development
