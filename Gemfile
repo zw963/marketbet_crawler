@@ -17,10 +17,15 @@ gem 'interactor'
 gem 'roda'
 gem 'puma'
 gem 'tilt'
-gem 'erubi', '>= 1.5'
 gem 'rake'
 gem 'rack-test', require: false
+
+# templates
+gem 'erubi', '>= 1.5'
 gem 'sassc'
+gem "opal-sprockets"
+gem 'opal-jquery'
+gem "roda-sprockets"
 
 group :development do
   gem 'gruff', group: :development

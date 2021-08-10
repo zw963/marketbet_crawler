@@ -4,20 +4,29 @@ class App < Roda
   plugin :content_for
   plugin :partials
   plugin :path
-  plugin :assets, css: ['app.scss'], js: ['app.js']
+
+  plugin :public
+
+  plugin :sprockets, precompile: %w(app.js app.scss),
+    root: Dir.pwd,
+    public_path: 'public/',
+    opal: true,
+    debug: ENV['RACK_ENV'] != 'production'
+
   plugin :not_found do
     view('error', layout: false)
   end
 
   route do |r|
-    r.assets
+    r.public
+    r.sprockets
 
     r.is 'stocks' do
       r.get do
-        @sort_column, @sort_direction = r.params.values_at('sort_column', 'sort_direction')
+        sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
 
-        if @sort_column.present?
-          order = case @sort_column
+        if sort_column.present?
+          order = case sort_column
                   when /^(id|name|percent_of_institutions)$/
                     :stocks[@sort_column.to_sym]
                   when /^exchange_name$/
@@ -25,7 +34,7 @@ class App < Roda
                   end
         end
 
-        if @sort_direction == 'desc'
+        if sort_direction == 'desc'
           order = order.desc
         end
 
@@ -39,16 +48,16 @@ class App < Roda
 
       @log = Log.last(type: 'institution_parser')
 
-      @sort_column, @sort_direction = r.params.values_at('sort_column', 'sort_direction')
+      sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
 
-      if @sort_column.present?
-        order = case @sort_column
+      if sort_column.present?
+        order = case sort_column
                 when /^(id|stock_id|date|name)$/
                   :institutions[@sort_column.to_sym]
                 end
       end
 
-      if @sort_direction == 'desc'
+      if sort_direction == 'desc'
         order = order.desc
       end
 
