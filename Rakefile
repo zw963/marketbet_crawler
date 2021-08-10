@@ -16,3 +16,7 @@ Rake::TestTask.new do |t|
 end
 
 task default: :test
+
+# require_relative 'config/environment'
+# require 'roda/plugins/sprockets_task'
+# Roda::RodaPlugins::Sprockets::Task.define!(App)
