@@ -9,10 +9,12 @@ describe 'test /stocks' do
     get "/stocks"
 
     last_response.body.must_equal <<-'HEREDOC'
+<!doctype html>
 <html>
   <head>
     <title>  Stock list
 </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   </head>
   <body>
     <h1>  Stock list
@@ -45,6 +47,7 @@ describe 'test /stocks' do
 
 
 
+    <script src="http://cdn.opalrb.com/opal/1.0.0/opal.min.js"></script>
       We have 2 stocks.
 
   </body>
