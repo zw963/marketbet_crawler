@@ -18,7 +18,7 @@ symbols = %w(
 # symbols = %w(nasdaq/arry)
 ins.symbols = symbols
 
-file = File.open('/tmp/parse_insititution_done',  'a')
+file = File.open('tmp/parse_insititution_done',  'a')
 file.puts '*'*100
 file.puts "Start " + Time.now.strftime('%Y-%m-%d %H:%M:%S %A')
 
