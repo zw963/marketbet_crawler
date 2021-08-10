@@ -14,7 +14,7 @@ symbols = %w(
 )
 ins.symbols = symbols
 
-file = File.open('/tmp/parse_insider_done',  'a')
+file = File.open('tmp/parse_insider_done',  'a')
 file.puts '*'*100
 file.puts "Start " + Time.now.strftime('%Y-%m-%d %H:%M:%S %A')
 
