@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rsync -a root@${hk}:marketbet_crawler.production/db/marketbet_crawler.db db/
+rsync -a deployer@${hk}:apps/marketbet_crawler_production/current/db/files/marketbet_crawler_production.db db/files/
 
 ROOT=${0%/*}
 
