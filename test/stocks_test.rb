@@ -12,9 +12,12 @@ describe 'test /stocks' do
 <!doctype html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>  Stock list
 </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="/assets/app.debug.js" type="text/javascript"></script>
+    <script> Opal.loaded(typeof(OpalLoaded) === "undefined" ? [] : OpalLoaded); Opal.require("app"); </script>
   </head>
   <body>
     <h1>  Stock list
@@ -47,7 +50,6 @@ describe 'test /stocks' do
 
 
 
-    <script src="http://cdn.opalrb.com/opal/1.0.0/opal.min.js"></script>
       We have 2 stocks.
 
   </body>

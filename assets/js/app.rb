@@ -1,3 +1,3 @@
 require 'opal'
 
-puts "wow, running ruby!"*10
+puts "wow, running ruby!"
