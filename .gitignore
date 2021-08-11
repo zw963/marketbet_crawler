@@ -1,8 +1,7 @@
-.env
-.env.local
 *.png
 db/files/*.db
 node_modules
 public/.sprockets*
 public/app-*.js*
 public/app-*.scss*
+Procofile*.local
