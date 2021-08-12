@@ -7,6 +7,12 @@ Sequel.migration do
       index [:name], :name=>:sqlite_autoindex_exchanges_1, :unique=>true
     end
     
+    create_table(:firms) do
+      primary_key :id
+      String :name, :size=>255, :null=>false
+      String :display_name, :size=>255
+    end
+    
     create_table(:logs) do
       primary_key :id
       String :type, :size=>255, :null=>false
@@ -63,6 +69,7 @@ Sequel.migration do
       Date :date
       DateTime :created_at
       foreign_key :stock_id, :stocks
+      foreign_key :firm_id, :firms
     end
   end
 end
