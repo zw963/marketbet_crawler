@@ -14,6 +14,10 @@ Fabricator(:institution) do
   percent_of_shares_for_institution 0.02.to_d
 end
 
+Fabricator(:firm) do
+  name { sequence(:name) { |i| "firm #{i}" } }
+end
+
 Fabricator(:stock) do
   name { sequence(:name) { |i| "stock #{i}" } }
   exchange
