@@ -42,3 +42,4 @@ namespace :procodile do
 end
 
 after 'deploy:finished', "procodile:restart"
+after 'deploy:updated', 'assets:precompile'
