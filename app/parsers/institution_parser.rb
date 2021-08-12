@@ -80,9 +80,14 @@ class InstitutionParser
         quarterly_changes = number_of_holding - ((number_of_holding)/(1+quarterly_changed_share_percent)).to_i
       end
 
+      name = e[1]
+
+      firm = Firm.find_or_create(name: name)
+
       Institution.find_or_create(
         {
-          name: e[1],
+          name: name,
+          firm_id: firm.id,
           date: Date.strptime(e[0], '%m/%d/%Y'),
           stock: stock,
           number_of_holding: number_of_holding,
