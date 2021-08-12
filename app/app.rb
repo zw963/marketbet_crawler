@@ -4,18 +4,21 @@ class App < Roda
   plugin :content_for
   plugin :partials
   plugin :path
-
-  plugin :public
-
-  plugin :sprockets, precompile: %w(app.js app.scss),
-    root: Dir.pwd,
-    public_path: 'public/',
-    opal: true,
-    debug: ENV['RACK_ENV'] != 'production'
-
-  plugin :not_found do
+  plugin :status_handler
+  status_handler(404) do
+    @error_message ||= "404"
     view('error', layout: false)
   end
+  status_handler(304) do
+    response.headers['Content-Type'] = ''
+  end
+  plugin :delete_empty_headers
+  plugin :public
+  plugin :sprockets, precompile: ['app.rb', 'app.scss'],
+  root: Dir.pwd,
+  public_path: 'public/',
+  opal: true,
+  debug: ENV['RACK_ENV'] != 'production'
 
   route do |r|
     r.public
@@ -53,7 +56,7 @@ class App < Roda
       if sort_column.present?
         order = case sort_column
                 when /^(id|stock_id|date|name)$/
-                  :institutions[@sort_column.to_sym]
+                  :institutions[sort_column.to_sym]
                 end
       end
 
