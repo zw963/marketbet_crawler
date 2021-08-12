@@ -19,6 +19,8 @@ end
 #  date                              | Date         |
 #  created_at                        | timestamp    |
 #  stock_id                          | integer      |
+#  firm_id                           | integer      |
 # Foreign key constraints:
+#  (firm_id) REFERENCES firms
 #  (stock_id) REFERENCES stocks
 # -----------------------------------------------------------------------------
