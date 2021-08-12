@@ -31,7 +31,7 @@ class App < Roda
         if sort_column.present?
           order = case sort_column
                   when /^(id|name|percent_of_institutions)$/
-                    :stocks[@sort_column.to_sym]
+                    :stocks[sort_column.to_sym]
                   when /^exchange_name$/
                     :exchange[:name]
                   end
