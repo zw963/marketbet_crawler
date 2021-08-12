@@ -8,8 +8,19 @@ namespace :deploy do
       end
     end
   end
+
+  desc 'Precompile assets'
+  task :precompile_assets do
+    import '../../tasks/assets.rake'
+    on roles(fetch(:procodile_roles, [:app])) do
+      within release_path do
+        execute :rake, 'assets:precompile'
+      end
+    end
+  end
 end
 
+after 'deploy:updated', 'deploy:precompile_assets'
 after 'deploy:updated', 'deploy:migrate'
 
 namespace :procodile do
@@ -42,4 +53,3 @@ namespace :procodile do
 end
 
 after 'deploy:finished', "procodile:restart"
-after 'deploy:updated', 'assets:precompile'
