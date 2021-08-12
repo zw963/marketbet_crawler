@@ -7,7 +7,7 @@ class RetrieveLatestInstitutions
     days = context.days.to_i
     order = context.order
 
-    institutions = Institution.eager(stock: :exchange).where(
+    institutions = Institution.eager(stock: :exchange).eager(:firm).where(
       Sequel.or(
         date: today-days..today,
         created_at: now...(today + 1).to_datetime
@@ -34,11 +34,13 @@ class RetrieveLatestInstitutions
           value2 = ins.quarterly_changes
         end
 
+        firm_name = ins.firm.display_name.presence || ins.name
+
         {
           'ID' => ins.id,
           '股票' => "#{stock.exchange.name}/#{stock.name}",
           '日期' => ins.date.to_s,
-          '机构名称' => ins.name,
+          '机构名称' => firm_name,
           '机构持有数量' => ins.number_of_holding,
           '市场价值' => "#{value}万(#{ins.market_value_dollar_string})",
           '占股票百分比' => (ins.percent_of_shares_for_stock*100).to_f.to_s + "%",

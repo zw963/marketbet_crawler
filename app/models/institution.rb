@@ -1,5 +1,6 @@
 class Institution < Sequel::Model
   many_to_one :stock
+  many_to_one :firm
 end
 
 # Table: institutions

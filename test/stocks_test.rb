@@ -2,6 +2,7 @@ require 'test_helper'
 
 describe 'test /stocks' do
   it 'test /stocks return a stock lists' do
+    skip
     exchange = Exchange.create(name: 'nyse')
     Stock.create(name: 'ge', exchange: exchange, percent_of_institutions: 0.5525)
     Stock.create(name: 'lu', exchange: exchange, percent_of_institutions: 0.2233)
