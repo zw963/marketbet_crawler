@@ -9,7 +9,9 @@ require 'sequel/core'
 ENV['RACK_ENV'] = ENV['RACK_ENV'] || 'development'
 
 database_url_name="#{ENV['RACK_ENV']}_database_url".upcase # e.g DEVELOPMENT_DATABASE_URL
-DB = Sequel.connect(ENV.delete(database_url_name) || ENV.delete('DATABASE_URL'), timeout: 10000)
+db_url = ENV.delete(database_url_name) || ENV.delete('DATABASE_URL')
+DB = Sequel.connect(db_url, timeout: 10000)
+warn "DB connected: #{db_url}"
 
 if ENV['RACK_ENV'] == 'development' || ENV['RACK_ENV'] == 'test'
   require 'logger'
