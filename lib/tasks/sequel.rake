@@ -24,7 +24,7 @@ namespace :db do
     version = args[:version].to_i if args[:version]
     puts DB.url
 
-    return if Sequel::Migrator.is_current?(DB, 'db/migrations') and version.nil?
+    next if Sequel::Migrator.is_current?(DB, 'db/migrations') and version.nil?
 
     Sequel::Migrator.run(DB, "db/migrations", target: version)
     task('db:dump').invoke
