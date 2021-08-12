@@ -20,6 +20,7 @@ namespace :db do
 
   desc "Run migrations"
   task :migrate, [:version] => [:init_db] do |t, args|
+    puts '7'*100
     Sequel.extension :migration
     version = args[:version].to_i if args[:version]
     puts DB.url

@@ -1,4 +1,5 @@
 require_relative 'models'
+puts '4'*100
 require_relative 'hot_reloader'
 
 Thread.report_on_exception = false

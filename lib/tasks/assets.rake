@@ -1,4 +1,5 @@
 namespace :assets do
+  puts '2'*100
   require_relative '../../config/environment'
   require 'roda/plugins/sprockets_task'
 
