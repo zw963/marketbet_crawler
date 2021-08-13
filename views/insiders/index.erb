@@ -1,0 +1,25 @@
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>股票</th>
+      <th>日期</th>
+      <th>名称</th>
+      <th>职位</th>
+      <th>股票数量</th>
+      <th>平均价格</th>
+      <th>交易价格</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%== each_partial(@insiders, "insiders/insider") %>
+  </tbody>
+</table>
+
+<% content_for(:footer) do %>
+  We have <%= @insiders.count %> stocks.
+<% end %>
+
+<% content_for(:title) do %>
+  Insider list
+<% end %>

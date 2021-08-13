@@ -46,6 +46,23 @@ class App < Roda
       end
     end
 
+    r.is 'latest-insiders' do
+      days = r.params['days'].presence || 7
+
+      @log = Log.last(type: 'insider_parser')
+
+      result = RetrieveLatestInsider.call(days: days)
+
+      if result.success?
+        @insiders = result.insiders
+        view 'insiders/index'
+      else
+        @error_message = result.message
+        @error_message = "#{@error_message} 最后一次爬虫时间为: #{@log.finished_at}" if @log.present?
+        r.halt
+      end
+    end
+
     r.is 'latest-institutions' do
       days = r.params['days'].presence || (Date.today.monday? ? 3 : 1)
 
