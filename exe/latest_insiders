@@ -2,79 +2,29 @@
 
 require_relative '../config/environment'
 
-heading = [
-  "ID",
-  "股票",
-  "日期",
-  "名称",
-  "职位",
-  "股票数量",
-  "平均价格",
-  "交易价格"
-]
+days = Integer(ARGV[0]) rescue nil
+days = 30 if days.nil?
 
-day = Integer(ARGV[0]) rescue nil
+result = RetrieveLatestInsider.call(days: days)
 
-# if day.nil?
-#   if Date.today.monday?
-#     day = 7
-#   else
-#     day = 3
-#   end
-# end
-
-days = 7 if days.nil?
-
-today = Date.today
-now = today.to_datetime
-
-
-data = Insider
-  .where(Sequel.or(date: today-days..today, created_at: now...(today + 1).to_datetime))
-  .order(:stock_id)
-  .map do |x|
-    mapping = {
-      'major shareholder' => "大股东",
-      "insider" => "内部人士",
-      "ceo" => "CEO",
-      "director" => "董事",
-      "cto" => "CTO",
-      "cfo" => "CFO",
-      "coo" => "首席运营官",
-      "general counsel" => "顾问",
-      "svp" => "高级副总裁",
-      "vp" => "副总裁",
-      "evp" => "执行副总裁",
-      "cao" => "首席行政官",
-      "vice chairman" => "副董事長",
-      "chairman" => "董事長",
-      "cmo" => "首席市场官",
-      'president' => '总裁'
-    }
-
-    title = x.title
-
-    unless mapping[title.downcase].to_s.downcase == title.downcase
-      title = "#{title}(#{mapping[title.downcase]})"
-    end
-
-    [
-      x.id,
-      "#{x.stock.exchange.name}/#{x.stock.name}",
-      x.date.to_s,
-      x.name,
-      title,
-      x.number_of_shares,
-      x.average_price.to_f,
-      x.share_total_price.to_f
+if result.success?
+  table = Terminal::Table.new do |t|
+    t.style = { :border => :unicode_round }
+    t.headings = [
+      "ID",
+      "股票",
+      "日期",
+      "名称",
+      "职位",
+      "股票数量",
+      "平均价格",
+      "交易价格"
     ]
+    result.insiders.each {|e| t.add_row(e.values) }
+    t.style = {:all_separators => true}
   end
 
-table = Terminal::Table.new do |t|
-  t.style = { :border => :unicode_round }
-  t.headings = heading
-  data.each {|e| t.add_row(e) }
-  t.style = {:all_separators => true}
+  puts table
+else
+  puts result.message
 end
-
-puts table
