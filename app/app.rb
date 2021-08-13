@@ -51,7 +51,7 @@ class App < Roda
 
       @log = Log.last(type: 'insider_parser')
 
-      result = RetrieveLatestInsider.call(days: days)
+      result = RetrieveLatestInsider.call(days: days, sort_column: :date, sort_direction: :desc)
 
       if result.success?
         @insiders = result.insiders
