@@ -10,6 +10,7 @@ class InsiderParser
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
+    log = Log.create(type: 'insider_parser')
     symbols.uniq.each_slice(2).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
@@ -30,6 +31,8 @@ class InsiderParser
         end
       end.each(&:join)
     end
+
+    log.update(finished_at: Time.now)
 
     instance.quit
   end
