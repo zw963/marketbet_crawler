@@ -5,14 +5,26 @@ class RetrieveLatestInsider
     today = Date.today
     now = today.to_datetime
     days = context.days.to_i
-    order = context.order || :date
+    sort_column = context.sort_column || :date
+    sort_direction = context.sort_direction
+
+    if sort_column.present?
+      sort = case sort_column
+              when /^(id|stock_id|date|name)$/
+                :insiders[sort_column.to_sym]
+              end
+    end
+
+    if sort_direction == :desc
+      sort = sort.desc
+    end
 
     insiders = Insider.eager(stock: :exchange).where(
       Sequel.or(
         date: today-days..today,
         created_at: now...(today + 1).to_datetime
       )
-    ).order(order).all
+    ).order(sort).all
 
     mapping = {
       'major shareholder' => "大股东",
