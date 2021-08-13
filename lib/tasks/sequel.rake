@@ -22,7 +22,7 @@ namespace :db do
   task :migrate, [:version] => [:init_db] do |t, args|
     Sequel.extension :migration
     version = args[:version].to_i if args[:version]
-    puts DB.url
+    # puts DB.url
 
     next if Sequel::Migrator.is_current?(DB, 'db/migrations') and version.nil?
 
