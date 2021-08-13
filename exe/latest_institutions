@@ -39,5 +39,5 @@ if result.success?
 
   puts table
 else
-  puts institutions.message
+  puts result.message
 end

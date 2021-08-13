@@ -5,7 +5,7 @@ class RetrieveLatestInstitutions
     today = Date.today
     now = today.to_datetime
     days = context.days.to_i
-    order = context.order
+    order = context.order || :stock_id
 
     institutions = Institution.eager(stock: :exchange).eager(:firm).where(
       Sequel.or(
