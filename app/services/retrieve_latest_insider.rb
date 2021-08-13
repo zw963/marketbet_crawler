@@ -5,7 +5,7 @@ class RetrieveLatestInsider
     today = Date.today
     now = today.to_datetime
     days = context.days.to_i
-    order = context.order || :stock_id
+    order = context.order || :date
 
     insiders = Insider.eager(stock: :exchange).where(
       Sequel.or(
