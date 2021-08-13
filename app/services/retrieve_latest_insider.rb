@@ -10,12 +10,12 @@ class RetrieveLatestInsider
 
     if sort_column.present?
       sort = case sort_column
-              when /^(id|stock_id|date|name)$/
+             when /^(id|stock_id|date|name|number_of_shares|share_total_price)$/
                 :insiders[sort_column.to_sym]
               end
     end
 
-    if sort_direction == :desc
+    if sort_direction.to_s == 'desc'
       sort = sort.desc
     end
 
@@ -62,7 +62,7 @@ class RetrieveLatestInsider
           '日期' => ins.date.to_s,
           '名称' => ins.name,
           '职位' => title,
-          '股票数量' => ins.number_of_shares,
+          '股票变动数量' => ins.number_of_shares,
           '平均价格' => ins.average_price.to_f,
           '交易价格' => ins.share_total_price.to_f,
         }
