@@ -1,3 +1,17 @@
+GIT
+  remote: https://github.com/hmdne/paggio
+  revision: 6c336a219aa0097fcdf55f64e6fc7b9128165b18
+  specs:
+    paggio (0.2.6)
+
+GIT
+  remote: https://github.com/opal/opal-browser
+  revision: d17069cb8f7d6f10ed302036c90a0fec21337ff8
+  specs:
+    opal-browser (0.2.0)
+      opal (>= 1.0, < 2.0)
+      paggio
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -126,7 +140,9 @@ DEPENDENCIES
   interactor
   minitest-global_expectations
   only_blank
+  opal-browser!
   opal-sprockets
+  paggio!
   pry-rescue
   puma
   rack-test
