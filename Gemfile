@@ -20,7 +20,7 @@ gem 'tilt'
 gem 'rake'
 gem 'rack-test', require: false
 
-gem 'webrick'
+# gem 'webrick'
 
 # templates
 gem 'erubi', '>= 1.5'
