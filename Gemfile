@@ -24,7 +24,7 @@ gem 'rack-test', require: false
 gem 'erubi', '>= 1.5'
 gem 'sassc'
 gem "opal-sprockets"
-gem "roda-sprockets", github: 'zw963/roda-sprockets'
+gem "roda-sprockets"
 gem 'snabberb'
 
 group :development do
