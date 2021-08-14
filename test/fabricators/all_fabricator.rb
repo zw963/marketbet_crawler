@@ -24,7 +24,7 @@ Fabricator(:exchange) do
 end
 
 Fabricator(:insider) do
-  date { sequence(:date) {|n| Date.today + rand(-100..100) } }
+  date { sequence(:date) {|_n| Date.today + rand(-100..100) } }
   name { sequence(:name) { |i| "insider name #{i}" } }
   title 'ceo'
   number_of_shares 100

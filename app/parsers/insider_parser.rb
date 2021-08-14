@@ -53,12 +53,11 @@ class InsiderParser
     latest_data.each do |e|
       number_of_holding = e[7] == "" ? nil : e[7].to_i
 
-      if e[3] == 'Sell'
+      case e[3]
+      when 'Sell', 'Issued'
         xx = -1
-      elsif e[3] == 'Buy'
+      when 'Buy'
         xx = 1
-      elsif e[3] == 'Issued'
-        xx = -1
       end
 
       Insider.find_or_create(
@@ -78,9 +77,10 @@ class InsiderParser
 
   def p2b(percent)
     f = percent.tr('%', '').delete(',').delete('$')
-    if f == "N/A"
+    case f
+    when "N/A"
       nil
-    elsif f == "No Change"
+    when "No Change"
       BigDecimal('0.0')
     else
       BigDecimal(f)/100
@@ -98,7 +98,7 @@ class InsiderParser
       page.network.wait_for_idle(timeout: 5)
     rescue Ferrum::TimeoutError
       puts 'Retrying'
-      if (tries < 7)
+      if tries < 7
         sleep(2**tries)
         retry
       end

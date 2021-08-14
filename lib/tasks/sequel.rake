@@ -1,15 +1,15 @@
 namespace :db do
-  task :init_db do |t, args|
+  task :init_db do |_t, _args|
     require_relative '../../config/db'
   end
 
-  task :init_models => [:init_db] do |t, args|
+  task :init_models => [:init_db] do |_t, _args|
     require_relative '../../config/models'
     Dir['app/models/**/*.rb'].each {|m| load m }
   end
 
   desc "Drop database"
-  task :drop => [:init_db] do |t, args|
+  task :drop => [:init_db] do |_t, _args|
     database = DB.opts[:database]
     if DB.database_type == :sqlite
       FileUtils.rm_f(database, verbose: true)
@@ -19,7 +19,7 @@ namespace :db do
   end
 
   desc "Run migrations"
-  task :migrate, [:version] => [:init_db] do |t, args|
+  task :migrate, [:version] => [:init_db] do |_t, args|
     Sequel.extension :migration
     version = args[:version].to_i if args[:version]
     # puts DB.url
@@ -31,7 +31,7 @@ namespace :db do
   end
 
   desc "Rollback the last migrate"
-  task :rollback, [:number] => [:init_db] do |t, args|
+  task :rollback, [:number] => [:init_db] do |_t, args|
     if args[:number].nil?
       number = 2
     else
@@ -43,12 +43,12 @@ namespace :db do
   end
 
   desc "Dump database"
-  task :dump => [:init_db] do |t, args|
+  task :dump => [:init_db] do |_t, _args|
     sh "bundle exec sequel -d #{DB.url} > db/schema.rb"
   end
 
   desc "Reset database"
-  task :reset => [:init_db] do |t, args|
+  task :reset => [:init_db] do |_t, _args|
     Rake::Task["db:drop"].invoke
     sleep 3
     Rake::Task["db:migrate"].reenable
