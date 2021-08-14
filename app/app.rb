@@ -26,6 +26,10 @@ class App < Roda
     r.public
     r.sprockets
 
+    r.root do
+      render 'index'
+    end
+
     r.get do
       r.is 'stocks' do
         sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
