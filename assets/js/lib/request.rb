@@ -1,7 +1,5 @@
 class Request
   def self.send(path, method, data, prefix, block) # rubocop:disable Lint/UnusedMethodArgument
-    data = data&.merge(_client_id: `MessageBus.clientId`)
-
     %x{
         var payload = {
           method: #{method},

@@ -6,6 +6,6 @@ require 'lib/request'
 
 puts 'hello'
 
-Request.send('/stocks', 'get')
+Request.send('/stocks', 'GET', {})
 
 # TextBox.attach('app', text: 'hello world')
