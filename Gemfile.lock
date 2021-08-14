@@ -94,6 +94,7 @@ GEM
     tilt (2.0.10)
     timecop (0.9.4)
     unicode-display_width (2.0.0)
+    webrick (1.7.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -127,6 +128,7 @@ DEPENDENCIES
   terminal-table
   tilt
   timecop
+  webrick
 
 BUNDLED WITH
    2.2.22
