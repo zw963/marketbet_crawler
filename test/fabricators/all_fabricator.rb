@@ -1,10 +1,6 @@
 require 'bigdecimal'
 require 'bigdecimal/util'
 
-Fabricate.sequence(:name) { |i| "Name #{i}" }
-Fabricate.sequence(:title) { |i| "Title #{i}" }
-Fabricate.sequence(:date) {|n| Date.today + rand(-100..100) }
-
 Fabricator(:institution) do
   name { sequence(:name) { |i| "institution #{i}" } }
   number_of_holding 50
@@ -28,11 +24,11 @@ Fabricator(:exchange) do
 end
 
 Fabricator(:insider) do
-  date
-  name
-  title
-  number_of_share 100
-  avarage_price 1.24.to_d
+  date { sequence(:date) {|n| Date.today + rand(-100..100) } }
+  name { sequence(:name) { |i| "insider name #{i}" } }
+  title 'ceo'
+  number_of_shares 100
+  average_price 1.24.to_d
   share_total_price 300.2.to_d
   stock
 end

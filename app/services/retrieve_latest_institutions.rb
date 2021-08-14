@@ -5,14 +5,26 @@ class RetrieveLatestInstitutions
     today = Date.today
     now = today.to_datetime
     days = context.days.to_i
-    order = context.order || :stock_id
+    sort_column = context.order || :stock_id
+    sort_direction = context.sort_direction
+
+    if sort_column.present?
+      sort = case sort_column
+              when /^(id|stock_id|date|name)$/
+                :institutions[sort_column.to_sym]
+              end
+    end
+
+    if sort_direction.to_s == 'desc'
+      sort = sort.desc
+    end
 
     institutions = Institution.eager(stock: :exchange).eager(:firm).where(
       Sequel.or(
         date: today-days..today,
         created_at: now...(today + 1).to_datetime
       )
-    ).order(order).all
+    ).order(sort).all
 
     if institutions.empty?
       context.fail!(message: "没有最新的结果！")
