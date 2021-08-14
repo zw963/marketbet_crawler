@@ -2,7 +2,6 @@ require 'test_helper'
 
 describe 'test /stocks' do
   it 'test /stocks return a stock lists' do
-    skip
     exchange = Exchange.create(name: 'nyse')
     Stock.create(name: 'ge', exchange: exchange, percent_of_institutions: 0.5525)
     Stock.create(name: 'lu', exchange: exchange, percent_of_institutions: 0.2233)
@@ -17,8 +16,6 @@ describe 'test /stocks' do
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>  Stock list
 </title>
-    <script src="/assets/app.debug.js" type="text/javascript"></script>
-    <script> Opal.loaded(typeof(OpalLoaded) === "undefined" ? [] : OpalLoaded); Opal.require("app"); </script>
   </head>
   <body>
     <h1>  Stock list
@@ -51,10 +48,23 @@ describe 'test /stocks' do
 
 
 
+    <script src="/assets/app.debug.js" type="text/javascript"></script>
+    <script> Opal.loaded(typeof(OpalLoaded) === "undefined" ? [] : OpalLoaded); Opal.require("app"); </script>
       We have 2 stocks.
 
   </body>
 </html>
+HEREDOC
+  end
+
+  it 'test /stocks.json return json' do
+    exchange = Exchange.create(name: 'nyse')
+    Stock.create(name: 'ge', exchange: exchange, percent_of_institutions: 0.5525)
+    Stock.create(name: 'lu', exchange: exchange, percent_of_institutions: 0.2233)
+
+    get "/stocks.json"
+
+    last_response.body.must_equal <<-'HEREDOC'
 HEREDOC
   end
 end

@@ -15,17 +15,19 @@ class App < Roda
   plugin :delete_empty_headers
   plugin :public
   plugin :sprockets, precompile: ['app.rb', 'app.scss'],
-  root: Dir.pwd,
-  public_path: 'public/',
-  opal: true,
-  debug: ENV['RACK_ENV'] != 'production'
+    root: Dir.pwd,
+    public_path: 'public/',
+    opal: true,
+    debug: ENV['RACK_ENV'] != 'production'
+  plugin :type_routing
+  plugin :json
 
   route do |r|
     r.public
     r.sprockets
 
-    r.is 'stocks' do
-      r.get do
+    r.get do
+      r.is 'stocks' do
         sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
 
         if sort_column.present?
@@ -42,51 +44,58 @@ class App < Roda
         end
 
         @stocks = Stock.association_join(:exchange).qualify.select_append(:exchange[:name].as(:exchange_name)).order(order)
-        view 'stocks/index'
+
+        r.html do
+          view 'stocks/index'
+        end
+
+        r.json do
+          @stocks.all.map(&:to_hash)
+        end
       end
-    end
 
-    r.is 'latest-insiders' do
-      days = r.params['days'].presence || 7
+      r.is 'latest-insiders' do
+        days = r.params['days'].presence || 7
 
-      @log = Log.last(type: 'insider_parser')
+        @log = Log.last(type: 'insider_parser')
 
-      sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
+        sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
 
-      sort_column = sort_column.presence || :date
-      sort_direction = sort_direction.presence || :desc
+        sort_column = sort_column.presence || :date
+        sort_direction = sort_direction.presence || :desc
 
-      result = RetrieveLatestInsider.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
+        result = RetrieveLatestInsider.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
 
-      if result.success?
-        @insiders = result.insiders
-        view 'insiders/index'
-      else
-        @error_message = result.message
-        @error_message = "#{@error_message} 最后一次爬虫时间为: #{@log.finished_at}" if @log.present?
-        r.halt
+        if result.success?
+          @insiders = result.insiders
+          view 'insiders/index'
+        else
+          @error_message = result.message
+          @error_message = "#{@error_message} 最后一次爬虫时间为: #{@log.finished_at}" if @log.present?
+          r.halt
+        end
       end
-    end
 
-    r.is 'latest-institutions' do
-      days = r.params['days'].presence || (Date.today.monday? ? 3 : 1)
+      r.is 'latest-institutions' do
+        days = r.params['days'].presence || (Date.today.monday? ? 3 : 1)
 
-      @log = Log.last(type: 'institution_parser')
+        @log = Log.last(type: 'institution_parser')
 
-      sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
+        sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
 
-      sort_column = sort_column.presence || :stock_id
-      sort_direction = sort_direction.presence || :desc
+        sort_column = sort_column.presence || :stock_id
+        sort_direction = sort_direction.presence || :desc
 
-      result = RetrieveLatestInstitutions.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
+        result = RetrieveLatestInstitutions.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
 
-      if result.success?
-        @institutions = result.institutions
-        view 'institutions/index'
-      else
-        @error_message = result.message
-        @error_message = "#{@error_message} 最后一次爬虫时间为: #{@log.finished_at}" if @log.present?
-        r.halt
+        if result.success?
+          @institutions = result.institutions
+          view 'institutions/index'
+        else
+          @error_message = result.message
+          @error_message = "#{@error_message} 最后一次爬虫时间为: #{@log.finished_at}" if @log.present?
+          r.halt
+        end
       end
     end
   end
