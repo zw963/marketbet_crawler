@@ -11,8 +11,8 @@ class RetrieveLatestInsider
     if sort_column.present?
       sort = case sort_column
              when /^(id|stock_id|date|name|number_of_shares|share_total_price)$/
-                :insiders[sort_column.to_sym]
-              end
+               :insiders[sort_column.to_sym]
+             end
     end
 
     if sort_direction.to_s == 'desc'
@@ -65,6 +65,7 @@ class RetrieveLatestInsider
           '股票变动数量' => ins.number_of_shares,
           '平均价格' => ins.average_price.to_f,
           '交易价格' => ins.share_total_price.to_f,
+          '创建时间' => ins.created_at.strftime("%m-%d %H:%M")
         }
       end
     end

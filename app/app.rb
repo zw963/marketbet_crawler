@@ -75,18 +75,11 @@ class App < Roda
 
       sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
 
-      if sort_column.present?
-        order = case sort_column
-                when /^(id|stock_id|date|name)$/
-                  :institutions[sort_column.to_sym]
-                end
-      end
+      sort_column = sort_column.presence || :stock_id
+      sort_direction = sort_direction.presence || :desc
 
-      if sort_direction == 'desc'
-        order = order.desc
-      end
+      result = RetrieveLatestInstitutions.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
 
-      result = RetrieveLatestInstitutions.call(days: days, order: order)
       if result.success?
         @institutions = result.institutions
         view 'institutions/index'
