@@ -18,7 +18,7 @@ describe "retrieve latest institutions" do
     result = RetrieveLatestInsider.call(days: 3)
     assert_equal true, result.success?
     insiders = result.insiders
-    assert_equal ["2021-08-09", "2021-08-11", "2021-08-12", "2021-08-13", "2021-08-14"], insiders.map {|x| x['日期'] }
+    assert_equal ["2021-08-09", "2021-08-11", "2021-08-12", "2021-08-13", "2021-08-14"], (insiders.map {|x| x['日期'] })
     assert_equal({
       "股票"=>"exchange/stock",
       "日期"=>"2021-08-14",
@@ -29,7 +29,6 @@ describe "retrieve latest institutions" do
       "交易价格" => 300.2,
       "创建时间" =>'08-04 00:00'
     },
-      insiders.last.except("ID")
-    )
+      insiders.last.except("ID"))
   end
 end

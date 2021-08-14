@@ -15,7 +15,7 @@ class TextBox < Snabberb::Component
     style['background-color'] = 'lightblue' if @selected
 
     h(:div, { style: style, on: { click: onclick } }, [
-        h(:div, @text)
-      ])
+      h(:div, @text)
+    ])
   end
 end

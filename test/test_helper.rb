@@ -1,7 +1,7 @@
 ENV['RACK_ENV'] = 'test'
 require "rack/test"
 require 'database_cleaner-sequel'
-require_relative '../config/db.rb'
+require_relative '../config/db'
 
 if not Dir.empty?('db/migrations')
   Sequel.extension :migration
@@ -15,7 +15,7 @@ OUTER_APP = Rack::Builder.parse_file("config.ru").first.freeze.app
 class Minitest::Test
   include Rack::Test::Methods
   Fabrication.manager.load_definitions
-  alias_method :create, :Fabricate
+  alias create Fabricate
 
   def app
     OUTER_APP

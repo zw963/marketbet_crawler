@@ -21,7 +21,7 @@ describe "retrieve latest institutions" do
     result = RetrieveLatestInstitutions.call(days: 3)
     assert_equal true, result.success?
     institutions = result.institutions
-    assert_equal ["黑石_2", "黑石_3", "黑石_4", "黑石_5"], institutions.map {|x| x['机构名称'] }
+    assert_equal ["黑石_2", "黑石_3", "黑石_4", "黑石_5"], (institutions.map {|x| x['机构名称'] })
     assert_equal({
       "股票"=>"exchange/stock",
       "日期"=>"2021-08-02",
@@ -35,8 +35,7 @@ describe "retrieve latest institutions" do
       "机构平均成本"=>0.0,
       "创建时间"=>"08-06 00:00"
     },
-      institutions.last.except("ID")
-    )
+      institutions.last.except("ID"))
   end
 
   it "get the expected institution list" do

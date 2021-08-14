@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe App do
-  it "should correct" do
+  it "corrects" do
     1.must_equal 1
   end
 end
