@@ -11,3 +11,5 @@ module Rack
     end
   end
 end
+
+require 'opal-browser'
