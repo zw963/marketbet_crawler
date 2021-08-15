@@ -1,8 +1,11 @@
 require 'bigdecimal'
 require 'bigdecimal/util'
 
+Fabricate.sequence(:name) { |i| "Name #{i}" }
+Fabricate.sequence(:date) {|_n| Date.today + rand(-100..100) }
+
 Fabricator(:institution) do
-  name { sequence(:name) { |i| "institution #{i}" } }
+  name { sequence(:name) }
   number_of_holding 50
   market_value 100
   stock
@@ -11,21 +14,22 @@ Fabricator(:institution) do
 end
 
 Fabricator(:firm) do
-  name { sequence(:name) { |i| "firm #{i}" } }
+  name { sequence(:name) }
 end
 
 Fabricator(:stock) do
-  name { sequence(:name) { |i| "stock #{i}" } }
+  name { sequence(:name) }
   exchange
 end
 
 Fabricator(:exchange) do
-  name { sequence(:name) { |i| "exchange #{i}" } }
+  name { sequence(:name) }
 end
 
 Fabricator(:insider) do
   date { sequence(:date) {|_n| Date.today + rand(-100..100) } }
-  name { sequence(:name) { |i| "insider name #{i}" } }
+  name { sequence(:name) }
+  date { sequence(:date) }
   title 'ceo'
   number_of_shares 100
   average_price 1.24.to_d
