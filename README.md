@@ -66,7 +66,11 @@ Require by others components for support auto reloader(development mode) and eag
 ## How to start app.
 
 1. run `bundle`
-2. set correct `RACK_ENV` environment variable.
+2. set `RACK_ENV` and following environment variables
+   export DEVELOPMENT_DATABASE_URL="sqlite://db/files/marketbet_crawler_development.db"
+   export TEST_DATABASE_URL="sqlite://db/files/marketbet_crawler_test.db"
+   export DATABASE_URL="sqlite://db/files/marketbet_crawler_production.db"
+   export APP_SESSION_SECRET="909f017cc94c96f8a1aff843d95920485376f4c997143cc3c39ca945c883ec88e310a2177a69b8b714d22af1b5fd7864833568b6bf93fc3bc811bcf6e112"
 3. set correct `DEVELOPMENT_DATABASE_URL`, `TEST_DATABASE_URL` environment variable.
 4. run `rake db:migrate` if `db/migrations` any.
-5. run `bundle exec puma` to start this app. (or use forman/procodile if you like)
+5. run `bundle exec puma` to start this app. (or use Procfile with forman/procodile)
