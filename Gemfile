@@ -27,7 +27,7 @@ gem 'uglifier'
 gem "opal-sprockets"
 gem "roda-sprockets"
 gem 'snabberb'
-gem 'paggio', github: 'hmdne/paggio'
+# gem 'paggio', github: 'hmdne/paggio'
 gem 'opal-browser', github: 'opal/opal-browser'
 
 group :development do

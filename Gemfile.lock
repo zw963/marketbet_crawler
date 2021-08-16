@@ -1,10 +1,4 @@
 GIT
-  remote: https://github.com/hmdne/paggio
-  revision: 6c336a219aa0097fcdf55f64e6fc7b9128165b18
-  specs:
-    paggio (0.2.6)
-
-GIT
   remote: https://github.com/opal/opal-browser
   revision: d17069cb8f7d6f10ed302036c90a0fec21337ff8
   specs:
@@ -75,6 +69,7 @@ GEM
       opal (>= 1.0, < 2.0)
       sprockets (~> 4.0)
       tilt (>= 1.4)
+    paggio (0.2.6)
     parser (3.0.2.0)
       ast (~> 2.4.1)
     pry (0.14.1)
@@ -145,7 +140,6 @@ DEPENDENCIES
   only_blank
   opal-browser!
   opal-sprockets
-  paggio!
   pry-rescue
   puma
   rack-test
