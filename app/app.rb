@@ -14,10 +14,11 @@ class App < Roda
   end
   plugin :delete_empty_headers
   plugin :public
-  plugin :sprockets, precompile: ['app.rb', 'app.scss'],
+  plugin :sprockets, precompile: ['app.js', 'app.scss'],
     root: Dir.pwd,
     public_path: 'public/',
     opal: true,
+    js_compressor: 'uglifier',
     debug: ENV['RACK_ENV'] != 'production'
   plugin :type_routing
   plugin :json
