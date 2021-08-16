@@ -3,7 +3,7 @@ require 'snabberb'
 
 require 'native'
 require 'promise'
-require 'browser/setup/full'
+require 'browser/setup/large'
 require 'browser/http'
 
 require_tree './components'
