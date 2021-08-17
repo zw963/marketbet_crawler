@@ -9,13 +9,13 @@ class RetrieveLatestInsider
     sort_direction = context.sort_direction
 
     if sort_column.present?
-      sort = case sort_column
-             when /^(id|stock_id|date|name|number_of_shares|share_total_price)$/
+      sort = case sort_column.to_s
+             when Insider.columns.map(&:to_s)
                :insiders[sort_column.to_sym]
              end
     end
 
-    if sort_direction.to_s == 'desc'
+    if sort.present? and sort_direction.to_s == 'desc'
       sort = sort.desc
     end
 
