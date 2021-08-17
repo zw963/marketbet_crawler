@@ -10,7 +10,7 @@ class RetrieveLatestInstitutions
 
     if sort_column.present?
       sort = case sort_column.to_s
-               when Institution.columns.map(&:to_s)
+               when *Institution.columns.map(&:to_s)
                 :institutions[sort_column.to_sym]
               end
     end
