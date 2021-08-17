@@ -23,7 +23,7 @@ gem 'rack-test', require: false
 # templates
 gem 'erubi', '>= 1.5'
 gem 'sassc'
-gem 'uglifier'
+gem 'terser'
 gem "opal-sprockets"
 gem "roda-sprockets"
 gem 'snabberb'
