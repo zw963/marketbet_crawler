@@ -10,7 +10,7 @@ class RetrieveLatestInsider
 
     if sort_column.present?
       sort = case sort_column.to_s
-             when Insider.columns.map(&:to_s)
+             when *Insider.columns.map(&:to_s)
                :insiders[sort_column.to_sym]
              end
     end
