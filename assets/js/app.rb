@@ -8,10 +8,11 @@ require 'browser/http'
 
 require_tree './components'
 
-Browser::HTTP.get "/stocks.json" do
-  on :success do |res|
-    puts res.json.inspect
-  end
+require 'opal-parser'
+
+$document.ready do
+  # TextBox.attach('app', text: 'hello world')
+  eval "puts 'hello world!'"
 end
 
-# TextBox.attach('app', text: 'hello world')
+# p 100.class
