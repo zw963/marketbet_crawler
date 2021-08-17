@@ -5,17 +5,17 @@ class RetrieveLatestInstitutions
     today = Date.today
     now = today.to_datetime
     days = context.days.to_i
-    sort_column = context.order || :stock_id
+    sort_column = context.sort_column || :stock_id
     sort_direction = context.sort_direction
 
     if sort_column.present?
-      sort = case sort_column
-              when /^(id|stock_id|date|name)$/
+      sort = case sort_column.to_s
+               when Institution.columns.map(&:to_s)
                 :institutions[sort_column.to_sym]
               end
     end
 
-    if sort_direction.to_s == 'desc'
+    if sort.present? and sort_direction.to_s == 'desc'
       sort = sort.desc
     end
 
