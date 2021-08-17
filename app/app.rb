@@ -17,7 +17,7 @@ class App < Roda
   plugin :sprockets, precompile: ['app.js', 'app.scss'],
     public_path: 'public/',
     opal: true,
-    js_compressor: Uglifier.new(:harmony => true),
+    js_compressor: Terser.new,
     debug: ENV['RACK_ENV'] != 'production'
   plugin :type_routing
   plugin :json

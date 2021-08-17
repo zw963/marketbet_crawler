@@ -113,10 +113,10 @@ GEM
       net-ssh (>= 2.8.0)
     terminal-table (3.0.1)
       unicode-display_width (>= 1.1.1, < 3)
+    terser (1.1.5)
+      execjs (>= 0.3.0, < 3)
     tilt (2.0.10)
     timecop (0.9.4)
-    uglifier (4.2.0)
-      execjs (>= 0.3.0, < 3)
     unicode-display_width (2.0.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -152,9 +152,9 @@ DEPENDENCIES
   snabberb
   sqlite3
   terminal-table
+  terser
   tilt
   timecop
-  uglifier
 
 BUNDLED WITH
    2.2.22
