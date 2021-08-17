@@ -6,6 +6,8 @@
     <title><%== content_for(:title) || "Stocks" %></title>
   </head>
   <body>
+    <div id="app">
+    </div>
     <h1><%== content_for(:title) || "Stocks" %></h1>
     <%== yield %>
     <%== javascript_tag 'app' %>

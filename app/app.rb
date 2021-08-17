@@ -15,10 +15,9 @@ class App < Roda
   plugin :delete_empty_headers
   plugin :public
   plugin :sprockets, precompile: ['app.js', 'app.scss'],
-    root: Dir.pwd,
     public_path: 'public/',
     opal: true,
-    js_compressor: 'uglifier',
+    js_compressor: Uglifier.new(:harmony => true),
     debug: ENV['RACK_ENV'] != 'production'
   plugin :type_routing
   plugin :json
