@@ -21,7 +21,7 @@ class RetrieveLatestInstitutions
       sort = sort.desc
     end
 
-    institutions = Institution.eager(stock: :exchange).eager(:firm).where(
+    institutions = Institution.eager_graph({stock: :exchange}, :firm).where(
       Sequel.or(
         date: today-days..today,
         created_at: now...(today + 1).to_datetime
