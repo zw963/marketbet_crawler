@@ -9,7 +9,7 @@ class RetrieveStocks
       sort = case sort_column
              when *Stock.columns.map(&:name)
                :stocks[sort_column.to_sym]
-             when /^exchange_name$/
+             when 'exchange_name'
                :exchange[:name]
              end
     end

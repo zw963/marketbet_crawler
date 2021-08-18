@@ -12,6 +12,8 @@ class RetrieveLatestInstitutions
       sort = case sort_column
              when *Institution.columns.map(&:name)
                :institutions[sort_column.to_sym]
+             when 'stock_name'
+               :stock[:name]
              end
     end
 
