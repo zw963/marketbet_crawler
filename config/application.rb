@@ -11,3 +11,5 @@ module Rack
     end
   end
 end
+
+Opal::Config.source_map_enabled = false unless ENV['RACK_ENV'] == 'development'
