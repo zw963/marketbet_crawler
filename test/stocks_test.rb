@@ -18,6 +18,8 @@ describe 'test /stocks' do
       </title>
         </head>
         <body>
+          <div id="app">
+          </div>
           <h1>  Stock list
       </h1>
           <table>

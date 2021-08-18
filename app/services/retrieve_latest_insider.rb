@@ -5,17 +5,17 @@ class RetrieveLatestInsider
     today = Date.today
     now = today.to_datetime
     days = context.days.to_i
-    sort_column = context.sort_column || :date
+    sort_column = context.sort_column || 'date'
     sort_direction = context.sort_direction
 
     if sort_column.present?
-      sort = case sort_column.to_s
-             when *Insider.columns.map(&:to_s)
+      sort = case sort_column
+             when *Insider.columns.map(&:name)
                :insiders[sort_column.to_sym]
              end
     end
 
-    if sort.present? and sort_direction.to_s == 'desc'
+    if sort.present? and sort_direction == 'desc'
       sort = sort.desc
     end
 
