@@ -14,10 +14,10 @@ class App < Roda
   end
   plugin :delete_empty_headers
   plugin :public
-  plugin :sprockets, precompile: ['app.js', 'app.scss'],
-    public_path: 'public/',
+  plugin :sprockets, public_path: 'public/',
     opal: true,
     js_compressor: Terser.new,
+    css_compressor: :sassc,
     debug: ENV['RACK_ENV'] != 'production'
   plugin :type_routing
   plugin :json
@@ -27,7 +27,7 @@ class App < Roda
     r.sprockets
 
     r.root do
-      render 'index'
+      view 'index'
     end
 
     r.get do

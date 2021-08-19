@@ -9,6 +9,7 @@ require 'browser/http'
 require_tree './components'
 
 require 'opal-parser'
+require 'js/bin/materialize.js'
 
 $document.ready do
   # TextBox.attach('app', text: 'hello world')
