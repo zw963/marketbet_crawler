@@ -1,7 +1,7 @@
 <% if @log.present? %>
-<h3>Latest Data:</h3>
-<h3>Start at: <%== @log.created_at %></h3>
-<h3>Finished at <%== @log.finished_at  %></h3>
+  <h3>Latest Data:</h3>
+  <h3>Start at: <%== @log.created_at %></h3>
+  <h3>Finished at <%== @log.finished_at  %></h3>
 <% end %>
 
 <table>
@@ -22,7 +22,7 @@
     </tr>
   </thead>
   <tbody>
-    <%== each_partial(@institutions, "institutions/institution") %>
+    <%== each_partial(@institutions, 'institutions/institution') %>
   </tbody>
 </table>
 
