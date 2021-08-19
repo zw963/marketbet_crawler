@@ -13,7 +13,7 @@ class App < Roda
     response.headers['Content-Type'] = ''
   end
   plugin :delete_empty_headers
-  plugin :public
+  plugin :public, gzip:true
   plugin :sprockets, public_path: 'public/',
     opal: true,
     js_compressor: Terser.new,
