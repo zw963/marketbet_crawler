@@ -4,4 +4,5 @@ node_modules
 public/.sprockets*
 public/app-*.js*
 public/app-*.scss*
+public/app-*.css*
 Procofile*.local
