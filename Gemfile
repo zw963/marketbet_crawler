@@ -41,8 +41,3 @@ group :test do
   gem 'timecop'
   gem 'fabrication'
 end
-
-group :production, :development do
-  gem 'capistrano'
-  gem 'capistrano-bundler'
-end
