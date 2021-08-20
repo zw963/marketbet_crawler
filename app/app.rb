@@ -17,6 +17,7 @@ class App < Roda
   plugin :sprockets, public_path: 'public/',
     opal: true,
     js_compressor: Terser.new,
+    path_prefix: '',
     css_compressor: :sassc,
     debug: ENV['RACK_ENV'] != 'production'
   plugin :type_routing
