@@ -27,6 +27,7 @@ class App < Roda
     debug: ENV['RACK_ENV'] != 'production'
   plugin :type_routing
   plugin :json
+  plugin :drop_body # workaround for rack Content-Type header found in 304 response, not allowed error.
 
   route do |r|
     r.public
