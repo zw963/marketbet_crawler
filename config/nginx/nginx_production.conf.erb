@@ -1,0 +1,32 @@
+upstream app_server {
+    server <%= server_target %>;
+}
+
+server {
+    listen 80;
+    server_name <%= server_name %>;
+
+    location ~ \.(aspx|php|jsp|cgi)$ {
+        return 410;
+    }
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_set_header   X-Real-IP   $remote_addr;
+        proxy_pass http://app_server;
+        proxy_buffering on;
+        proxy_buffers 32 16k;
+        proxy_set_header   Upgrade $http_upgrade;
+        proxy_set_header   Connection "Upgrade";
+        # gzip off;   # 当 https 时, 应该关闭?
+    }
+
+    location ~ \.(js|css) {
+        root <%= server_public %>;
+        gzip_static on;
+        expires max;
+        add_header Cache-Control public;
+        add_header Access-Control-Allow-Origin *;
+    }
+}
