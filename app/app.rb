@@ -1,5 +1,9 @@
 class App < Roda
-  plugin :default_headers, 'Content-Type' => 'text/html; charset=UTF-8'
+  plugin :default_headers,
+    'Content-Type' => 'text/html; charset=UTF-8',
+    'X-Frame-Options'=>'deny',
+    'X-Content-Type-Options'=>'nosniff',
+    'X-XSS-Protection'=>'1; mode=block'
   plugin :render, escape: true
   plugin :content_for
   plugin :partials
@@ -13,7 +17,7 @@ class App < Roda
     response.headers['Content-Type'] = ''
   end
   plugin :delete_empty_headers
-  plugin :public, gzip:true
+  plugin :public, gzip: true
   plugin :sprockets, public_path: 'public/',
     opal: true,
     js_compressor: Terser.new,
