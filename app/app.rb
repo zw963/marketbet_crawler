@@ -18,10 +18,11 @@ class App < Roda
   end
   plugin :delete_empty_headers
   plugin :public, gzip: true
-  plugin :sprockets, public_path: 'public/',
+  plugin :sprockets,
+    public_path: 'public/assets', # 运行 task生成 assets 的目标文件夹.
+    path_prefix: '/assets',  # 生成 link 的时path 的前缀.
     opal: true,
     js_compressor: Terser.new,
-    path_prefix: '',
     css_compressor: :sassc,
     debug: ENV['RACK_ENV'] != 'production'
   plugin :type_routing
