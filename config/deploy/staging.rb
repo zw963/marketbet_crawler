@@ -1,2 +1,2 @@
-role :app, ["deployer1@***REMOVED***"]
+role :app, ["marketbet_crawler_staging"]
 set :branch, 'master'
