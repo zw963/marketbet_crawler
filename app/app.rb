@@ -19,12 +19,11 @@ class App < Roda
   plugin :delete_empty_headers
   plugin :public, gzip: true
   plugin :sprockets,
-    public_path: 'public/assets', # 运行 task生成 assets 的目标文件夹.
-    path_prefix: '/assets',  # 生成 link 的时path 的前缀.
     opal: true,
     js_compressor: Terser.new,
     css_compressor: :sassc,
     debug: ENV['RACK_ENV'] != 'production'
+    # cache: Sprockets::Cache::MemoryStore.new(65536) if ENV['RACK_ENV'] == 'development'
   plugin :type_routing
   plugin :json
   plugin :drop_body # workaround for rack Content-Type header found in 304 response, not allowed error.
