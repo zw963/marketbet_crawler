@@ -25,7 +25,7 @@ gem 'erubi', '>= 1.5'
 gem 'sassc'
 gem 'terser'
 gem "opal-sprockets"
-gem "roda-sprockets", github: 'hmdne/roda-sprockets'
+gem "roda-sprockets"
 gem 'snabberb'
 # gem 'paggio', github: 'hmdne/paggio'
 gem 'opal-browser', github: 'opal/opal-browser'
