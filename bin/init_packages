@@ -14,7 +14,20 @@ deb-src https://nginx.org/packages/ubuntu/ focal nginx
 HEREDOC
         sudo apt update
         sudo apt install nginx
+        systemctl enable nginx
     fi
+
+    if ! dpkg -l python-certbot-nginx; then
+        add-apt-repository ppa:certbot/certbot
+        apt update
+        apt install python-certbot-nginx
+        # 1. Run `sudo certbot --nginx' to configure current domain.
+        # 2. Test if can renew certbot successful. `sudo certbot renew --dry-run'
+        # 3. Add following crontab, will date cert first day of month.
+        #    0 0 1 * * /usr/bin/certbot renew
+        # more detail, check https://certbot.eff.org/
+    fi
+
 elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
     if ! rpm -qa nodejs; then
         curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
@@ -24,7 +37,18 @@ elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
     if ! rpm -qa nginx; then
         wget https://nginx.org/packages/centos/8/x86_64/RPMS/nginx-1.20.1-1.el8.ngx.x86_64.rpm
         sudo rpm -ivh nginx-1.20.1-1.el8.ngx.x86_64.rpm
+        systemctl enable nginx
     fi
+
+    if ! rpm -qa python3-certbot-nginx; then
+        yum install certbot python3-certbot-nginx
+        # 1. Run `sudo certbot --nginx' to configure current domain.
+        # 2. Test if can renew certbot successful. `sudo certbot renew --dry-run'
+        # 3. Add following crontab, will date cert first day of month.
+        #    0 0 1 * * /usr/bin/certbot renew
+        # more detail, check https://certbot.eff.org/
+    fi
+
 else
     echo "Don't support this linux release!"
 fi
