@@ -1,7 +1,30 @@
 #!/bin/bash
 
-curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
-sudo yum install -y nodejs
+if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+    if ! dpkg -l nodejs; then
+        curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+    fi
 
-wget https://nginx.org/packages/centos/8/x86_64/RPMS/nginx-1.20.1-1.el8.ngx.x86_64.rpm
-sudo rpm -ivh nginx-1.20.1-1.el8.ngx.x86_64.rpm
+    if ! dpkg -l nginx; then
+        ## Replace focal with your corresponding Ubuntu release.
+        cat <<'HEREDOC' > /etc/apt/sources.list.d/nginx.list
+deb https://nginx.org/packages/ubuntu/ focal nginx
+deb-src https://nginx.org/packages/ubuntu/ focal nginx
+HEREDOC
+        sudo apt update
+        sudo apt install nginx
+    fi
+elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
+    if ! rpm -qa nodejs; then
+        curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
+        sudo yum install -y nodejs
+    fi
+
+    if ! rpm -qa nginx; then
+        wget https://nginx.org/packages/centos/8/x86_64/RPMS/nginx-1.20.1-1.el8.ngx.x86_64.rpm
+        sudo rpm -ivh nginx-1.20.1-1.el8.ngx.x86_64.rpm
+    fi
+else
+    echo "Don't support this linux release!"
+fi
