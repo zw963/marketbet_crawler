@@ -1,4 +1,4 @@
-upstream app_server {
+upstream <%= config_base_name %>_server {
     server <%= server_target %>;
 }
 
@@ -14,7 +14,7 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
         proxy_set_header   X-Real-IP   $remote_addr;
-        proxy_pass http://app_server;
+        proxy_pass http://<%= config_base_name %>_server;
         proxy_buffering on;
         proxy_buffers 32 16k;
         proxy_set_header   Upgrade $http_upgrade;
