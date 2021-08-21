@@ -24,6 +24,7 @@ gem 'rack-test', require: false
 gem 'erubi', '>= 1.5'
 gem 'sassc'
 gem 'terser'
+gem 'brotli'
 gem "opal-sprockets"
 gem "roda-sprockets", github: 'hmdne/roda-sprockets'
 gem 'snabberb'
