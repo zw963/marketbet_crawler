@@ -22,11 +22,11 @@ class App < Roda
     opal: true,
     js_compressor: Terser.new,
     css_compressor: :sassc,
-    debug: ENV['RACK_ENV'] != 'production'
-    # cache: Sprockets::Cache::MemoryStore.new(65536) if ENV['RACK_ENV'] == 'development'
+    debug: ENV['RACK_ENV'] != 'production',
+    cache: (Sprockets::Cache::MemoryStore.new(65536) if ENV['RACK_ENV'] == 'development')
   plugin :type_routing
   plugin :json
-  plugin :drop_body # workaround for rack Content-Type header found in 304 response, not allowed error.
+  # plugin :drop_body # workaround for rack Content-Type header found in 304 response, not allowed error.
 
   route do |r|
     r.public
