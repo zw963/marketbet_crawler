@@ -30,6 +30,7 @@ gem "roda-sprockets", github: 'hmdne/roda-sprockets'
 gem 'snabberb'
 # gem 'paggio', github: 'hmdne/paggio'
 gem 'opal-browser', github: 'opal/opal-browser'
+gem 'refrigerator'
 
 group :development do
   gem 'gruff', group: :development
