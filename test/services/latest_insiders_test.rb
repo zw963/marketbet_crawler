@@ -22,13 +22,12 @@ describe "retrieve latest institutions" do
     assert_equal({
       "股票"=>"exchange/stock",
       "日期"=>"2021-08-14",
-      "名称"=>"insider name 0",
-      "职位"=> 'ceo',
-      "股票变动数量"=>100,
-      "平均价格" => 1.24,
-      "交易价格" => 300.2,
+      "职位"=> 'Major Shareholder(大股东)',
+      "股票变动数量"=>-220809,
+      "平均价格" => 1.92,
+      "交易价格" => 423953.28,
       "创建时间" =>'08-04 00:00'
     },
-      insiders.last.except("ID"))
+      insiders.last.except("ID", "名称"))
   end
 end

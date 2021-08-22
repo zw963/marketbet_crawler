@@ -16,6 +16,7 @@ describe 'test /stocks' do
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
           <title>  Stock list
       </title>
+          <link rel="stylesheet" type="text/css" href="/assets/app.debug.css">
         </head>
         <body>
           <div id="app">
