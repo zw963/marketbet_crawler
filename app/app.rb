@@ -25,7 +25,7 @@ class App < Roda
 
   route do |r|
     r.public
-    r.sprockets
+    r.sprockets if ENV['RACK_ENV'] == 'development'
 
     r.root do
       view 'index'
