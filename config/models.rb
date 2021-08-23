@@ -3,6 +3,7 @@ require 'sequel/model'
 
 Sequel::Model.plugin :timestamps
 Sequel.extension :symbol_aref
+DB.extension :pagination
 
 Sequel::Model.plugin :subclasses unless ENV['RACK_ENV'] == 'development'
 

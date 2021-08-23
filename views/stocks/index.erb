@@ -12,6 +12,19 @@
   </tbody>
 </table>
 
+<%=
+next_page = @stocks.next_page
+prev_page = @stocks.prev_page
+page_size = @stocks.page_size
+%>
+
+<% if prev_page %>
+  <a href="/stocks?page=<%= @stocks.prev_page %>&per=<%= page_size  %>">previous page</a>
+<% end %>
+<% if next_page %>
+  <a href="/stocks?page=<%= next_page %>&per=<%= page_size %>">next page</a>
+<% end %>
+
 <% content_for(:footer) do %>
   We have <%= @stocks.count %> stocks.
 <% end %>

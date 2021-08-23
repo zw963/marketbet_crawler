@@ -4,6 +4,8 @@ class RetrieveStocks
   def call
     sort_column = context.sort_column || 'id'
     sort_direction = context.sort_direction
+    page = context.page || 1
+    per = context.per || 10
 
     if sort_column.present?
       sort = case sort_column
@@ -21,7 +23,7 @@ class RetrieveStocks
     stocks = Stock.association_join(:exchange)
       .qualify
       .select_append(:exchange[:name].as(:exchange_name))
-      .order(sort).all
+      .order(sort).paginate(page.to_i, per.to_i)
 
     if stocks.empty?
       context.fail!(message: "没有最新的结果！")

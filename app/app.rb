@@ -33,9 +33,9 @@ class App < Roda
 
     r.get do
       r.is 'stocks' do
-        sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
+        sort_column, sort_direction, page, per = r.params.values_at('sort_column', 'sort_direction', 'page', 'per')
 
-        result = RetrieveStocks.call(sort_column: sort_column, sort_direction: sort_direction)
+        result = RetrieveStocks.call(sort_column: sort_column, sort_direction: sort_direction, page: page, per: per)
 
         if result.success?
           @stocks = result.stocks
