@@ -13,9 +13,6 @@ class App < Roda
     @error_message ||= "404"
     view('error', layout: false)
   end
-  status_handler(304) do
-    response.headers['Content-Type'] = ''
-  end
   plugin :delete_empty_headers
   plugin :public, gzip: true, brotli: true
   plugin :sprockets,
@@ -26,7 +23,6 @@ class App < Roda
     cache: (Sprockets::Cache::MemoryStore.new(65536) if ENV['RACK_ENV'] == 'development')
   plugin :type_routing
   plugin :json
-  plugin :drop_body # workaround for rack Content-Type header found in 304 response, not allowed error.
 
   route do |r|
     r.public
