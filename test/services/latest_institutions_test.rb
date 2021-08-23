@@ -11,7 +11,7 @@ describe "retrieve latest institutions" do
     firm2 = create(:firm, display_name: '黑石_2')
     firm3 = create(:firm, display_name: '黑石_3')
     firm4 = create(:firm, display_name: '黑石_4')
-    firm5 = create(:firm, display_name: '黑石_5')
+    firm5 = create(:firm, display_name: '黑石_5', id: 5)
     create(:institution, date: '2021-08-02', created_at: '2021-08-04', name: 1, firm: firm1, stock: stock)
     create(:institution, date: '2021-08-03', created_at: '2021-08-04', name: 2, firm: firm2, stock: stock)
     create(:institution, date: '2021-08-04', created_at: '2021-08-04', name: 3, firm: firm3, stock: stock)
@@ -27,6 +27,7 @@ describe "retrieve latest institutions" do
       "stock_id" => 1,
       "日期"=>"2021-08-02",
       "机构名称"=>"黑石_5",
+      "firm_id" => 5,
       "机构持有数量"=>69830,
       "市场价值"=>"94.0万($0.94M)",
       "占股票百分比"=>"2.4%",
