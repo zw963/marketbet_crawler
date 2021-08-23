@@ -1,4 +1,4 @@
-class RetrieveLatestInstitutions
+class RetrieveInstitutions
   include Interactor
 
   def call

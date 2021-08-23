@@ -5,7 +5,7 @@ require_relative '../config/environment'
 days = Integer(ARGV[0]) rescue nil
 days = 30 if days.nil?
 
-result = RetrieveLatestInsider.call(days: days)
+result = RetrieveInsider.call(days: days)
 
 if result.success?
   table = Terminal::Table.new do |t|

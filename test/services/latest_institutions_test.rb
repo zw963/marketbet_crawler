@@ -18,7 +18,7 @@ describe "retrieve latest institutions" do
     create(:institution, date: '2021-08-05', created_at: '2021-08-04', name: 4, firm: firm4, stock: stock)
     create(:institution, date: '2021-08-02', name: 5, firm: firm5, stock: stock)
     assert_equal 5, Institution.all.count
-    result = RetrieveLatestInstitutions.call(days: 3, sort_column: 'stock_name')
+    result = RetrieveInstitutions.call(days: 3, sort_column: 'stock_name')
     assert_equal true, result.success?
     institutions = result.institutions
     assert_equal ["黑石_2", "黑石_3", "黑石_4", "黑石_5"], (institutions.map {|x| x['机构名称'] })
@@ -45,7 +45,7 @@ describe "retrieve latest institutions" do
     create(:institution, date: '2021-08-02', created_at: '2021-08-04', name: 1)
 
     assert_equal 1, Institution.all.count
-    result = RetrieveLatestInstitutions.call(days: 3)
+    result = RetrieveInstitutions.call(days: 3)
     assert_equal false, result.success?
     assert_nil result.institutions
     assert_equal '没有最新的结果！', result.message

@@ -15,7 +15,7 @@ describe "retrieve latest institutions" do
     create(:insider, stock: stock, date: '2021-08-09')
 
     assert_equal 6, Insider.all.count
-    result = RetrieveLatestInsider.call(days: 3)
+    result = RetrieveInsider.call(days: 3)
     assert_equal true, result.success?
     insiders = result.insiders
     assert_equal ["2021-08-09", "2021-08-11", "2021-08-12", "2021-08-13", "2021-08-14"], (insiders.map {|x| x['日期'] })

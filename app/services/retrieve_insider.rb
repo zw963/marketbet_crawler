@@ -1,4 +1,4 @@
-class RetrieveLatestInsider
+class RetrieveInsider
   include Interactor
 
   def call

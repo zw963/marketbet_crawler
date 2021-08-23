@@ -60,7 +60,7 @@ class App < Roda
         sort_column = sort_column.presence || :date
         sort_direction = sort_direction.presence || :desc
 
-        result = RetrieveLatestInstitutions.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: id)
+        result = RetrieveInstitutions.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: id)
 
         if result.success?
           @institutions = result.institutions
@@ -70,7 +70,7 @@ class App < Roda
           r.halt
         end
 
-        result = RetrieveLatestInsider.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: id)
+        result = RetrieveInsider.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: id)
 
         if result.success?
           @insiders = result.insiders
@@ -93,7 +93,7 @@ class App < Roda
         sort_column = sort_column.presence || :date
         sort_direction = sort_direction.presence || :desc
 
-        result = RetrieveLatestInsider.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
+        result = RetrieveInsider.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
 
         if result.success?
           @insiders = result.insiders
@@ -115,7 +115,7 @@ class App < Roda
         sort_column = sort_column.presence || :stock_id
         sort_direction = sort_direction.presence || :desc
 
-        result = RetrieveLatestInstitutions.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
+        result = RetrieveInstitutions.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
 
         if result.success?
           @institutions = result.institutions
