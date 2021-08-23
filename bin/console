@@ -3,7 +3,7 @@
 # this file used for robe for load environment before start inf-ruby.
 # it name must be console, don't change it.
 
-require 'irb'
 require_relative '../config/environment'
 
+require 'irb'
 IRB.start(__FILE__)
