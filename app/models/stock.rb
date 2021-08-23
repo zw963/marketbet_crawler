@@ -1,6 +1,7 @@
 class Stock < Sequel::Model
   many_to_one :exchange
   one_to_many :institutions
+  one_to_many :insiders
 end
 
 # Table: stocks

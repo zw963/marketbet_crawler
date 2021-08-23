@@ -6,7 +6,7 @@ describe "retrieve latest institutions" do
     assert_equal 0, Institution.all.count
 
     exchange = create(:exchange, name: 'exchange')
-    stock = create(:stock, name: 'stock', exchange: exchange)
+    stock = create(:stock, name: 'stock', exchange: exchange, id: 1)
     firm1 = create(:firm)
     firm2 = create(:firm, display_name: '黑石_2')
     firm3 = create(:firm, display_name: '黑石_3')
@@ -24,6 +24,7 @@ describe "retrieve latest institutions" do
     assert_equal ["黑石_2", "黑石_3", "黑石_4", "黑石_5"], (institutions.map {|x| x['机构名称'] })
     assert_equal({
       "股票"=>"exchange/stock",
+      "stock_id" => 1,
       "日期"=>"2021-08-02",
       "机构名称"=>"黑石_5",
       "机构持有数量"=>69830,

@@ -7,24 +7,33 @@ class RetrieveLatestInsider
     days = context.days.to_i
     sort_column = context.sort_column || 'date'
     sort_direction = context.sort_direction
+    stock_id = context.stock_id
 
     if sort_column.present?
-      sort = case sort_column
+      sort = case sort_column.to_s
              when *Insider.columns.map(&:name)
                :insiders[sort_column.to_sym]
              end
     end
 
-    if sort.present? and sort_direction == 'desc'
+    if sort.present? and sort_direction.to_s == 'desc'
       sort = sort.desc
     end
 
-    insiders = Insider.eager(stock: :exchange).where(
-      Sequel.or(
-        date: today-days..today,
-        created_at: now...(today + 1).to_datetime
+    insiders = Insider.eager(stock: :exchange)
+
+    if stock_id.present?
+      insiders = insiders.where(stock_id: stock_id)
+    else
+      insiders = insiders.where(
+        Sequel.or(
+          date: today-days..today,
+          created_at: now...(today + 1).to_datetime
+        )
       )
-    ).order(sort).all
+    end
+
+    insiders = insiders.order(sort).all
 
     mapping = {
       'major shareholder' => "大股东",
@@ -59,6 +68,7 @@ class RetrieveLatestInsider
         {
           'ID' => ins.id,
           '股票' => "#{stock.exchange.name}/#{stock.name}",
+          'stock_id' => stock.id,
           '日期' => ins.date.to_s,
           '名称' => ins.name,
           '职位' => title,

@@ -1,6 +1,6 @@
 <tr>
   <td><%= insider['ID'] %></td>
-  <td><%= insider['股票'] %></td>
+  <td><a href="/stocks/<%= insider['stock_id'] %>"><%= insider['股票'] %></a></td>
   <td><%= insider['日期'] %></td>
   <td><%= insider['名称'] %></td>
   <td><%= insider['职位'] %></td>

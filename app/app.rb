@@ -53,6 +53,36 @@ class App < Roda
         end
       end
 
+      r.is 'stocks', Integer do |id|
+        @stock = Stock[id]
+        sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
+
+        sort_column = sort_column.presence || :date
+        sort_direction = sort_direction.presence || :desc
+
+        result = RetrieveLatestInstitutions.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: id)
+
+        if result.success?
+          @institutions = result.institutions
+        else
+          @error_message = result.message
+          @error_message = "#{@error_message} 最后一次爬虫时间为: #{@log.finished_at}" if @log.present?
+          r.halt
+        end
+
+        result = RetrieveLatestInsider.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: id)
+
+        if result.success?
+          @insiders = result.insiders
+        else
+          @error_message = result.message
+          @error_message = "#{@error_message} 最后一次爬虫时间为: #{@log.finished_at}" if @log.present?
+          r.halt
+        end
+
+        view 'stocks/show'
+      end
+
       r.is 'latest-insiders' do
         days = r.params['days'].presence || 7
 

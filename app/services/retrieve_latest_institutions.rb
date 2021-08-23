@@ -7,9 +7,10 @@ class RetrieveLatestInstitutions
     days = context.days.to_i
     sort_column = context.sort_column || 'stock_id'
     sort_direction = context.sort_direction
+    stock_id = context.stock_id
 
     if sort_column.present?
-      sort = case sort_column
+      sort = case sort_column.to_s
              when *Institution.columns.map(&:name)
                :institutions[sort_column.to_sym]
              when 'stock_name'
@@ -17,16 +18,26 @@ class RetrieveLatestInstitutions
              end
     end
 
-    if sort.present? and sort_direction == 'desc'
+    if sort.present? and sort_direction.to_s == 'desc'
       sort = sort.desc
     end
 
-    institutions = Institution.eager_graph({stock: :exchange}, :firm).where(
-      Sequel.or(
-        date: today-days..today,
-        created_at: now...(today + 1).to_datetime
+    institutions = Institution.eager_graph({stock: :exchange}, :firm)
+
+    if stock_id.present?
+      institutions = institutions.where(stock_id: stock_id)
+    else
+      institutions = institutions.where(
+        Sequel.or(
+          date: today-days..today,
+          created_at: now...(today + 1).to_datetime
+        )
       )
-    ).order(sort).all
+    end
+
+    # 注意，这里加个 all 方法，下面 map 的时候，元素才是 institution
+    # 没这个 all, 返回的直接是哈希。
+    institutions = institutions.order(sort).all
 
     if institutions.empty?
       context.fail!(message: "没有最新的结果！")
@@ -53,6 +64,7 @@ class RetrieveLatestInstitutions
         {
           'ID' => ins.id,
           '股票' => "#{stock.exchange.name}/#{stock.name}",
+          'stock_id' => stock.id,
           '日期' => ins.date.to_s,
           '机构名称' => firm_name,
           '机构持有数量' => ins.number_of_holding,

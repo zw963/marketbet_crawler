@@ -8,7 +8,7 @@ class RetrieveStocks
     per = context.per || 10
 
     if sort_column.present?
-      sort = case sort_column
+      sort = case sort_column.to_s
              when *Stock.columns.map(&:name)
                :stocks[sort_column.to_sym]
              when 'exchange_name'
@@ -16,7 +16,7 @@ class RetrieveStocks
              end
     end
 
-    if sort.present? and sort_direction == 'desc'
+    if sort.present? and sort_direction.to_s == 'desc'
       sort = sort.desc
     end
 

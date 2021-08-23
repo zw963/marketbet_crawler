@@ -1,0 +1,47 @@
+<h3>内部人士变动</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>股票</th>
+      <th>日期</th>
+      <th><%== link_path(request.path, '名称', 'name') %></th>
+      <th>职位</th>
+      <th><%== link_path(request.path, '股票变动数量', 'number_of_shares') %></th>
+      <th>平均价格</th>
+      <th><%== link_path(request.path, '交易价格', 'share_total_price') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%== each_partial(@insiders, 'insiders/insider') %>
+  </tbody>
+</table>
+
+<h3>机构变动</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th><%== link_path(request.path, 'ID', 'id') %></th>
+      <th><%== link_path(request.path, '股票', 'stock_name') %></th>
+      <th><%== link_path(request.path, '日期', 'date') %></th>
+      <th><%== link_path(request.path, '机构名称', 'name') %></th>
+      <th>机构持有数量</th>
+      <th><%== link_path(request.path, '市场价值', 'market_value') %></th>
+      <th><%== link_path(request.path, '占股票百分比', 'percent_of_shares_for_stock') %></th>
+      <th><%== link_path(request.path, '占机构百分比', 'percent_of_shares_for_institution') %></th>
+      <th><%== link_path(request.path, '机构季度变动百分比', 'quarterly_changes_percent') %></th>
+      <th>机构季度变动数量</th>
+      <th>机构平均成本</th>
+      <th>创建时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%== each_partial(@institutions, 'institutions/institution') %>
+  </tbody>
+</table>
+
+<% content_for(:title) do %>
+  <%== "#{@stock.exchange.name}/#{@stock.name}".upcase %>
+<% end %>
