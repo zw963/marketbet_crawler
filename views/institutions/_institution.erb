@@ -2,7 +2,7 @@
   <td><%= institution['ID'] %></td>
   <td><a href="/stocks/<%= institution['stock_id'] %>"><%= institution['股票'] %></a></td>
   <td><%= institution['日期'] %></td>
-  <td><%= institution['机构名称'] %></td>
+  <td><a href="/firms/<%= institution['firm_id'] %>"><%= institution['机构名称'] %></a></td>
   <td><%= institution['机构持有数量'] %></td>
   <td><%= institution['市场价值'] %></td>
   <td><%= institution['占股票百分比'] %></td>

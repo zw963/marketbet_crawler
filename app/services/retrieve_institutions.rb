@@ -8,6 +8,7 @@ class RetrieveInstitutions
     sort_column = context.sort_column || 'stock_id'
     sort_direction = context.sort_direction
     stock_id = context.stock_id
+    firm_id = context.firm_id
 
     if sort_column.present?
       sort = case sort_column.to_s
@@ -26,6 +27,8 @@ class RetrieveInstitutions
 
     if stock_id.present?
       institutions = institutions.where(stock_id: stock_id)
+    elsif firm_id.present?
+      institutions = institutions.where(firm_id: firm_id)
     else
       institutions = institutions.where(
         Sequel.or(
@@ -67,6 +70,7 @@ class RetrieveInstitutions
           'stock_id' => stock.id,
           '日期' => ins.date.to_s,
           '机构名称' => firm_name,
+          'firm_id' => ins.firm.id,
           '机构持有数量' => ins.number_of_holding,
           '市场价值' => "#{value}万(#{ins.market_value_dollar_string})",
           '占股票百分比' => (ins.percent_of_shares_for_stock*100).to_f.to_s + "%",
