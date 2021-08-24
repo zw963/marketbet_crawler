@@ -39,6 +39,7 @@ GEM
       concurrent-ruby (~> 1.1)
       websocket-driver (>= 0.6, < 0.8)
     ffi (1.15.3)
+    graphql (1.12.15)
     gruff (0.14.0)
       histogram
       rmagick
@@ -122,6 +123,7 @@ DEPENDENCIES
   erubi (>= 1.5)
   fabrication
   ferrum
+  graphql
   gruff
   hot_reloader
   interactor

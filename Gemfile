@@ -31,6 +31,7 @@ gem 'snabberb'
 # gem 'paggio', github: 'hmdne/paggio'
 gem 'opal-browser', github: 'opal/opal-browser'
 gem 'refrigerator'
+gem 'graphql'
 
 group :development do
   gem 'gruff', group: :development
