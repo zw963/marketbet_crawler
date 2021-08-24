@@ -1,9 +1,9 @@
 class App < Roda
   plugin :default_headers,
     'Content-Type' => 'text/html; charset=UTF-8'
-    # 'X-Frame-Options'=>'deny',
-    # 'X-Content-Type-Options'=>'nosniff',
-    # 'X-XSS-Protection'=>'1; mode=block'
+  # 'X-Frame-Options'=>'deny',
+  # 'X-Content-Type-Options'=>'nosniff',
+  # 'X-XSS-Protection'=>'1; mode=block'
   plugin :render, escape: true
   plugin :content_for
   plugin :partials
@@ -39,12 +39,17 @@ class App < Roda
 
     r.post do
       r.is 'graphql' do
-        # query = r.params.fetch('query', '')
-        load = JSON.load(r.body)
-
-        r.json do
-          ApplicationSchema.execute(load['query']).to_h
+        begin
+          load = JSON.load(r.body)
+        rescue JSON::ParserError
+          {msg: 'invalid format'}
         end
+
+        ApplicationSchema.execute(
+          query: load['query'],
+          variables: load['variables'],
+          operation_name: load['operationName']
+        ).to_h
       end
     end
 
