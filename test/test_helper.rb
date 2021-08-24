@@ -21,6 +21,36 @@ class Minitest::Test
     OUTER_APP
   end
 
+  def query(query_path=nil)
+    test_home = APP_ROOT.join('test/graphql').realpath
+    current_path = Pathname(caller[0][/(.*):\d+.*/, 1])
+    relative_path = current_path.relative_path_from(test_home)
+    name = relative_path.basename.sub(/_test|_spec/, '').sub_ext('.graphql')
+    query_file = if query_path
+                   APP_ROOT.join("test/graphql_queries/#{query_path}.graphql")
+                 else
+                   APP_ROOT.join("test/graphql_queries/#{relative_path.dirname}/#{name}")
+                 end
+
+    if query_file.exist?
+      File.read(query_file)
+    else
+      fail "#{query_file} 文件不存在."
+    end
+  end
+
+  def content
+    res = JSON.parse(last_response.body)
+
+    if res.is_a? Array
+      res.map { |e| OpenStruct.new(e) }
+    else
+      OpenStruct.new(res)
+    end
+  rescue JSON::ParserError
+    response.body
+  end
+
   def before_setup
     DatabaseCleaner[:sequel].start
   end

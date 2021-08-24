@@ -37,6 +37,16 @@ class App < Roda
       view 'index'
     end
 
+    r.post do
+      r.is 'graphql' do
+        query = r.params.fetch('query', '')
+
+        r.json do
+          ApplicationSchema.execute(query).to_h
+        end
+      end
+    end
+
     r.get do
       r.is 'stocks' do
         sort_column, sort_direction, page, per = r.params.values_at('sort_column', 'sort_direction', 'page', 'per')

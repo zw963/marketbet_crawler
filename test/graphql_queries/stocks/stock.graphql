@@ -1,0 +1,6 @@
+query stock {
+  stock {
+    name
+    exchangeName
+  }
+}
