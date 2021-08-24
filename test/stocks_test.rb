@@ -2,10 +2,9 @@ require 'test_helper'
 
 describe 'test /stocks' do
   it 'test /stocks return a stock lists' do
-    skip
     exchange = Exchange.create(name: 'nyse')
-    Stock.create(name: 'ge', exchange: exchange, percent_of_institutions: 0.5525)
-    Stock.create(name: 'lu', exchange: exchange, percent_of_institutions: 0.2233)
+    create(:stock, name: 'ge', exchange: exchange, percent_of_institutions: 0.5525, id: 1)
+    create(:stock, name: 'lu', exchange: exchange, percent_of_institutions: 0.2233, id: 2)
 
     get "/stocks"
 
@@ -36,13 +35,13 @@ describe 'test /stocks' do
         <tbody>
           <tr>
         <td>1</td>
-        <td>ge</td>
+        <td><a href="/stocks/1">ge</a></td>
         <td>nyse</td>
         <td>55.25%</td>
       </tr>
       <tr>
         <td>2</td>
-        <td>lu</td>
+        <td><a href="/stocks/2">lu</a></td>
         <td>nyse</td>
         <td>22.33%</td>
       </tr>
@@ -52,7 +51,9 @@ describe 'test /stocks' do
 
 
 
-          <script src="/assets/app-f119d28b5edf6d5209073ddc1bf9e3ddbd415cc739cc608b3f7fc5a97e0d1c90.js" type="text/javascript"></script>
+
+
+          <script src="/assets/app-a5f51ebadef35e028257569d3c92d3c4b89613a2f3b002addc11ceeb2dffcd90.js" type="text/javascript"></script>
           <script> Opal.loaded(typeof(OpalLoaded) === "undefined" ? [] : OpalLoaded); Opal.require("app"); </script>
             We have 2 stocks.
 

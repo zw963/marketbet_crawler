@@ -15,11 +15,17 @@ class App < Roda
   end
   plugin :delete_empty_headers
   plugin :public, gzip: true, brotli: true
+  cache = case ENV['RACK_ENV']
+          when 'development'
+            Sprockets::Cache::MemoryStore.new(65536)
+          when 'test'
+            Sprockets::Cache::FileStore.new("tmp/cache")
+          end
   plugin :sprockets,
     opal: true,
     js_compressor: Terser.new,
     css_compressor: :sassc,
-    cache: (Sprockets::Cache::MemoryStore.new(65536) if ENV['RACK_ENV'] == 'development')
+    cache: cache
   plugin :type_routing
   plugin :json
 
