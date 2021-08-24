@@ -39,10 +39,11 @@ class App < Roda
 
     r.post do
       r.is 'graphql' do
-        query = r.params.fetch('query', '')
+        # query = r.params.fetch('query', '')
+        load = JSON.load(r.body)
 
         r.json do
-          ApplicationSchema.execute(query).to_h
+          ApplicationSchema.execute(load['query']).to_h
         end
       end
     end
