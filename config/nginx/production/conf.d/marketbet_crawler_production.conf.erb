@@ -22,7 +22,7 @@ server {
         # gzip off;   # 当 https 时, 应该关闭?
     }
 
-    location ~ \.(js|css) {
+    location ~ ^/(assets|packs) {
         root <%= server_public %>;
         gzip_static on;
         expires max;
