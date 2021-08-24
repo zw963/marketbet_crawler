@@ -43,4 +43,5 @@ group :test do
   gem 'minitest-global_expectations'
   gem 'timecop'
   gem 'fabrication'
+  gem 'hashr'
 end

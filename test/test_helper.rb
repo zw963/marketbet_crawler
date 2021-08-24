@@ -40,12 +40,14 @@ class Minitest::Test
   end
 
   def content
+    assert_equal last_response.status, 200
+
     res = JSON.parse(last_response.body)
 
     if res.is_a? Array
-      res.map { |e| OpenStruct.new(e) }
+      res.map { |e| Hashr.new(e) }
     else
-      OpenStruct.new(res)
+      Hashr.new(res)
     end
   rescue JSON::ParserError
     response.body

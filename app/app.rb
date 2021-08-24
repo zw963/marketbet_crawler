@@ -39,15 +39,12 @@ class App < Roda
 
     r.post do
       r.is 'graphql' do
-        begin
-          load = JSON.load(r.body)
-        rescue JSON::ParserError
-          {msg: 'invalid format'}
-        end
+        load = JSON.load(r.body)
 
         ApplicationSchema.execute(
           query: load['query'],
           variables: load['variables'],
+          context: load['context'],
           operation_name: load['operationName']
         ).to_h
       end

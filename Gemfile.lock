@@ -43,6 +43,7 @@ GEM
     gruff (0.14.0)
       histogram
       rmagick
+    hashr (2.0.1)
     histogram (0.2.4.1)
     hot_reloader (0.7.1)
       listen (~> 3.0)
@@ -125,6 +126,7 @@ DEPENDENCIES
   ferrum
   graphql
   gruff
+  hashr
   hot_reloader
   interactor
   minitest-global_expectations
