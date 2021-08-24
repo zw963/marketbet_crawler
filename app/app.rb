@@ -1,9 +1,9 @@
 class App < Roda
   plugin :default_headers,
-    'Content-Type' => 'text/html; charset=UTF-8',
-    'X-Frame-Options'=>'deny',
-    'X-Content-Type-Options'=>'nosniff',
-    'X-XSS-Protection'=>'1; mode=block'
+    'Content-Type' => 'text/html; charset=UTF-8'
+    # 'X-Frame-Options'=>'deny',
+    # 'X-Content-Type-Options'=>'nosniff',
+    # 'X-XSS-Protection'=>'1; mode=block'
   plugin :render, escape: true
   plugin :content_for
   plugin :partials
