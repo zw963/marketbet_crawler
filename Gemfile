@@ -1,10 +1,7 @@
-# frozen_string_literal: true
-
 source "https://rubygems.org"
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
-gem 'pry-rescue', require: false
 gem 'hot_reloader'
 gem "ferrum"
 gem 'terminal-table'
@@ -36,6 +33,7 @@ gem 'graphql'
 group :development do
   gem 'gruff', group: :development
   # gem 'activerecord', require: 'active_record'
+  gem 'pry-rescue'
 end
 
 group :test do
