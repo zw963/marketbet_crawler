@@ -15,6 +15,7 @@ class App < Roda
   end
   plugin :delete_empty_headers
   plugin :public, gzip: true, brotli: true
+
   cache = case ENV['RACK_ENV']
           when 'development'
             Sprockets::Cache::MemoryStore.new(65536)
@@ -26,8 +27,15 @@ class App < Roda
     js_compressor: Terser.new,
     css_compressor: :sassc,
     cache: cache
+
   plugin :type_routing
   plugin :json
+
+  plugin :hash_routes
+
+  Dir["routes/**/*.rb"].each do |route_file|
+    load route_file
+  end
 
   route do |r|
     r.public
@@ -39,140 +47,33 @@ class App < Roda
 
     r.post do
       r.is 'graphql' do
-        load = JSON.load(r.body)
-
-        ApplicationSchema.execute(
-          query: load['query'],
-          variables: load['variables'],
-          context: load['context'],
-          operation_name: load['operationName']
-        ).to_h
+        r.hash_routes('graphql')
       end
     end
 
     r.get do
       r.is 'stocks' do
-        sort_column, sort_direction, page, per = r.params.values_at('sort_column', 'sort_direction', 'page', 'per')
-
-        result = RetrieveStocks.call(sort_column: sort_column, sort_direction: sort_direction, page: page, per: per)
-
-        if result.success?
-          @stocks = result.stocks
-
-          r.html do
-            view 'stocks/index'
-          end
-
-          r.json do
-            @stocks.map(&:to_hash)
-          end
-        else
-          @error_message = result.message
-          r.halt
-        end
+        r.hash_routes('stocks/index')
       end
 
       r.is 'stocks', Integer do |id|
         @stock = Stock[id]
-        sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
 
-        sort_column = sort_column.presence || :date
-        sort_direction = sort_direction.presence || :desc
-
-        @log1 = Log.last(type: 'institution_parser')
-        result = RetrieveInstitutions.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: id)
-
-        cond1, cond2 = nil, nil
-
-        if result.success?
-          @institutions = result.institutions
-        else
-          @error_message = result.message
-          @error_message = "#{@error_message}，机构最后一次爬虫时间为: #{@log1.finished_at}" if @log1.present?
-          cond1 = true
-        end
-
-        @log2 = Log.last(type: 'insider_parser')
-        result = RetrieveInsider.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: id)
-
-        if result.success?
-          @insiders = result.insiders
-        else
-          # @error_message = result.message
-          @error_message = "#{@error_message} 内幕交易最后一次爬虫时间为: #{@log2.finished_at}" if @log2.present?
-          cond2 = true
-        end
-
-        p cond1, cond2
-        if cond1 && cond2
-          r.halt
-        else
-          view 'stocks/show'
-        end
+        r.hash_routes('stocks/show')
       end
 
       r.is 'firms', Integer do |id|
         @firm = Firm[id]
-        sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
 
-        sort_column = sort_column.presence || :date
-        sort_direction = sort_direction.presence || :desc
-
-        result = RetrieveInstitutions.call(sort_column: sort_column, sort_direction: sort_direction, firm_id: id)
-
-        if result.success?
-          @institutions = result.institutions
-        else
-          @error_message = result.message
-          @error_message = "#{@error_message} 最后一次爬虫时间为: #{@log.finished_at}" if @log.present?
-          r.halt
-        end
-
-        view 'firms/show'
+        r.hash_routes('firms/show')
       end
 
       r.is 'latest-insiders' do
-        days = r.params['days'].presence || 7
-
-        @log = Log.last(type: 'insider_parser')
-
-        sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
-
-        sort_column = sort_column.presence || :date
-        sort_direction = sort_direction.presence || :desc
-
-        result = RetrieveInsider.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
-
-        if result.success?
-          @insiders = result.insiders
-          view 'insiders/index'
-        else
-          @error_message = result.message
-          @error_message = "#{@error_message} 最后一次爬虫时间为: #{@log.finished_at}" if @log.present?
-          r.halt
-        end
+        r.hash_routes('insiders/index')
       end
 
       r.is 'latest-institutions' do
-        days = r.params['days'].presence || (Date.today.monday? ? 3 : 1)
-
-        @log = Log.last(type: 'institution_parser')
-
-        sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
-
-        sort_column = sort_column.presence || :stock_id
-        sort_direction = sort_direction.presence || :desc
-
-        result = RetrieveInstitutions.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
-
-        if result.success?
-          @institutions = result.institutions
-          view 'institutions/index'
-        else
-          @error_message = result.message
-          @error_message = "#{@error_message} 最后一次爬虫时间为: #{@log.finished_at}" if @log.present?
-          r.halt
-        end
+        r.hash_routes('institutions/index')
       end
     end
   end
