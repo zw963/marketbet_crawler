@@ -26,7 +26,7 @@ class RetrieveStocks
       .select_append(:exchange[:name].as(:exchange_name))
 
     if name.present?
-      stocks = stocks.where(Sequel[:stocks][:name] => name)
+      stocks = stocks.where(:stocks[:name] => name)
     end
 
     stocks = stocks.order(sort).paginate(page.to_i, per.to_i)

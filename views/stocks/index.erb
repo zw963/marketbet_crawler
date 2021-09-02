@@ -1,8 +1,17 @@
 <form action="/stocks" method="get">
-  <input class="input" type="text" name="name" maxlength="20" placeholder="输入股票代码" width="50" />
+  <div class="row">
+    <div class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <input type="text" name="name" id="autocomplete-input" class="autocomplete">
+          <label for="autocomplete-input">输入股票代码</label>
+        </div>
+      </div>
+    </div>
+  </div>
 </form>
-
-<table>
+  
+<table class="highlight centered responsive-table">
   <thead>
     <tr>
       <th><%== link_path('ID', 'id') %></th>
@@ -35,4 +44,8 @@ page_size = @stocks.page_size
 
 <% content_for(:title) do %>
   Stock list
+<% end %>
+
+<% content_for(:page_title) do %>
+  <a href="/stocks">Stock list</a>
 <% end %>

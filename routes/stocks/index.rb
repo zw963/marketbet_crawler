@@ -13,7 +13,7 @@ class App
         end
 
         r.json do
-          @stocks.map(&:to_hash)
+          @stocks = Stock.as_hash(:name, :id)
         end
       else
         @error_message = result.message

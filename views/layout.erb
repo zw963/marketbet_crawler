@@ -9,7 +9,7 @@
   <body>
     <div id="app">
     </div>
-    <h1><%== content_for(:title) || "Stocks" %></h1>
+    <h1><%== content_for(:page_title) || content_for(:title) %></h1>
     <%== yield %>
     <%== javascript_tag 'app' %>
     <%== opal_require 'app' %>
