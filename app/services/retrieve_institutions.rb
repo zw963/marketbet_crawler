@@ -62,7 +62,7 @@ class RetrieveInstitutions
           value2 = ins.quarterly_changes
         end
 
-        firm_name = ins.firm.display_name.presence || ins.name
+        firm_name = ins.firm.display_name.presence || ins.firm.name
 
         {
           'ID' => ins.id,

@@ -38,8 +38,8 @@ GEM
       cliver (~> 0.3)
       concurrent-ruby (~> 1.1)
       websocket-driver (>= 0.6, < 0.8)
-    ffi (1.15.3)
-    graphql (1.12.15)
+    ffi (1.15.4)
+    graphql (1.12.16)
     gruff (0.14.0)
       histogram
       rmagick
@@ -92,7 +92,7 @@ GEM
       rack
     sassc (2.4.0)
       ffi (~> 1.9)
-    sequel (5.47.0)
+    sequel (5.48.0)
     sequel-annotate (1.7.0)
       sequel (>= 4)
     snabberb (1.5.3)

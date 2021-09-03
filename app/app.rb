@@ -49,19 +49,26 @@ class App < Roda
       r.is 'graphql' do
         r.hash_routes('graphql')
       end
+      
+      r.is 'firms', Integer do |id|
+        @id = id
+        r.hash_routes('firms/update')
+      end
     end
 
     r.get do
-      r.is 'stocks' do
-        r.hash_routes('stocks/index')
+      r.on 'stocks' do
+        r.is do
+          r.hash_routes('stocks/index')
+        end
+        
+        r.on Integer do |id|
+          @stock = Stock[id]
+
+          r.hash_routes('stocks/show') 
+       end
       end
-
-      r.is 'stocks', Integer do |id|
-        @stock = Stock[id]
-
-        r.hash_routes('stocks/show')
-      end
-
+      
       r.is 'firms', Integer do |id|
         @firm = Firm[id]
 

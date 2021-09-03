@@ -1,7 +1,24 @@
 <tr>
   <td><a href="/stocks/<%= institution['stock_id'] %>"><%= institution['股票'] %></a></td>
   <td><%= institution['日期'] %></td>
-  <td><a href="/firms/<%= institution['firm_id'] %>"><%= institution['机构名称'] %></a></td>
+  <td>
+    <%
+    firm_id = institution['firm_id']
+    firm_name = institution['机构名称']
+    firm_url = "/firms/#{firm_id}"
+    %>
+    <a href=<%= firm_url %>><%= firm_name %></a>
+    <i class="material-icons prefix">
+      <a
+        class="waves-effect waves-light modal-trigger"
+        href="#modal1"
+        data-firm-id="<%= firm_id %>"
+        data-firm-name="<%= firm_name %>"
+      >
+        Change name
+      </a>
+    </i>
+  </td>
   <td><%= institution['机构季度变动百分比'] %></td>
   <td><%= institution['机构季度变动数量'] %></td>
   <td><%= institution['机构持有数量'] %></td>

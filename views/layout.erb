@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><%== content_for(:title) || "Stocks" %></title>
     <%== stylesheet_tag 'app' %>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body>
     <div id="app">
@@ -13,6 +14,24 @@
     <%== yield %>
     <%== javascript_tag 'app' %>
     <%== opal_require 'app' %>
-    <%== content_for(:footer) || render("footer") %>
+    <%== content_for(:footer) || render('footer') %>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+      <form action="" method="post">
+        <div class="modal-content">
+          <h4>修改 display_name</h4>
+          <input type="text" name="display_name" maxlength="80" placeholder="" />
+          <input type="hidden" name="original_path" value="<%= request.path %>" />
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn waves-effect waves-light" type="submit" name="">Submit
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+      </form>
+
+    </div>
   </body>
 </html>
