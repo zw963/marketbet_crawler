@@ -7,17 +7,7 @@
     firm_name = institution['机构名称']
     firm_url = "/firms/#{firm_id}"
     %>
-    <a href=<%= firm_url %>><%= firm_name %></a>
-    <i class="material-icons prefix">
-      <a
-        class="waves-effect waves-light modal-trigger"
-        href="#modal1"
-        data-firm-id="<%= firm_id %>"
-        data-firm-name="<%= firm_name %>"
-      >
-        Change name
-      </a>
-    </i>
+  <a class='dropdown-trigger' href='<%= firm_url %>' data-target='dropdown1' data-firm-id="<%= firm_id %>" ><%= firm_name %></a>
   </td>
   <td><%= institution['机构季度变动百分比'] %></td>
   <td><%= institution['机构季度变动数量'] %></td>
