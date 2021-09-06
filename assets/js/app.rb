@@ -29,6 +29,8 @@ $document.ready do
     change_firm_display_name_callback = proc do |_, trigger|
       firm_id = `trigger.dataset.firmId`
       firm_name = `trigger.dataset.firmName`
+      debugger
+      p 'you click me!'
       form = $document.at_css('#modal1 form')
       form.action = "/firms/#{firm_id}"
       form.at_css('input').value = firm_name
