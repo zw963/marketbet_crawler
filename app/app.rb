@@ -65,8 +65,8 @@ class App < Roda
         r.on Integer do |id|
           @stock = Stock[id]
 
-          r.hash_routes('stocks/show') 
-       end
+          r.hash_routes('stocks/show')
+        end
       end
       
       r.is 'firms', Integer do |id|
