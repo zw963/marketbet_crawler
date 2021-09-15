@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/hmdne/roda-sprockets
-  revision: 433fcd6e7be9743635a3c5bc43a9baec54eb36d6
-  specs:
-    roda-sprockets (2.0.0rc1)
-      roda (~> 3)
-      sprockets (>= 2.2)
-      sprockets-helpers (>= 1.4.0)
-
-GIT
   remote: https://github.com/opal/opal-browser
   revision: d17069cb8f7d6f10ed302036c90a0fec21337ff8
   specs:
@@ -88,8 +79,12 @@ GEM
       ffi (~> 1.0)
     refrigerator (1.3.0)
     rmagick (4.2.2)
-    roda (3.47.0)
+    roda (3.48.0)
       rack
+    roda-sprockets (2.0.0)
+      roda (~> 3)
+      sprockets (>= 2.2)
+      sprockets-helpers (>= 1.4.0)
     sassc (2.4.0)
       ffi (~> 1.9)
     sequel (5.48.0)
@@ -139,7 +134,7 @@ DEPENDENCIES
   rake
   refrigerator
   roda
-  roda-sprockets!
+  roda-sprockets
   sassc
   sequel
   sequel-annotate

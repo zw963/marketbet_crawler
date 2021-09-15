@@ -23,7 +23,7 @@ gem 'sassc'
 gem 'terser'
 gem 'brotli'
 gem "opal-sprockets"
-gem "roda-sprockets", github: 'hmdne/roda-sprockets'
+gem "roda-sprockets"
 gem 'snabberb'
 # gem 'paggio', github: 'hmdne/paggio'
 gem 'opal-browser', github: 'opal/opal-browser'
