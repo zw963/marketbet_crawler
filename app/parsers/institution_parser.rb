@@ -17,7 +17,6 @@ class InstitutionParser
           page = context.create_page
           sleep rand(3)
 
-          puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership"
           try_again(page, "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
 
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
@@ -27,13 +26,8 @@ class InstitutionParser
             exchange = Exchange.find_or_create(name: stock_exchange)
             stock = Stock.find(name: stock_name, exchange: exchange)
 
-            if stock and Institution.find(stock: stock)
-              matched_date = (Date.today-3..Date.today).map {|x| x.to_time.strftime('%-m/%-d/%Y') }
-              latest_data = tables[1..].select {|x| matched_date.include? x[0] }
-            else
-              stock = Stock.find_or_create(name: stock_name, exchange: exchange)
-              latest_data = tables[1..]
-            end
+            stock = Stock.find_or_create(name: stock_name, exchange: exchange)
+            latest_data = tables[1..]
 
             div = page.at_css('div#cphPrimaryContent_tabInstitutionalOwnership')
             percent_ele = div&.at_xpath('.//strong[contains(text(), "Institutional Ownership Percentage:")]/..')
@@ -121,14 +115,16 @@ class InstitutionParser
 
   def try_again(page, url)
     tries = 0
+    puts url
     begin
-      tries += 1
       page.goto(url)
-      page.network.wait_for_idle(timeout: 10)
-    rescue Ferrum::PendingConnectionsError, Ferrum::TimeoutError
-      puts 'Retrying'
-      if tries < 5
-        sleep(2**tries)
+      tries += 1
+      page.network.wait_for_idle(timeout: 5)
+    rescue Ferrum::TimeoutError, Ferrum::PendingConnectionsError
+      if tries < 7
+        seconds = (1.8**tries).floor
+        puts "[#{Thread.current.object_id}] Retrying in #{seconds} seconds."
+        sleep(seconds)
         retry
       end
     end

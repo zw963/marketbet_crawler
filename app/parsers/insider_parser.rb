@@ -18,7 +18,7 @@ class InsiderParser
           page = context.create_page
           sleep rand(3)
 
-          try_again(page, symbol)
+          try_again(page, "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades")
 
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
@@ -83,17 +83,17 @@ class InsiderParser
     BigDecimal(dollar.gsub(/GBX|\$|£|,/, ''))
   end
 
-  def try_again(page, symbol)
+  def try_again(page, url)
     tries = 0
-    puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades"
+    puts url
     begin
-      page.goto("https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades")
+      page.goto(url)
       tries += 1
       page.network.wait_for_idle(timeout: 5)
     rescue Ferrum::TimeoutError, Ferrum::PendingConnectionsError
       if tries < 7
-        seconds = (1.5**tries).floor
-        puts "Retrying in #{seconds} seconds"
+        seconds = (1.8**tries).floor
+        puts "[#{Thread.current.object_id}] Retrying in #{seconds} seconds."
         sleep(seconds)
         retry
       end
