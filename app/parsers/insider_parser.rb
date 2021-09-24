@@ -40,15 +40,9 @@ class InsiderParser
     exchange = Exchange.find_or_create(name: stock_exchange)
     stock = Stock.find(name: stock_name, exchange: exchange)
 
-    if stock and Insider.find(stock: stock)
-      matched_date = (Date.today-1..Date.today).map {|x| x.to_time.strftime('%-m/%-d/%Y') }
-      latest_data = table_ary[1..].select {|x| matched_date.include? x[0] }
-    else
-      stock = Stock.find_or_create(name: stock_name, exchange: exchange)
-      latest_data = table_ary[1..]
-    end
+    stock = Stock.find_or_create(name: stock_name, exchange: exchange)
 
-    latest_data.each do |e|
+    table_ary[1..].each do |e|
       number_of_holding = e[7] == "" ? nil : e[7].to_i
 
       case e[3]
