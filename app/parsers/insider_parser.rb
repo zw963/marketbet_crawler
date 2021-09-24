@@ -11,7 +11,7 @@ class InsiderParser
     raise 'symbols must be exists' if symbols.nil?
 
     log = Log.create(type: 'insider_parser')
-    symbols.uniq.each_slice(2).to_a.shuffle.each do |symbol_group|
+    symbols.uniq.each_slice(1).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
           context = browser.contexts.create
