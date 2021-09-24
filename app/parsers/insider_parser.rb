@@ -11,16 +11,14 @@ class InsiderParser
     raise 'symbols must be exists' if symbols.nil?
 
     log = Log.create(type: 'insider_parser')
-    symbols.uniq.each_slice(1).to_a.shuffle.each do |symbol_group|
+    symbols.uniq.each_slice(2).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
           context = browser.contexts.create
           page = context.create_page
           sleep rand(3)
 
-          puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades"
-          page.goto("https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades")
-          try_again(page)
+          try_again(page, symbol)
 
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
@@ -91,15 +89,18 @@ class InsiderParser
     BigDecimal(dollar.gsub(/GBX|\$|£|,/, ''))
   end
 
-  def try_again(page)
+  def try_again(page, symbol)
     tries = 0
+    puts "https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades"
     begin
+      page.goto("https://www.marketbeat.com/stocks/#{symbol.upcase}/insider-trades")
       tries += 1
       page.network.wait_for_idle(timeout: 5)
-    rescue Ferrum::TimeoutError
-      puts 'Retrying'
+    rescue Ferrum::TimeoutError, Ferrum::PendingConnectionsError
       if tries < 7
-        sleep(2**tries)
+        seconds = (1.5**tries).floor
+        puts "Retrying in #{seconds} seconds"
+        sleep(seconds)
         retry
       end
     end
