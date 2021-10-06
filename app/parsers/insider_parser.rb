@@ -24,6 +24,7 @@ class InsiderParser < ParserHelper
 
     log.update(finished_at: Time.now)
 
+  ensure
     instance.quit
   end
 
