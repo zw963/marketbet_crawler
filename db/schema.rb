@@ -38,6 +38,10 @@ Sequel.migration do
       String :name, :size=>255, :null=>false
       foreign_key :exchange_id, :exchanges
       BigDecimal :percent_of_institutions
+      String :ipo_price, :size=>255
+      BigDecimal :ipo_amount
+      String :ipo_placement, :size=>255
+      Date :ipo_date
       
       index [:name], :name=>:sqlite_autoindex_stocks_1, :unique=>true
     end

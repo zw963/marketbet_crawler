@@ -31,8 +31,6 @@ class InsiderParser < ParserHelper
   def save_to_insiders(table_ary, symbol)
     stock_exchange, stock_name = symbol.split('/')
     exchange = Exchange.find_or_create(name: stock_exchange)
-    stock = Stock.find(name: stock_name, exchange: exchange)
-
     stock = Stock.find_or_create(name: stock_name, exchange: exchange)
 
     table_ary[1..].each do |e|

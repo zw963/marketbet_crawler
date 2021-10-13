@@ -31,11 +31,11 @@ class ParserHelper
     begin
       tries += 1
       page.goto(url)
-      page.network.wait_for_idle(timeout: 5)
+      page.network.wait_for_idle(timeout: 30)
     rescue Ferrum::TimeoutError, Ferrum::PendingConnectionsError
       if tries < 7
         seconds = (1.8**tries).ceil
-        puts "[#{Thread.current.object_id}] Retrying #{url} in #{seconds} seconds."
+        puts "[#{Thread.current.object_id}] Retrying #{url} in #{seconds} seconds because #{$!}"
         sleep(seconds)
         retry
       end

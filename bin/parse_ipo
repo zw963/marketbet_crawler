@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require_relative '../config/environment'
 
-ins = InstitutionParser.instance
+ins = IpoParser.instance
 
 symbols = %w(
   nasdaq/arry nasdaq/fldm nyse/beke nasdaq/lizi nasdaq/momo
@@ -13,10 +13,9 @@ symbols = %w(
   nyse/ge nasdaq/bmbl nyse/yq nyse/gotu nyse/fsly nasdaq/wish
   nyse/dash nyse/qs nyse/nok nyseamerican/eman nyse/coe
 )
-# symbols = %w(nasdaq/arry)
 ins.symbols = symbols
 
-file = File.open('tmp/parse_insititution_done',  'a')
+file = File.open('tmp/parse_ipo_done',  'a')
 file.puts '*'*100
 file.puts "Start #{Time.now.strftime('%Y-%m-%d %H:%M:%S %A')}"
 
