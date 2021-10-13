@@ -13,8 +13,12 @@ symbols = %w(
   nyse/ge nasdaq/bmbl nyse/yq nyse/gotu nyse/fsly nasdaq/wish
   nyse/dash nyse/qs nyse/nok nyseamerican/eman nyse/coe
 )
-# symbols = %w(nasdaq/arry)
-ins.symbols = symbols
+
+if ARGV[0]
+  ins.symbols = [ARGV[0]]
+else
+  ins.symbols = symbols
+end
 
 file = File.open('tmp/parse_insititution_done',  'a')
 file.puts '*'*100

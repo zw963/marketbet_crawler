@@ -10,7 +10,12 @@ symbols = %w(
   otcmkts/wcagy nyse/cnk lon/rr nyse/ge nasdaq/bmbl
   nyse/fsly nasdaq/wish nyse/dash nyse/qs nyseamerican/eman
 )
-ins.symbols = symbols
+
+if ARGV[0]
+  ins.symbols = [ARGV[0]]
+else
+  ins.symbols = symbols
+end
 
 file = File.open('tmp/parse_insider_done',  'a')
 file.puts '*'*100
