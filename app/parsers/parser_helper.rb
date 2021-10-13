@@ -4,7 +4,11 @@ class ParserHelper
 
   def initialize
     # self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
-    self.instance = Ferrum::Browser.new(headless: true, browser_options: { 'no-sandbox': nil })
+    self.instance = Ferrum::Browser.new(
+      headless: true,
+      pending_connection_errors: false,
+      window_size: [1024, 768],
+      browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false' })
   end
 
   def p2b(percent)
