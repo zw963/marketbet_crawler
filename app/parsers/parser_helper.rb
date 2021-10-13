@@ -5,7 +5,7 @@ class ParserHelper
   def initialize
     # self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
     self.instance = Ferrum::Browser.new(
-      logger: Logger.new('chrome_headless.log', 10, 1024000),
+      # logger: Logger.new('chrome_headless.log', 10, 1024000),
       headless: true,
       pending_connection_errors: false,
       window_size: [1024, 768],
