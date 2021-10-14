@@ -7,7 +7,7 @@ class App
 
       sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
 
-      sort_column = sort_column.presence || :stock_id
+      sort_column = sort_column.presence || :date
       sort_direction = sort_direction.presence || :desc
 
       result = RetrieveInstitutions.call(days: days, sort_column: sort_column, sort_direction: sort_direction)
