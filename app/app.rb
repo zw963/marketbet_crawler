@@ -49,7 +49,7 @@ class App < Roda
       r.is 'graphql' do
         r.hash_routes('graphql')
       end
-      
+
       r.is 'firms', Integer do |id|
         @id = id
         r.hash_routes('firms/update')
@@ -61,14 +61,14 @@ class App < Roda
         r.is do
           r.hash_routes('stocks/index')
         end
-        
+
         r.on Integer do |id|
           @stock = Stock[id]
 
           r.hash_routes('stocks/show')
         end
       end
-      
+
       r.is 'firms', Integer do |id|
         @firm = Firm[id]
 
@@ -94,5 +94,15 @@ class App < Roda
     href = request.path
     href = "#{href}?#{query_string}" if query_string.present?
     "<a href=\"#{href}\">#{title}</a>"
+  end
+
+  path :page do |page, title, page_size=10|
+    params = request.params.dup
+    query_string = URI.encode_www_form(params.merge({'page' => page, 'per' => page_size}))
+    href = request.path
+    href = "#{href}?#{query_string}" if query_string.present?
+    anchor_class = "waves-effect waves-light btn-small"
+    anchor_class = "#{anchor_class} disabled" if page.nil?
+    "<a class=\"#{anchor_class}\" href=\"#{href}\">#{title}</a>"
   end
 end

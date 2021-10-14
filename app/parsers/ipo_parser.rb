@@ -1,3 +1,5 @@
+require 'bigdecimal/util'
+
 class IpoParser < ParserHelper
   def parse
     raise 'symbols must be exists' if symbols.nil?
@@ -34,10 +36,10 @@ class IpoParser < ParserHelper
                 ipo_placement = captures[0]
 
                 ipo_placement_number = case ipo_placement
-                                       when /\$(\d+) million/
-                                         $1.to_i * 1000000
-                                       when /\$(\d+) million/
-                                         $1.to_i * 1000000000
+                                       when /\$([\d\.]+) million/
+                                         $1.to_d * 1000000
+                                       when /\$([\d\.]+) billion/
+                                         $1.to_d * 1000000000
                                        end
 
                 stock.ipo_placement = ipo_placement

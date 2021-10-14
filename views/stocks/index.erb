@@ -35,15 +35,11 @@ prev_page = @stocks.prev_page
 page_size = @stocks.page_size
 %>
 
-<% if prev_page %>
-  <a href="/stocks?page=<%= @stocks.prev_page %>&per=<%= page_size  %>">previous page</a>
-<% end %>
-<% if next_page %>
-  <a href="/stocks?page=<%= next_page %>&per=<%= page_size %>">next page</a>
-<% end %>
-
+<%== page_path prev_page, 'Prev Page' %>
+Current is the <%= @stocks.current_page  %>'th page.
+<%== page_path next_page, 'Next Page' %>
 <% content_for(:footer) do %>
-  We have <%= @stocks.count %> stocks.
+  <%= @stocks.page_count %> pages in total, <%= @stocks.count %> stocks in this page.
 <% end %>
 
 <% content_for(:title) do %>
