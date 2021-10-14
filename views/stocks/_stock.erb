@@ -3,4 +3,8 @@
   <td><a href="/stocks/<%= stock[:id] %>"><%= stock[:name] %></a></td>
   <td><%= stock[:exchange_name] %></td>
   <td><%= stock[:percent_of_institutions] ? "#{(stock[:percent_of_institutions]*100).to_f}%" : "0.00%" %></td>
+  <td><%= stock[:ipo_amount].to_i %></td>
+  <td><%= stock[:ipo_price] %></td>
+  <td><%= stock[:ipo_placement] %></td>
+  <td><%= stock[:ipo_date] %></td>
 </tr>

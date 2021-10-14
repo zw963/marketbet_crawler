@@ -18,6 +18,7 @@ class ParserHelper
       headless: true,
       pending_connection_errors: false,
       window_size: [1024, 768],
+      timeout: 30,
       browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false' })
   end
 
@@ -38,14 +39,12 @@ class ParserHelper
     BigDecimal(dollar.gsub(/GBX|\$|£|,/, ''))
   end
 
-  def try_again(page, url)
-    puts url
+  def run
     tries = 0
 
     begin
       tries += 1
-      page.goto(url)
-      page.network.wait_for_idle(timeout: 30)
+      parse
     rescue Ferrum::TimeoutError, Ferrum::PendingConnectionsError
       if tries < 7
         seconds = (1.8**tries).ceil

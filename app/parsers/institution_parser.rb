@@ -10,7 +10,9 @@ class InstitutionParser < ParserHelper
           page = context.create_page
           sleep rand(3)
 
-          try_again(page, "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership")
+          url = "https://www.marketbeat.com/stocks/#{symbol.upcase}/institutional-ownership"
+          puts url
+          page.goto url
 
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }

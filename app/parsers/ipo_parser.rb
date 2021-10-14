@@ -10,7 +10,9 @@ class IpoParser < ParserHelper
           page = context.create_page
           sleep rand(3)
 
-          try_again(page, "https://www.marketbeat.com/stocks/#{symbol.upcase}/")
+          url = "https://www.marketbeat.com/stocks/#{symbol.upcase}/"
+          puts url
+          page.goto url
 
           ipo_question = page.css('h3.question').find {|x| x.text.match?(/When did .* IPO/i) }
 
@@ -18,7 +20,7 @@ class IpoParser < ParserHelper
             ipo_info_text = ipo_question.at_xpath('.//../following-sibling::dd').text
 
             if ipo_info_text.present?
-              matched_info = ipo_info_text.match(/raised (.*) in an initial public offering.*? on (.*)\. The company issued ([\d,]+) shares at (?:a price of )?([$0-9\-.]+) per share/i)
+              matched_info = ipo_info_text.match(/raised (.*) in an (?:initial public offering|IPO).*? on (.*)\. The company issued ([\d,]+) shares at (?:a price of )?([$0-9\-.]+) per share/i)
 
               if matched_info.nil?
                 warn "Parse \`#{ipo_info_text}' failed."
