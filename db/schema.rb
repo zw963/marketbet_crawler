@@ -42,6 +42,8 @@ Sequel.migration do
       BigDecimal :ipo_amount
       String :ipo_placement, :size=>255
       Date :ipo_date
+      BigDecimal :ipo_average_price
+      BigDecimal :ipo_placement_number
       
       index [:name], :name=>:sqlite_autoindex_stocks_1, :unique=>true
     end
