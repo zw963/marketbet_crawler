@@ -18,18 +18,21 @@ class IpoParser < ParserHelper
             ipo_info_text = ipo_question.at_xpath('.//../following-sibling::dd').text
 
             if ipo_info_text.present?
-              info = ipo_info_text.match(/raised (.*) in an initial public offering on (.*)\. The company issued ([\d,]+) shares at (?:a price of )?([$0-9\-.]+) per share/i).captures
-            end
+              matched_info = ipo_info_text.match(/raised (.*) in an initial public offering.*? on (.*)\. The company issued ([\d,]+) shares at (?:a price of )?([$0-9\-.]+) per share/i)
 
-            if info.present?
-              stock_exchange, stock_name = symbol.split('/')
-              exchange = Exchange.find_or_create(name: stock_exchange)
-              stock = Stock.find_or_create(name: stock_name, exchange: exchange)
-              stock.ipo_placement = info[0]
-              stock.ipo_date = info[1]
-              stock.ipo_price = info[3]
-              stock.ipo_amount = info[2].delete(',')
-              stock.save
+              if matched_info.nil?
+                warn "Parse \`#{ipo_info_text}' failed."
+              else
+                captures = matched_info.captures
+                stock_exchange, stock_name = symbol.split('/')
+                exchange = Exchange.find_or_create(name: stock_exchange)
+                stock = Stock.find_or_create(name: stock_name, exchange: exchange)
+                stock.ipo_placement = captures[0]
+                stock.ipo_date = captures[1]
+                stock.ipo_price = captures[3]
+                stock.ipo_amount = captures[2].delete(',')
+                stock.save
+              end
             end
           end
           context.dispose

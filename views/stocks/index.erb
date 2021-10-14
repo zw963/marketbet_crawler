@@ -18,10 +18,14 @@
       <th><%== link_path('股票名称', 'name') %></th>
       <th><%== link_path('交易所名称', 'exchange_name') %></th>
       <th><%== link_path('机构持股占比', 'percent_of_institutions') %></th>
+      <th><%== link_path('IPO 发行数量', 'ipo_amount') %></th>
+      <th><%== link_path('IPO 发行价区间', 'ipo_price') %></th>
+      <th><%== link_path('IPO 融资金额', 'ipo_placement') %></th>
+      <th><%== link_path('IPO 日期', 'ipo_date') %></th>
     </tr>
   </thead>
   <tbody>
-    <%== each_partial(@stocks, "stocks/stock") %>
+    <%== each_partial(@stocks, 'stocks/stock') %>
   </tbody>
 </table>
 
