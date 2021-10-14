@@ -41,12 +41,35 @@ elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
     fi
 
     if ! rpm -qa python3-certbot-nginx; then
-        yum install certbot python3-certbot-nginx
+        yum install -y certbot python3-certbot-nginx
         # 1. Run `sudo certbot --nginx' to configure current domain.
         # 2. Test if can renew certbot successful. `sudo certbot renew --dry-run'
         # 3. Add following crontab, will date cert first day of month.
         #    0 0 1 * * /usr/bin/certbot renew
         # more detail, check https://certbot.eff.org/
+    fi
+
+    # for install newest version nginx
+    if ! rpm -qa nginx; then
+        cat <<'HEREDOC' > /etc/yum.repos.d/nginx.repo
+    [nginx-stable]
+    name=nginx stable repo
+    baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+    gpgcheck=1
+    enabled=1
+    gpgkey=https://nginx.org/keys/nginx_signing.key
+    module_hotfixes=true
+
+    [nginx-mainline]
+    name=nginx mainline repo
+    baseurl=http://nginx.org/packages/mainline/centos/$releasever/$basearch/
+    gpgcheck=1
+    enabled=0
+    gpgkey=https://nginx.org/keys/nginx_signing.key
+    module_hotfixes=true
+HEREDOC
+        sudo yum-config-manager --enable nginx-stable
+        sudo yum install -y nginx
     fi
 
     # compile bri dynamic module support
@@ -59,8 +82,10 @@ elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
     # yum install -y pcre pcre-devel zlib zlib-devel openssl openssl-devel
     ./configure --with-compat --add-dynamic-module=./ngx_brotli
     make modules
-    sudo cp objs/*.so /etc/nginx/modules
-    # add both config into /etc/nginx/nginx.conf
+    sudo cp objs/*.so /etc/nginx/modules/
+
+    # Then, add following config into /etc/nginx/nginx.conf to load module.
+
     # load_module modules/ngx_http_brotli_filter_module.so;
     # load_module modules/ngx_http_brotli_static_module.so;
 else
