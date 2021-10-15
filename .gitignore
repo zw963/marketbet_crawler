@@ -1,6 +1,5 @@
 *.png
 db/files/*.db
 node_modules
-public/**/.sprockets-*.json
-public/**/app-*.*
-Procofile*.local
+public/assets
+Procofile.options
