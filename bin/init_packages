@@ -1,12 +1,20 @@
 #!/bin/bash
 
+function package_exists () {
+    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+        dpkg -l "$*"
+    else
+        rpm -q --quiet "$*"
+    fi
+}
+
 if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
-    if ! dpkg -l nodejs; then
+    if ! package_exists nodejs; then
         curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
         sudo apt-get install -y nodejs
     fi
 
-    if ! dpkg -l nginx; then
+    if ! package_exists nginx; then
         ## Replace focal with your corresponding Ubuntu release.
         cat <<'HEREDOC' > /etc/apt/sources.list.d/nginx.list
 deb https://nginx.org/packages/ubuntu/ focal nginx
@@ -17,7 +25,7 @@ HEREDOC
         systemctl enable nginx
     fi
 
-    if ! dpkg -l python-certbot-nginx; then
+    if ! package_exists python-certbot-nginx; then
         add-apt-repository ppa:certbot/certbot
         apt update
         apt install python-certbot-nginx
@@ -29,18 +37,12 @@ HEREDOC
     fi
 
 elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
-    if ! rpm -qa nodejs; then
+    if ! package_exists nodejs; then
         curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
         sudo yum install -y nodejs
     fi
 
-    if ! rpm -qa nginx; then
-        wget https://nginx.org/packages/centos/8/x86_64/RPMS/nginx-1.20.1-1.el8.ngx.x86_64.rpm
-        sudo rpm -ivh nginx-1.20.1-1.el8.ngx.x86_64.rpm
-        systemctl enable nginx
-    fi
-
-    if ! rpm -qa python3-certbot-nginx; then
+    if ! rpm -q --quiet python3-certbot-nginx; then
         yum install -y certbot python3-certbot-nginx
         # 1. Run `sudo certbot --nginx' to configure current domain.
         # 2. Test if can renew certbot successful. `sudo certbot renew --dry-run'
@@ -49,8 +51,14 @@ elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
         # more detail, check https://certbot.eff.org/
     fi
 
+    if ! package_exists nginx; then
+        wget https://nginx.org/packages/centos/8/x86_64/RPMS/nginx-1.20.1-1.el8.ngx.x86_64.rpm
+        sudo rpm -ivh nginx-1.20.1-1.el8.ngx.x86_64.rpm
+        systemctl enable nginx
+    fi
+
     # for install newest version nginx
-    if ! rpm -qa nginx; then
+    if ! package_exists nginx; then
         cat <<'HEREDOC' > /etc/yum.repos.d/nginx.repo
     [nginx-stable]
     name=nginx stable repo
@@ -70,24 +78,35 @@ elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
 HEREDOC
         sudo yum-config-manager --enable nginx-stable
         sudo yum install -y nginx
+
+        # compile bri dynamic module support
+        nginx_version=$(nginx -v 2>&1 |cut -d'/' -f2)
+        wget https://nginx.org/download/nginx-${nginx_version}.tar.gz
+        tar xvf nginx-${nginx_version}.tar.gz
+        cd nginx-${nginx_version}
+        git clone https://github.com/google/ngx_brotli.git
+        cd ngx_brotli && git submodule update --init && cd -
+        # yum install -y pcre pcre-devel zlib zlib-devel openssl openssl-devel
+        ./configure --with-compat --add-dynamic-module=./ngx_brotli
+        make modules
+        sudo cp objs/*.so /etc/nginx/modules/
+
+        # Then, add following config into /etc/nginx/nginx.conf to load module.
+
+        # load_module modules/ngx_http_brotli_filter_module.so;
+        # load_module modules/ngx_http_brotli_static_module.so;
     fi
 
-    # compile bri dynamic module support
-    nginx_version=$(nginx -v 2>&1 |cut -d'/' -f2)
-    wget https://nginx.org/download/nginx-${nginx_version}.tar.gz
-    tar xvf nginx-${nginx_version}.tar.gz
-    cd nginx-${nginx_version}
-    git clone https://github.com/google/ngx_brotli.git
-    cd ngx_brotli && git submodule update --init && cd -
-    # yum install -y pcre pcre-devel zlib zlib-devel openssl openssl-devel
-    ./configure --with-compat --add-dynamic-module=./ngx_brotli
-    make modules
-    sudo cp objs/*.so /etc/nginx/modules/
+    if ! which -a pg_dump &>/dev/null; then
+        # 导入 pg 源
+        sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+        # 关闭 centos 内置的 pg 模块
+        sudo dnf -qy module disable postgresql
+        # 初始化数据库
+        sudo /usr/pgsql-14/bin/postgresql-14-setup initdb
 
-    # Then, add following config into /etc/nginx/nginx.conf to load module.
-
-    # load_module modules/ngx_http_brotli_filter_module.so;
-    # load_module modules/ngx_http_brotli_static_module.so;
-else
-    echo "Don't support this linux release!"
-fi
+        sudo systemctl enable postgresql-14
+        sudo systemctl start postgresql-14
+    else
+        echo "Don't support this linux release!"
+    fi
