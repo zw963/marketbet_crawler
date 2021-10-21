@@ -11,8 +11,8 @@ APP_ROOT = Pathname(Dir.pwd)
 # 而此时，无法判断当前该使用那个环境的 DATABASE_URL.
 ENV['RACK_ENV'] = ENV['RACK_ENV'] || 'development'
 
-database_url_name="#{ENV['RACK_ENV']}_database_url".upcase # e.g DEVELOPMENT_DATABASE_URL
-db_url = ENV.delete(database_url_name) || ENV.delete('DATABASE_URL')
+env_database_url="#{ENV['RACK_ENV']}_database_url".upcase # e.g DEVELOPMENT_DATABASE_URL
+db_url = ENV.delete(env_database_url) || ENV.delete('DATABASE_URL')
 DB = Sequel.connect(db_url, timeout: 10000)
 warn "\033[0;34mRACK_ENV=#{ENV['RACK_ENV']}\033[0m"
 warn "\033[0;34mDB connected: #{db_url}\033[0m"

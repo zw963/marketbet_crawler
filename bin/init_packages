@@ -3,9 +3,25 @@
 function package_exists () {
     if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
         dpkg -l "$*"
-    else
+    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
         rpm -q --quiet "$*"
     fi
+}
+
+function init_pg () {
+    # 导入 pg 源
+    sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    # 关闭 centos 内置的 pg 模块
+    sudo dnf -qy module disable postgresql
+    # 安装 pg
+    sudo dnf install -y postgresql14-devel
+    # 初始化数据库
+    sudo /usr/pgsql-14/bin/postgresql-14-setup initdb
+
+    sudo systemctl enable postgresql-14
+    sudo systemctl start postgresql-14
+
+    sudo -u postgres psql -p 5432 -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
 }
 
 if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
@@ -98,15 +114,8 @@ HEREDOC
     fi
 
     if ! which -a pg_dump &>/dev/null; then
-        # 导入 pg 源
-        sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-        # 关闭 centos 内置的 pg 模块
-        sudo dnf -qy module disable postgresql
-        # 初始化数据库
-        sudo /usr/pgsql-14/bin/postgresql-14-setup initdb
-
-        sudo systemctl enable postgresql-14
-        sudo systemctl start postgresql-14
-    else
-        echo "Don't support this linux release!"
+        init_pg
     fi
+else
+    echo "Don't support this linux release!"
+fi

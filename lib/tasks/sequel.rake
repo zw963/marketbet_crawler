@@ -8,13 +8,29 @@ namespace :db do
     Dir['app/models/**/*.rb'].each {|m| load m }
   end
 
+  desc "Create database"
+  task :create do |_t, _args|
+    database, db_url = get_db_url
+
+    if db_url.start_with? 'sqlite'
+      warn 'Do nothing.'
+    elsif db_url.start_with? 'postgres'
+      command = "sudo -u postgres createdb #{database}"
+      warn command
+      Kernel.system(command)
+    end
+  end
+
   desc "Drop database"
-  task :drop => [:init_db] do |_t, _args|
-    database = DB.opts[:database]
-    if DB.database_type == :sqlite
+  task :drop do |_t, _args|
+    database, db_url = get_db_url
+
+    if db_url.start_with? 'sqlite'
       FileUtils.rm_f(database, verbose: true)
-    else
-      DB.execute("DROP DATABASE IF EXISTS #{database}")
+    elsif db_url.start_with? 'postgres'
+      command = "sudo -u postgres dropdb #{database}"
+      warn command
+      Kernel.system(command)
     end
   end
 
@@ -63,4 +79,12 @@ namespace :db do
     require 'sequel/annotate'
     Sequel::Annotate.annotate(Dir['app/models/**/*.rb'], border: true)
   end
+end
+
+def get_db_url
+  env_database_url="#{ENV.fetch('RACK_ENV', 'development')}_database_url".upcase # e.g DEVELOPMENT_DATABASE_URL
+  db_url = ENV.delete(env_database_url) || ENV.delete('DATABASE_URL')
+  database_pattern = db_url.split('//')[1]
+  database = database_pattern.sub(/[^:]+:[^:]+@[^:]+:\d+\//, '')
+  [database, db_url]
 end

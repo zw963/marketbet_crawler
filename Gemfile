@@ -7,10 +7,10 @@ gem "ferrum"
 gem 'terminal-table'
 gem 'sequel'
 gem 'sequel-annotate'
+gem 'pg'
 gem 'sqlite3'
 gem 'only_blank'
 gem 'interactor'
-
 gem 'roda'
 gem 'puma'
 gem 'tilt'
