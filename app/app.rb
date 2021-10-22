@@ -15,6 +15,7 @@ class App < Roda
   end
   plugin :delete_empty_headers
   plugin :public, gzip: true, brotli: true
+  plugin :enhanced_logger if ENV['RACK_ENV'] == 'development'
 
   cache = case ENV['RACK_ENV']
           when 'development'

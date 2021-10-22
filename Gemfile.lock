@@ -67,6 +67,8 @@ GEM
     paggio (0.2.6)
     parser (3.0.2.0)
       ast (~> 2.4.1)
+    pastel (0.8.0)
+      tty-color (~> 0.5)
     pg (1.2.3)
     pry (0.14.1)
       coderay (~> 1.1)
@@ -88,6 +90,9 @@ GEM
     rmagick (4.2.3)
     roda (3.49.0)
       rack
+    roda-enhanced_logger (0.4.0)
+      roda (>= 3.19.0)
+      tty-logger (>= 0.3, < 1.0)
     roda-sprockets (2.0.0)
       roda (~> 3)
       sprockets (>= 2.2)
@@ -111,6 +116,9 @@ GEM
       execjs (>= 0.3.0, < 3)
     tilt (2.0.10)
     timecop (0.9.4)
+    tty-color (0.6.0)
+    tty-logger (0.6.0)
+      pastel (~> 0.8)
     unicode-display_width (2.1.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -143,6 +151,7 @@ DEPENDENCIES
   rake
   refrigerator
   roda
+  roda-enhanced_logger
   roda-sprockets
   sassc
   sequel
