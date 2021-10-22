@@ -5,7 +5,7 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 gem 'hot_reloader'
 gem "ferrum"
 gem 'terminal-table'
-gem 'sequel_pg', require: 'sequel'
+gem 'sequel'
 gem 'sequel-annotate'
 gem 'pg'
 gem 'sqlite3'

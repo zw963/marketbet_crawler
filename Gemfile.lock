@@ -97,9 +97,6 @@ GEM
     sequel (5.49.0)
     sequel-annotate (1.7.0)
       sequel (>= 4)
-    sequel_pg (1.14.0)
-      pg (>= 0.18.0, != 1.2.0)
-      sequel (>= 4.38.0)
     snabberb (1.5.4)
       opal (>= 1.1)
     sprockets (4.0.2)
@@ -148,8 +145,8 @@ DEPENDENCIES
   roda
   roda-sprockets
   sassc
+  sequel
   sequel-annotate
-  sequel_pg
   snabberb
   sqlite3
   terminal-table
