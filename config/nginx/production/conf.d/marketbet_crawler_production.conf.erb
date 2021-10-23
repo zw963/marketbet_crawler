@@ -14,7 +14,8 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
         proxy_set_header   X-Real-IP   $remote_addr;
-        proxy_pass http://<%= config_base_name %>_server;
+        proxy_pass https://<%= config_base_name %>_server;
+        proxy_ssl_session_reuse on;
         proxy_buffering on;
         proxy_buffers 32 16k;
         proxy_set_header   Upgrade $http_upgrade;
