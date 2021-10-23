@@ -1,1 +1,1 @@
-app: bundle exec puma
+app: falcon serve --port 3000
