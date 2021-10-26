@@ -67,7 +67,12 @@ class InstitutionParser < ParserHelper
       if quarterly_changed_share_percent.nil?
         quarterly_changes = nil
       else
-        quarterly_changes = number_of_holding - (number_of_holding/(1+quarterly_changed_share_percent)).to_i
+        percent = (number_of_holding/(1+quarterly_changed_share_percent))
+        if percent.nan?
+          quarterly_changes = nil
+        else
+          quarterly_changes = number_of_holding - percent.to_i
+        end
       end
 
       name = e[1]
