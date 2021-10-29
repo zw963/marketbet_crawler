@@ -14,5 +14,6 @@ listened_folders = ["#{APP_ROOT}/routes"]
 if ENV['RACK_ENV'] == 'development'
   HotReloader.will_listen(loader, listened_folders)
 else
+  puts 'Eager loading ...'
   HotReloader.eager_load(loader)
 end
