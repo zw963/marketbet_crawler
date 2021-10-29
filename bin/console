@@ -3,6 +3,15 @@
 # this file used for robe for load environment before start inf-ruby.
 # it name must be console, don't change it.
 
+require 'yaml'
+
+env_file = 'Procfile.dev.options'
+
+if File.file?(env_file)
+  env = YAML.load_file(env_file)['env']
+  ENV.merge!(env) unless env.nil?
+end
+
 require_relative '../config/environment'
 
 require 'irb'
