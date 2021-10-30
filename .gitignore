@@ -2,4 +2,5 @@
 db/files/*.db
 node_modules
 public/assets
-Procofile.options
+Procfile
+Procfile.local
