@@ -1,6 +1,12 @@
 ENV['RACK_ENV'] = 'test'
 require "rack/test"
 require 'database_cleaner-sequel'
+
+require 'warning'
+Warning.ignore(/warning: mismatched indentations at/)
+Warning.ignore(/warning: loading in progress, circular require considered harmful/)
+Warning.ignore(/warning: method redefined; discarding old absolute_path\?/)
+
 require_relative '../config/db'
 
 if not Dir.empty?('db/migrations')

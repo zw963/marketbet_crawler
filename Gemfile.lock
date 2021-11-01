@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/opal/opal
-  revision: 6d50787603f4290bd0e11041e33e3a7d62555d04
+  revision: ac609eed79935711305c957ee6914369391e3bf7
   branch: master
   specs:
-    opal (1.3.0.rc1)
+    opal (1.3.0)
       ast (>= 2.3.0)
       parser (~> 3.0)
 
@@ -173,6 +173,7 @@ GEM
     tty-logger (0.6.0)
       pastel (~> 0.8)
     unicode-display_width (2.1.0)
+    warning (1.2.1)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -215,6 +216,7 @@ DEPENDENCIES
   terser
   tilt
   timecop
+  warning
 
 BUNDLED WITH
    2.2.22

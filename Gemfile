@@ -45,4 +45,5 @@ group :test do
   gem 'timecop'
   gem 'fabrication'
   gem 'hashr'
+  gem 'warning'
 end
