@@ -1,3 +1,5 @@
+require_relative '../../config/load_env'
+
 namespace :db do
   task :init_db do |_t, _args|
     require_relative '../../config/db'

@@ -4,6 +4,7 @@
 
 require 'sequel/core'
 
+require 'pathname'
 # load earlier, should be accessible by rake task and app.
 APP_ROOT = Pathname(Dir.pwd)
 
