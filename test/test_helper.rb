@@ -3,9 +3,12 @@ require "rack/test"
 require 'database_cleaner-sequel'
 
 require 'warning'
-Warning.ignore(/warning: mismatched indentations at/)
-Warning.ignore(/warning: loading in progress, circular require considered harmful/)
-Warning.ignore(/warning: method redefined; discarding old absolute_path\?/)
+
+Gem.path.each do |path|
+  Warning.ignore(/warning: mismatched indentations at/, path)
+  Warning.ignore(/warning: loading in progress, circular require considered harmful/, path)
+  Warning.ignore(/warning: method redefined; discarding old absolute_path\?/, path)
+end
 
 require_relative '../config/db'
 
