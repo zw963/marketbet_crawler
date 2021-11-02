@@ -44,6 +44,7 @@ Sequel.migration do
       Date :ipo_date
       BigDecimal :ipo_average_price
       BigDecimal :ipo_placement_number
+      Date :next_earnings_date
       
       index [:name], :name=>:stocks_name_key, :unique=>true
     end

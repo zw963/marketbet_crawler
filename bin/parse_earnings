@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+require_relative '../config/environment'
+
+ins = EarningsParser.instance
+
+symbols = %w(
+  nasdaq/arry nasdaq/fldm
+)
+
+# nyse/beke nasdaq/lizi nasdaq/momo
+#   nyse/stm otcmkts/dlaky otcmkts/rycey nasdaq/niu nyse/lu
+#   nyse/umc nyse/nclh nasdaq/cron nyse/pltr nasdaq/ttcf
+#   nasdaq/kopn nasdaq/afrm nasdaq/cree nasdaq/dada nasdaq/fami
+#   nyse/dao nasdaq/ino nasdaq/tour nyse/tme nyse/ai
+#   nasdaq/eh otcmkts/wcagy nyse/fubo nyse/yala nyse/cnk nyse/jks
+#   nyse/ge nasdaq/bmbl nyse/yq nyse/gotu nyse/fsly nasdaq/wish
+#   nyse/dash nyse/qs nyse/nok nyseamerican/eman nyse/coe
+
+if ARGV[0]
+  ins.symbols = [ARGV[0]]
+else
+  ins.symbols = symbols
+end
+
+file = File.open('tmp/parse_ipo_done',  'a')
+file.puts '*'*100
+file.puts "Start #{Time.now.strftime('%Y-%m-%d %H:%M:%S %A')}"
+
+ins.run
+
+file.puts "End #{Time.now.strftime('%Y-%m-%d %H:%M:%S %A')}"
+file.close

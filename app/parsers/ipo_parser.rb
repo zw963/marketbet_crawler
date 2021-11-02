@@ -52,6 +52,7 @@ class IpoParser < ParserHelper
               end
             end
           end
+        ensure
           context.dispose
         end
       end.each(&:join)

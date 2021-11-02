@@ -1,0 +1,47 @@
+require 'bigdecimal/util'
+require 'date'
+
+class EarningsParser < ParserHelper
+  def parse
+    raise 'symbols must be exists' if symbols.nil?
+
+    stock_symbol_mapping = YAML.load_file(APP_ROOT.join('config/mapping.yml')).dig('stock_symbol_mapping')
+
+    log = Log.create(type: 'earnings_parser')
+
+    symbols.uniq.each_slice(1).to_a.shuffle.each do |symbol_group|
+      symbol_group.map do |symbol|
+        Thread.new(instance) do |browser|
+          context = browser.contexts.create
+          page = context.create_page
+          sleep rand(3)
+
+          stock_exchange, stock_name = symbol.split('/')
+          symbol = stock_symbol_mapping.dig(symbol, 'investing')
+          url = "https://cn.investing.com/equities/#{symbol}-earnings/"
+          puts url
+          page.goto url
+
+          upcoming_earnings_dates = page
+            .css("tr[name='instrumentEarningsHistory'] td.bold.left")
+            .map { Date.strptime(_1.text, "%Y年%m月%d日") }
+            .select! {_1 > Date.today}
+
+          if upcoming_earnings_dates.present?
+            exchange = Exchange.find_or_create(name: stock_exchange)
+            stock = Stock.find_or_create(name: stock_name, exchange: exchange)
+            stock.next_earnings_date = upcoming_earnings_dates.min
+            stock.save
+          end
+        ensure
+          context.dispose
+        end
+      end.each(&:join)
+    end
+
+    log.update(finished_at: Time.now)
+
+  ensure
+    instance.quit
+  end
+end
