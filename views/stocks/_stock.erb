@@ -1,12 +1,14 @@
 <%
 next_earnings_date = stock[:next_earnings_date]
-date_time_difference = (Date.today - next_earnings_date).to_i
+if next_earnings_date.present?
+  date_time_difference = (Date.today - next_earnings_date).to_i
 
-case date_time_difference
+  case date_time_difference
 when 0, -1, 1
   color = 'red lighten-2'
 when -2, +2
   color = 'blue lighten-2'
+end
 end
 %>
 
