@@ -1,3 +1,15 @@
+<%
+next_earnings_date = stock[:next_earnings_date]
+date_time_difference = (Date.today - next_earnings_date).to_i
+
+case date_time_difference
+when 0, -1, 1
+  color = 'red lighten-2'
+when -2, +2
+  color = 'blue lighten-2'
+end
+%>
+
 <tr>
   <td><%= stock[:id] %></td>
   <td><a href="/stocks/<%= stock[:id] %>"><%= stock[:name] %></a></td>
@@ -7,5 +19,5 @@
   <td><%= stock[:ipo_price] %></td>
   <td><%= stock[:ipo_placement] %></td>
   <td><%= stock[:ipo_date] %></td>
-  <td><%= stock[:next_earnings_date] %></td>
+  <td class=<%= color %>><%= next_earnings_date %></td>
 </tr>
