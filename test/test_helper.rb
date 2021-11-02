@@ -17,7 +17,7 @@ if not Dir.empty?('db/migrations')
   Sequel::Migrator.check_current(DB, 'db/migrations')
 end
 
-DatabaseCleaner[:sequel].strategy = :transaction
+DatabaseCleaner[:sequel].strategy = :truncation
 
 OUTER_APP = Rack::Builder.parse_file("config.ru").first.freeze.app
 

@@ -3,7 +3,7 @@ require 'sequel/model'
 
 Sequel::Model.plugin :timestamps
 Sequel.extension :symbol_aref
-Sequel.extension :fiber_concurrency unless ENV['RACK_ENV'] == 'test'
+Sequel.extension :fiber_concurrency
 DB.extension :pagination
 
 if DB.adapter_scheme == :postgres
