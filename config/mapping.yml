@@ -3,13 +3,77 @@ stock_symbol_mapping:
     investing: 'array-technologies-inc'
   nasdaq/fldm:
     investing: 'fluidigm-corp'
-
-
-  #     nasdaq/arry nasdaq/fldm nyse/beke nasdaq/lizi nasdaq/momo
-  # nyse/stm otcmkts/dlaky otcmkts/rycey nasdaq/niu nyse/lu
-  # nyse/umc nyse/nclh nasdaq/cron nyse/pltr nasdaq/ttcf
-  # nasdaq/kopn nasdaq/afrm nasdaq/cree nasdaq/dada nasdaq/fami
-  # nyse/dao nasdaq/ino nasdaq/tour nyse/tme nyse/ai
-  # nasdaq/eh otcmkts/wcagy nyse/fubo nyse/yala nyse/cnk nyse/jks
-  # nyse/ge nasdaq/bmbl nyse/yq nyse/gotu nyse/fsly nasdaq/wish
-  # nyse/dash nyse/qs nyse/nok nyseamerican/eman nyse/coe
+  nyse/beke:
+    investing: 'ke-holdings-inc'
+  nyse/lizi:
+    investing: 'lizhi-inc'
+  nasdaq/momo:
+    investing: 'momo-inc'
+  nasdaq/niu:
+    investing: 'niu-technologies'
+  nyse/lu:
+    investing: 'lufax-holding-ltd'
+  nyse/umc:
+    investing: 'united-microelectronics-corp'
+  nyse/nclh:
+    investing: 'norwegian-cruise-line-holdings-ltd'
+  nyse/pltr:
+    investing: 'palantir-technologies-inc'
+  nasdaq/ttcf:
+    investing: 'forum-merger-ii'
+  nasdaq/cron:
+    investing: 'cronos'
+  nasdaq/kopn:
+    investing: 'kopin-corp'
+  nasdaq/dada:
+    investing: 'dada-nexus-ltd'
+  nyse/dao:
+    investing: 'youdao-inc'
+  nasdaq/tour:
+    investing: 'tuniu-corp'
+  nasdaq/afrm:
+    investing: 'affirm-holdings'
+  nyse/tme:
+    investing: 'tencent-music-entertainment-group'
+  nasdaq/eh:
+    investing: 'ehang-holdings-ltd'
+  nyse/yala:
+    investing: 'yalla-group-ltd'
+  nyse/fubo:
+    investing: 'fubotv-inc'
+  nyse/gotu:
+    investing: 'gsx-techedu-a'
+  nyse/jks:
+    investing: 'jinkosolar-holding-comp-ltd'
+  nyse/ge:
+    investing: 'general-electric'
+  nyse/yq:
+    investing: '17-education-technology-group'
+  nyse/coe:
+    investing: 'china-online-education-group'
+  nasdaq/wish:
+    investing: 'contextlogic'
+  nyse/dash:
+    investing: 'doordash-inc'
+  nyse/cnk:
+    investing: 'cinemark-hldg'
+  nasdaq/fami:
+    investing: 'farmmi-earnings'
+  nasdaq/bmbl:
+    investing: 'bumble'
+  nyse/fsly:
+    investing: 'fastly-inc'
+  nyse/ai:
+    investing: 'c3-ai-inc'
+  nasdaq/ino:
+    investing: 'inovio-pharmaceuticals-inc'
+  nyse/qs:
+    investing: 'kensington-capital-acquisition'
+  nyse/nok:
+    investing: 'nokia-corp-exch'
+  nyseamerican/eman:
+    investing: 'emagin-corp'
+  lon/rr:
+    investing: 'rolls-royce'
+  nyse/stm:
+    investing: 'stmicroelectronics-nv'

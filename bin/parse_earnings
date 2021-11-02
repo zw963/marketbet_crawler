@@ -4,17 +4,18 @@ require_relative '../config/environment'
 ins = EarningsParser.instance
 
 symbols = %w(
-  nasdaq/arry nasdaq/fldm
+  nasdaq/arry nasdaq/fldm nyse/beke nasdaq/lizi nasdaq/momo
+  nasdaq/niu nyse/lu nyse/umc nyse/nclh nyse/pltr nasdaq/ttcf
+  nasdaq/cron nasdaq/kopn nasdaq/dada nyse/dao nasdaq/tour
+  nasdaq/afrm nyse/tme nasdaq/eh nyse/yala nyse/fubo nyse/gotu
+  nyse/jks nyse/ge nyse/yq nyse/coe nasdaq/wish nyse/dash
+  nyse/cnk nasdaq/fami nasdaq/bmbl nyse/fsly nyse/ai nyse/qs
+  nyse/nok nyseamerican/eman otcmkts/rycey lon/rr nyse/stm
 )
 
-# nyse/beke nasdaq/lizi nasdaq/momo
-#   nyse/stm otcmkts/dlaky otcmkts/rycey nasdaq/niu nyse/lu
-#   nyse/umc nyse/nclh nasdaq/cron nyse/pltr nasdaq/ttcf
-#   nasdaq/kopn nasdaq/afrm nasdaq/cree nasdaq/dada nasdaq/fami
-#   nyse/dao nasdaq/ino nasdaq/tour nyse/tme nyse/ai
-#   nasdaq/eh otcmkts/wcagy nyse/fubo nyse/yala nyse/cnk nyse/jks
-#   nyse/ge nasdaq/bmbl nyse/yq nyse/gotu nyse/fsly nasdaq/wish
-#   nyse/dash nyse/qs nyse/nok nyseamerican/eman nyse/coe
+#    otcmkts/dlaky
+#     nasdaq/cree
+#    otcmkts/wcagy
 
 if ARGV[0]
   ins.symbols = [ARGV[0]]
