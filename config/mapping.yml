@@ -5,7 +5,7 @@ stock_symbol_mapping:
     investing: 'fluidigm-corp'
   nyse/beke:
     investing: 'ke-holdings-inc'
-  nyse/lizi:
+  nasdaq/lizi:
     investing: 'lizhi-inc'
   nasdaq/momo:
     investing: 'momo-inc'

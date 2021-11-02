@@ -11,6 +11,7 @@ symbols = %w(
   nyse/jks nyse/ge nyse/yq nyse/coe nasdaq/wish nyse/dash
   nyse/cnk nasdaq/fami nasdaq/bmbl nyse/fsly nyse/ai nyse/qs
   nyse/nok nyseamerican/eman otcmkts/rycey lon/rr nyse/stm
+  nasdaq/ino
 )
 
 #    otcmkts/dlaky
