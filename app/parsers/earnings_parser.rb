@@ -17,9 +17,8 @@ class EarningsParser < ParserHelper
           sleep rand(3)
 
           stock_exchange, stock_name = symbol.split('/')
-          symbol = stock_symbol_mapping.dig(symbol, 'investing')
-          url = "https://cn.investing.com/equities/#{symbol}-earnings/"
-          puts url
+          url = "https://cn.investing.com/equities/#{stock_symbol_mapping.dig(symbol, 'investing')}-earnings/"
+          puts "#{symbol}, goto #{url}"
           page.goto url
 
           upcoming_earnings_dates = page
