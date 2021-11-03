@@ -59,7 +59,7 @@ class Minitest::Test
       Hashr.new(res)
     end
   rescue JSON::ParserError
-    response.body
+    last_response.body
   end
 
   def before_setup
