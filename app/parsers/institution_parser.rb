@@ -35,6 +35,7 @@ class InstitutionParser < ParserHelper
             save_to_institutions(latest_data, stock)
           end
 
+        ensure
           context.dispose
         end
       end.each(&:join)

@@ -19,6 +19,7 @@ class InsiderParser < ParserHelper
             save_to_insiders(tables, symbol)
           end
 
+        ensure
           context.dispose
         end
       end.each(&:join)
