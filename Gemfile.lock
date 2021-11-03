@@ -75,7 +75,7 @@ GEM
       websocket-driver (>= 0.6, < 0.8)
     ffi (1.15.4)
     fiber-local (1.0.0)
-    graphql (1.12.17)
+    graphql (1.12.18)
     gruff (0.14.0)
       histogram
       rmagick
@@ -148,7 +148,7 @@ GEM
       mapping (~> 1.0)
     sassc (2.4.0)
       ffi (~> 1.9)
-    sequel (5.49.0)
+    sequel (5.50.0)
     sequel-annotate (1.7.0)
       sequel (>= 4)
     sequel_pg (1.14.0)
