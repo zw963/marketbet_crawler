@@ -1,4 +1,4 @@
-class InsiderParser < ParserHelper
+class InsiderParser < ParserBase
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
