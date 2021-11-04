@@ -1,6 +1,6 @@
 require 'bigdecimal/util'
 
-class IpoParser < ParserHelper
+class IpoParser < ParserBase
   def parse
     raise 'symbols must be exists' if symbols.nil?
 

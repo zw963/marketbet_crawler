@@ -7,7 +7,7 @@ class MyLogger
   end
 end
 
-class ParserHelper
+class ParserBase
   include Singleton
   attr_accessor :symbols, :instance, :page
 

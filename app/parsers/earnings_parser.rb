@@ -1,7 +1,7 @@
 require 'bigdecimal/util'
 require 'date'
 
-class EarningsParser < ParserHelper
+class EarningsParser < ParserBase
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
