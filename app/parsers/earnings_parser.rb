@@ -12,11 +12,15 @@ class EarningsParser < ParserBase
     symbols.uniq.each_slice(1).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
+          stock_exchange, stock_name = symbol.split('/')
+          exchange = Exchange.find_or_create(name: stock_exchange)
+          stock = Stock.find_or_create(name: stock_name, exchange: exchange)
+          next if stock.next_earnings_date.present? && stock.next_earnings_date >= Date.today
+
           context = browser.contexts.create
           page = context.create_page
           sleep rand(3)
 
-          stock_exchange, stock_name = symbol.split('/')
           url = "https://cn.investing.com/equities/#{stock_symbol_mapping.dig(symbol, 'investing')}-earnings/"
           puts "#{symbol}, goto #{url}"
           page.goto url
@@ -27,13 +31,11 @@ class EarningsParser < ParserBase
             .select! {_1 > Date.today}
 
           if upcoming_earnings_dates.present?
-            exchange = Exchange.find_or_create(name: stock_exchange)
-            stock = Stock.find_or_create(name: stock_name, exchange: exchange)
             stock.next_earnings_date = upcoming_earnings_dates.min
             stock.save
           end
         ensure
-          context.dispose
+          context.dispose unless context.nil?
         end
       end.each(&:join)
     end
