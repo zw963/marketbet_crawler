@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/opal/opal
-  revision: 9cb891c59181decedbf913f57b60c549b0933c5e
-  branch: master
-  specs:
-    opal (1.3.1)
-      ast (>= 2.3.0)
-      parser (~> 3.0)
-
-GIT
   remote: https://github.com/opal/opal-browser
   revision: a9a1592cae8302ba59b2c0afefc1ec693e8c6a11
   specs:
@@ -81,7 +72,7 @@ GEM
       rmagick
     hashr (2.0.1)
     histogram (0.2.4.1)
-    hot_reloader (0.8.0)
+    hot_reloader (0.8.1)
       listen (~> 3.0)
       zeitwerk (~> 2.3)
     interactor (3.1.2)
@@ -98,6 +89,9 @@ GEM
     nio4r (2.5.8)
     only_blank (1.2.1)
       fast_blank (>= 1.0)
+    opal (1.3.1)
+      ast (>= 2.3.0)
+      parser (~> 3.0)
     opal-sprockets (1.0.2)
       opal (>= 1.0, < 2.0)
       sprockets (~> 4.0)
@@ -198,7 +192,7 @@ DEPENDENCIES
   interactor
   minitest-global_expectations
   only_blank
-  opal!
+  opal
   opal-browser!
   opal-sprockets
   pg

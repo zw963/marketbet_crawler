@@ -22,7 +22,7 @@ gem 'erubi', '>= 1.5'
 gem 'sassc'
 gem 'terser'
 gem 'brotli'
-gem 'opal', github: 'opal/opal', branch: 'master'
+gem 'opal'
 gem "opal-sprockets"
 gem "roda-sprockets"
 gem 'snabberb'
