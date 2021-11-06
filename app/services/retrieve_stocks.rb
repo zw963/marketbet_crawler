@@ -17,8 +17,12 @@ class RetrieveStocks
              end
     end
 
-    if sort.present? and sort_direction.to_s == 'desc'
-      sort = sort.desc
+    if sort.present?
+      if sort_direction.to_s == 'desc'
+        sort = sort.desc(nulls: :last)
+      else
+        sort = sort.asc(nulls: :last)
+      end
     end
 
     stocks = Stock.association_join(:exchange)
