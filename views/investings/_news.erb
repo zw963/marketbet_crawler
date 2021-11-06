@@ -1,7 +1,6 @@
 <tr>
   <td><%= news_item[:id] %></td>
-  <td><a href="<%= news_item[:url] %>"><%= news_item[:title] %></a></td>
-  <td><%= news_item[:preview] %></td>
+  <td><a class="btn tooltipped" data-position="bottom" data-tooltip="<%= news_item[:preview] %>" href="<%= news_item[:url] %>"><%= news_item[:title] %></a></td>
   <td><%= news_item[:source] %></td>
   <td><%= news_item[:publish_time_string] %></td>
 </tr>

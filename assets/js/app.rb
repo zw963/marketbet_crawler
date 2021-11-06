@@ -49,8 +49,11 @@ var instances = M.Autocomplete.init(elems, {"data": #{json.to_n}});
 var elems = document.querySelectorAll('.modal');
 var instances = M.Modal.init(elems, {"onOpenStart": #{change_firm_display_name_callback.to_n}});
 
- var elems = document.querySelectorAll('.dropdown-trigger');
-    var instances = M.Dropdown.init(elems, {"onOpenStart": #{open_dropdown_callback.to_n}});
+var elems = document.querySelectorAll('.dropdown-trigger');
+var instances = M.Dropdown.init(elems, {"onOpenStart": #{open_dropdown_callback.to_n}});
+
+var elems = document.querySelectorAll('.tooltipped');
+var instances = M.Tooltip.init(elems, {"enterDelay": 1000});
     }
   end
 end
