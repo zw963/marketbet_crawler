@@ -13,6 +13,20 @@ Sequel.migration do
       String :display_name, :text=>true
     end
     
+    create_table(:investing_latest_news, :ignore_index_errors=>true) do
+      primary_key :id
+      String :url, :text=>true, :null=>false
+      String :title, :text=>true, :null=>false
+      String :preview, :text=>true, :null=>false
+      String :source, :text=>true, :null=>false
+      String :publish_time_string, :text=>true, :null=>false
+      DateTime :publish_time, :null=>false
+      DateTime :created_at, :null=>false
+      
+      index [:publish_time]
+      index [:url]
+    end
+    
     create_table(:logs) do
       primary_key :id
       String :type, :text=>true, :null=>false

@@ -1,0 +1,12 @@
+<table class="highlight centered responsive-table">
+  <thead>
+    <tr>
+      <th>标题</th>
+      <th>预览</th>
+      <th><%== link_path('消息来源', 'source') %></th>
+      <th><%== link_path('发布时间', 'publish_time') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%== each_partial(@news, 'investings/news', local: :news_item) %>>
+</table>

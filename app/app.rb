@@ -83,6 +83,10 @@ class App < Roda
       r.is 'latest-institutions' do
         r.hash_routes('institutions/index')
       end
+
+      r.is 'investing-latest-news' do
+        r.hash_routes('investings/latest_news')
+      end
     end
   end
 
