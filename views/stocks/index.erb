@@ -30,18 +30,7 @@
   </tbody>
 </table>
 
-<%-
-next_page = @stocks.next_page
-prev_page = @stocks.prev_page
-# page_size = @stocks.page_size
-%>
-
-<%== page_path prev_page, 'Prev Page' %>
-Current is the <%= @stocks.current_page  %>'th page.
-<%== page_path next_page, 'Next Page' %>
-<% content_for(:footer) do %>
-  <%= @stocks.page_count %> pages in total, <%= @stocks.count %> stocks in this page.
-<% end %>
+<%== paginate @stocks %>
 
 <% content_for(:title) do %>
   Stock list

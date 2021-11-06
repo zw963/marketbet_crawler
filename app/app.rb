@@ -15,6 +15,7 @@ class App < Roda
   end
   plugin :delete_empty_headers
   plugin :public, gzip: true, brotli: true
+
   plugin :enhanced_logger if ENV['RACK_ENV'] == 'development'
 
   cache = case ENV['RACK_ENV']
@@ -34,8 +35,8 @@ class App < Roda
 
   plugin :hash_routes
 
-  Dir["routes/**/*.rb"].each do |route_file|
-    load route_file
+  Dir['routes/**/*.rb', 'helpers/**/*.rb'].each do |file|
+    load file
   end
 
   route do |r|
@@ -88,26 +89,5 @@ class App < Roda
         r.hash_routes('investings/latest_news')
       end
     end
-  end
-
-  path :link do |title, current_column|
-    params = request.params.dup
-    sort_column = params.delete('sort_column')
-    sort_direction = params.delete('sort_direction')
-    direction = (current_column == sort_column && sort_direction == 'desc') ? 'asc' : 'desc'
-    query_string = URI.encode_www_form(sort_column: current_column, sort_direction: direction, **params)
-    href = request.path
-    href = "#{href}?#{query_string}" if query_string.present?
-    "<a href=\"#{href}\">#{title}</a>"
-  end
-
-  path :page do |page, title, page_size=10|
-    params = request.params.dup
-    query_string = URI.encode_www_form(params.merge({'page' => page, 'per' => page_size}))
-    href = request.path
-    href = "#{href}?#{query_string}" if query_string.present?
-    anchor_class = "waves-effect waves-light btn-small"
-    anchor_class = "#{anchor_class} disabled" if page.nil?
-    "<a class=\"#{anchor_class}\" href=\"#{href}\">#{title}</a>"
   end
 end

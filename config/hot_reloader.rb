@@ -9,7 +9,7 @@ loader.ignore("#{APP_ROOT}/app/ar")
 loader.collapse("#{APP_ROOT}/app/parsers")
 loader.inflector.inflect "ar" => "AR"
 
-listened_folders = ["#{APP_ROOT}/routes"]
+listened_folders = ["#{APP_ROOT}/routes", "#{APP_ROOT}/helpers"]
 
 if ENV['RACK_ENV'] == 'development'
   HotReloader.will_listen(loader, listened_folders)
