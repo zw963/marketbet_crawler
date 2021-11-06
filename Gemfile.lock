@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/opal/opal
-  revision: ac609eed79935711305c957ee6914369391e3bf7
+  revision: 9cb891c59181decedbf913f57b60c549b0933c5e
   branch: master
   specs:
-    opal (1.3.0)
+    opal (1.3.1)
       ast (>= 2.3.0)
       parser (~> 3.0)
 
@@ -75,13 +75,13 @@ GEM
       websocket-driver (>= 0.6, < 0.8)
     ffi (1.15.4)
     fiber-local (1.0.0)
-    graphql (1.12.18)
+    graphql (1.12.19)
     gruff (0.14.0)
       histogram
       rmagick
     hashr (2.0.1)
     histogram (0.2.4.1)
-    hot_reloader (0.7.1)
+    hot_reloader (0.8.0)
       listen (~> 3.0)
       zeitwerk (~> 2.3)
     interactor (3.1.2)
@@ -125,6 +125,8 @@ GEM
       interception (>= 0.5)
       pry (>= 0.12.0)
     public_suffix (4.0.6)
+    puma (5.5.2)
+      nio4r (~> 2.0)
     rack (2.2.3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -201,6 +203,7 @@ DEPENDENCIES
   opal-sprockets
   pg
   pry-rescue
+  puma
   rack-test
   rake
   refrigerator

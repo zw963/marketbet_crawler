@@ -12,7 +12,6 @@ gem 'sqlite3'
 gem 'only_blank'
 gem 'interactor'
 gem 'roda'
-# gem 'puma'
 gem 'falcon'
 gem 'tilt'
 gem 'rake'
@@ -37,6 +36,7 @@ group :development do
   # gem 'activerecord', require: 'active_record'
   gem 'pry-rescue'
   gem 'roda-enhanced_logger'
+  gem 'puma'
 end
 
 group :test do
