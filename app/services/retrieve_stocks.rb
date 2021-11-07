@@ -2,7 +2,7 @@ class RetrieveStocks
   include Interactor
 
   def call
-    sort_column = context.sort_column || 'id'
+    sort_column = context.sort_column || 'next_earnings_date'
     sort_direction = context.sort_direction
     page = context.page || 1
     per = context.per || 10
