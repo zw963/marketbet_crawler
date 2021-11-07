@@ -5,11 +5,11 @@ loader.push_dir("#{APP_ROOT}/app")
 loader.push_dir("#{APP_ROOT}/app/models")
 loader.push_dir("#{APP_ROOT}/app/graphql")
 loader.push_dir("#{APP_ROOT}/app/services")
-loader.ignore("#{APP_ROOT}/app/ar")
+loader.ignore("#{APP_ROOT}/app/ar", "#{APP_ROOT}/app/helpers")
 loader.collapse("#{APP_ROOT}/app/parsers")
 loader.inflector.inflect "ar" => "AR"
 
-listened_folders = ["#{APP_ROOT}/routes", "#{APP_ROOT}/helpers"]
+listened_folders = ["#{APP_ROOT}/routes", "#{APP_ROOT}/app/helpers"]
 
 if ENV['RACK_ENV'] == 'development'
   HotReloader.will_listen(loader, listened_folders)
