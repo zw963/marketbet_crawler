@@ -35,7 +35,7 @@ class App < Roda
 
   plugin :hash_routes
 
-  Dir['routes/**/*.rb', 'app/helpers/**/*.rb'].each do |file|
+  Dir['app/routes/**/*.rb', 'app/helpers/**/*.rb'].each do |file|
     load file
   end
 
