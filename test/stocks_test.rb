@@ -9,6 +9,7 @@ describe 'test /stocks' do
     get "/stocks"
 
     last_response.body.must_equal File.read('test/stocks.html')
+    # pp_to_file 'test/stocks.html', last_response.body
   end
 
   it 'test /stocks.json return json' do
