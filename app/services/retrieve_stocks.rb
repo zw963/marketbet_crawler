@@ -5,7 +5,7 @@ class RetrieveStocks
     sort_column = context.sort_column || 'next_earnings_date'
     sort_direction = context.sort_direction
     page = context.page || 1
-    per = context.per || 10
+    per = context.per || 20
     name = context.name
 
     if sort_column.present?

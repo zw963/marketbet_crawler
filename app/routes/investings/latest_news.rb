@@ -3,7 +3,7 @@ class App
     is true do |r|
       sort_column, sort_direction, page, per = r.params.values_at('sort_column', 'sort_direction', 'page', 'per')
 
-      result = RetrieveInvestingLatestNews.call(
+      result = RetrieveInvestingLatestNews.(
         sort_column: sort_column,
         sort_direction: sort_direction,
         page: page,

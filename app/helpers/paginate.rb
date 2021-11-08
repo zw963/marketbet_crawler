@@ -1,5 +1,5 @@
 class App < Roda
-  path :page do |page, title, page_size=10|
+  path :page do |page, title, page_size|
     params = request.params.dup
     query_string = URI.encode_www_form(params.merge({'page' => page, 'per' => page_size}))
     href = request.path
@@ -12,8 +12,9 @@ class App < Roda
   def paginate(records)
     next_page = records.next_page
     prev_page = records.prev_page
-    "#{page_path(prev_page, '上一页')}\
+    page_size = records.page_size
+    "#{page_path(prev_page, '上一页', page_size)}\
 第#{records.current_page}页，总共 #{records.page_count} 页 \
-#{page_path(next_page, '下一页')}"
+#{page_path(next_page, '下一页', page_size)}"
   end
 end
