@@ -1,1 +1,2 @@
-app: bundle exec falcon serve --port 9393
+# app: bundle exec falcon serve --port 9393
+app: bundle exec puma
