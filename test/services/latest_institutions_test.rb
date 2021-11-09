@@ -12,13 +12,13 @@ describe "retrieve latest institutions" do
     firm3 = create(:firm, display_name: '黑石_3', id: 3)
     firm4 = create(:firm, display_name: '黑石_4', id: 4)
     firm5 = create(:firm, display_name: '黑石_5', id: 5)
-    create(:institution, date: '2021-08-02', created_at: '2021-08-04', name: 1, firm: firm1, stock: stock)
-    create(:institution, date: '2021-08-03', created_at: '2021-08-04', name: 2, firm: firm2, stock: stock)
-    create(:institution, date: '2021-08-04', created_at: '2021-08-04', name: 3, firm: firm3, stock: stock)
-    create(:institution, date: '2021-08-05', created_at: '2021-08-04', name: 4, firm: firm4, stock: stock)
-    create(:institution, date: '2021-08-02', name: 5, firm: firm5, stock: stock)
+    create(:institution, date: '2021-08-02', created_at: '2021-08-04', firm: firm1, stock: stock)
+    create(:institution, date: '2021-08-03', created_at: '2021-08-04', firm: firm2, stock: stock)
+    create(:institution, date: '2021-08-04', created_at: '2021-08-04', firm: firm3, stock: stock)
+    create(:institution, date: '2021-08-05', created_at: '2021-08-04', firm: firm4, stock: stock)
+    create(:institution, date: '2021-08-02', firm: firm5, stock: stock)
     assert_equal 5, Institution.all.count
-    result = RetrieveInstitutions.call(days: 3, sort_column: 'stock_name')
+    result = RetrieveInstitutions.call(days: 3, sort_column: 'firm_id', sort_direction: 'desc')
     assert_equal true, result.success?
     institutions = result.institutions
     assert_equal ["黑石_5", "黑石_4", "黑石_3", "黑石_2"], (institutions.map {|x| x['机构名称'] })
@@ -43,7 +43,7 @@ describe "retrieve latest institutions" do
   it "get the expected institution list" do
     Timecop.freeze('2021-08-06')
     assert_equal 0, Institution.all.count
-    create(:institution, date: '2021-08-02', created_at: '2021-08-04', name: 1)
+    create(:institution, date: '2021-08-02', created_at: '2021-08-04')
 
     assert_equal 1, Institution.all.count
     result = RetrieveInstitutions.call(days: 3)

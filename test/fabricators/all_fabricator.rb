@@ -5,13 +5,13 @@ Fabricate.sequence(:name) { |i| "Name #{i}" }
 Fabricate.sequence(:date) {|_n| Date.today + rand(-100..100) }
 
 Fabricator(:institution) do
-  name { Fabricate.sequence(:name) }
   number_of_holding 69830
   market_value 940000
   stock
   percent_of_shares_for_stock 0.024.to_d
   percent_of_shares_for_institution 0.02.to_d
   market_value_dollar_string "$0.94M"
+  firm
 end
 
 Fabricator(:firm) do

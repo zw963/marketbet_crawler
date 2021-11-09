@@ -82,7 +82,6 @@ class InstitutionParser < ParserBase
 
       Institution.find_or_create(
         {
-          name: name,
           firm_id: firm.id,
           date: Date.strptime(e[0], '%m/%d/%Y'),
           stock: stock,
