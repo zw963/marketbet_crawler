@@ -6,4 +6,4 @@ ROOT=${0%/*}
 
 export RACK_ENV=production
 
-$ROOT/../exe/latest_insiders "$@"
+$ROOT/../exe/latest_insider_histories "$@"

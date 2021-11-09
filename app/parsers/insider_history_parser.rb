@@ -1,4 +1,4 @@
-class InsiderParser < ParserBase
+class InsiderHistoryParser < ParserBase
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
@@ -16,7 +16,7 @@ class InsiderParser < ParserBase
 
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
-            save_to_insiders(tables, symbol)
+            save_to_insider_histories(tables, symbol)
           end
 
         ensure
@@ -31,7 +31,7 @@ class InsiderParser < ParserBase
     instance.quit
   end
 
-  def save_to_insiders(table_ary, symbol)
+  def save_to_insider_histories(table_ary, symbol)
     stock_exchange, stock_name = symbol.split('/')
     exchange = Exchange.find_or_create(name: stock_exchange)
     stock = Stock.find_or_create(name: stock_name, exchange: exchange)
@@ -46,7 +46,7 @@ class InsiderParser < ParserBase
         xx = 1
       end
 
-      Insider.find_or_create(
+      InsiderHistory.find_or_create(
         {
           date: Date.strptime(e[0], '%m/%d/%Y'),
           name:  e[1],

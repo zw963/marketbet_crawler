@@ -1,4 +1,4 @@
-class RetrieveInsider
+class RetrieveInsiderHistory
   include Interactor
 
   def call
@@ -11,8 +11,8 @@ class RetrieveInsider
 
     if sort_column.present?
       sort = case sort_column.to_s
-             when *Insider.columns.map(&:name)
-               :insiders[sort_column.to_sym]
+             when *InsiderHistory.columns.map(&:name)
+               :insider_histories[sort_column.to_sym]
              end
     end
 
@@ -20,12 +20,12 @@ class RetrieveInsider
       sort = sort.desc
     end
 
-    insiders = Insider.eager(stock: :exchange)
+    insider_histories = InsiderHistory.eager(stock: :exchange)
 
     if stock_id.present?
-      insiders = insiders.where(stock_id: stock_id)
+      insider_histories = insider_histories.where(stock_id: stock_id)
     else
-      insiders = insiders.where(
+      insider_histories = insider_histories.where(
         Sequel.or(
           date: today-days..today,
           created_at: now...(today + 1).to_datetime
@@ -33,7 +33,7 @@ class RetrieveInsider
       )
     end
 
-    insiders = insiders.order(sort).all
+    insider_histories = insider_histories.order(sort).all
 
     mapping = {
       'major shareholder' => "大股东",
@@ -54,10 +54,10 @@ class RetrieveInsider
       'president' => '总裁'
     }
 
-    if insiders.empty?
+    if insider_histories.empty?
       context.fail!(message: "没有最新的结果！")
     else
-      context.insiders = insiders.map do |ins|
+      context.insider_histories = insider_histories.map do |ins|
         title = ins.title
         stock = ins.stock
 

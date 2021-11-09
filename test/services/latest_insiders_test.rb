@@ -3,22 +3,22 @@ require 'test_helper'
 describe "retrieve latest institutions" do
   it "get the expected insider list" do
     Timecop.freeze('2021-08-14')
-    assert_equal 0, Insider.all.count
+    assert_equal 0, InsiderHistory.all.count
 
     exchange = create(:exchange, name: 'exchange')
     stock = create(:stock, name: 'stock', exchange: exchange, id: 1)
-    create(:insider, stock: stock, date: '2021-08-14', created_at: '2021-08-04')
-    create(:insider, stock: stock, date: '2021-08-13')
-    create(:insider, stock: stock, date: '2021-08-12')
-    create(:insider, stock: stock, date: '2021-08-11', created_at: '2021-08-04')
-    create(:insider, stock: stock, date: '2021-08-10', created_at: '2021-08-04')
-    create(:insider, stock: stock, date: '2021-08-09')
+    create(:insider_history, stock: stock, date: '2021-08-14', created_at: '2021-08-04')
+    create(:insider_history, stock: stock, date: '2021-08-13')
+    create(:insider_history, stock: stock, date: '2021-08-12')
+    create(:insider_history, stock: stock, date: '2021-08-11', created_at: '2021-08-04')
+    create(:insider_history, stock: stock, date: '2021-08-10', created_at: '2021-08-04')
+    create(:insider_history, stock: stock, date: '2021-08-09')
 
-    assert_equal 6, Insider.all.count
-    result = RetrieveInsider.call(days: 3)
+    assert_equal 6, InsiderHistory.all.count
+    result = RetrieveInsiderHistory.call(days: 3)
     assert_equal true, result.success?
-    insiders = result.insiders
-    assert_equal ["2021-08-09", "2021-08-11", "2021-08-12", "2021-08-13", "2021-08-14"], (insiders.map {|x| x['日期'] })
+    insider_histories = result.insider_histories
+    assert_equal ["2021-08-09", "2021-08-11", "2021-08-12", "2021-08-13", "2021-08-14"], (insider_histories.map {|x| x['日期'] })
     assert_equal({
       "股票"=>"exchange/stock",
       "stock_id" => 1,
@@ -29,6 +29,6 @@ describe "retrieve latest institutions" do
       "交易价格" => 423953.28,
       "创建时间" =>'08-04 00:00'
     },
-      insiders.last.except("ID", "名称"))
+      insider_histories.last.except("ID", "名称"))
   end
 end

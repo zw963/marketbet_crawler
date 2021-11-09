@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require_relative '../config/environment'
 
-ins = InsiderParser.instance
+ins = InsiderHistoryParser.instance
 
 symbols = %w(
   nasdaq/arry nasdaq/fldm nasdaq/momo

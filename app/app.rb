@@ -77,8 +77,8 @@ class App < Roda
         r.hash_routes('firms/show')
       end
 
-      r.is 'latest-insiders' do
-        r.hash_routes('insiders/index')
+      r.is 'latest-insider-histories' do
+        r.hash_routes('insider_histories/index')
       end
 
       r.is 'latest-institutions' do

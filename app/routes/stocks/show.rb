@@ -19,10 +19,10 @@ class App
       end
 
       @log2 = Log.last(type: 'insider_parser')
-      result = RetrieveInsider.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: @stock.id)
+      result = RetrieveInsiderHistory.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: @stock.id)
 
       if result.success?
-        @insiders = result.insiders
+        @insider_histories = result.insider_histories
       else
         @error_message2 = "内幕交易: finished at #{@log2.finished_at}" if @log2.present?
         miss2 = true

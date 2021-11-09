@@ -63,7 +63,7 @@ Sequel.migration do
       index [:name], :name=>:stocks_name_key, :unique=>true
     end
     
-    create_table(:insiders) do
+    create_table(:insider_histories) do
       primary_key :id
       Date :date, :null=>false
       String :name, :text=>true, :null=>false

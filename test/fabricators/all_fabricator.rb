@@ -27,7 +27,7 @@ Fabricator(:exchange) do
   name { %w(otcmkts nyse nasdaq nyseamerican lon).sample }
 end
 
-Fabricator(:insider) do
+Fabricator(:insider_history) do
   date { Fabricate.sequence(:date) }
   name { Fabricate.sequence(:name) }
   title 'Major Shareholder'

@@ -5,7 +5,7 @@ require_relative '../config/environment'
 days = Integer(ARGV[0]) rescue nil
 days = 30 if days.nil?
 
-result = RetrieveInsider.call(days: days)
+result = RetrieveInsiderHistory.call(days: days)
 
 if result.success?
   table = Terminal::Table.new do |t|
@@ -20,7 +20,7 @@ if result.success?
       "平均价格",
       "交易价格"
     ]
-    result.insiders.each {|e| t.add_row(e.values) }
+    result.insider_histroies.each {|e| t.add_row(e.values) }
     t.style = {:all_separators => true}
   end
 

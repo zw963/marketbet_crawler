@@ -18,14 +18,14 @@
     </tr>
   </thead>
   <tbody>
-    <%== each_partial(@insiders, 'insiders/insider') %>
+    <%== each_partial(@insider_histories, 'insider_histories/insider_history') %>
   </tbody>
 </table>
 
 <% content_for(:footer) do %>
-  We have <%= @insiders.count %> insiders.
+  We have <%= @insider_histories.count %> insider histories.
 <% end %>
 
 <% content_for(:title) do %>
-  Insider list
+  Insider Histories
 <% end %>

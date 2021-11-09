@@ -1,4 +1,4 @@
-class Insider < Sequel::Model
+class InsiderHistory < Sequel::Model
   many_to_one :stock
 end
 
