@@ -79,6 +79,7 @@ Sequel.migration do
       BigDecimal :share_total_price, :null=>false
       DateTime :created_at, :null=>false
       foreign_key :stock_id, :stocks, :type=>:Bignum, :key=>[:id]
+      foreign_key :insider_id, :insiders, :key=>[:id]
     end
     
     create_table(:institutions) do
