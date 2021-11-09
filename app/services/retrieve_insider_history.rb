@@ -13,6 +13,8 @@ class RetrieveInsiderHistory
       sort = case sort_column.to_s
              when *InsiderHistory.columns.map(&:name)
                :insider_histories[sort_column.to_sym]
+             when 'insider_name'
+               :insiders[:name]
              end
     end
 
@@ -20,7 +22,13 @@ class RetrieveInsiderHistory
       sort = sort.desc
     end
 
-    insider_histories = InsiderHistory.eager(stock: :exchange)
+    # Two separate implementations are provided. eager should be used most of the time,
+    # as it loads associated records using one query per association. However,
+    # it does not allow you the ability to filter or order based on columns in associated tables.
+    # eager_graph loads all records in a single query using JOINs, allowing you to filter
+    # or order based on columns in associated tables. However, eager_graph is usually
+    # slower than eager, especially if multiple one_to_many or many_to_many associations are joined.
+    insider_histories = InsiderHistory.eager({stock: :exchange}, :insider)
 
     if stock_id.present?
       insider_histories = insider_histories.where(stock_id: stock_id)
@@ -57,25 +65,25 @@ class RetrieveInsiderHistory
     if insider_histories.empty?
       context.fail!(message: "没有最新的结果！")
     else
-      context.insider_histories = insider_histories.map do |ins|
-        title = ins.title
-        stock = ins.stock
+      context.insider_histories = insider_histories.map do |ih|
+        title = ih.title
+        stock = ih.stock
 
         unless mapping[title.downcase].to_s.downcase == title.downcase
           title = "#{title}(#{mapping[title.downcase]})"
         end
 
         {
-          'ID' => ins.id,
+          'ID' => ih.id,
           '股票' => "#{stock.exchange.name}/#{stock.name}",
           'stock_id' => stock.id,
-          '日期' => ins.date.to_s,
-          '名称' => ins.name,
+          '日期' => ih.date.to_s,
+          '名称' => ih.insider.name,
           '职位' => title,
-          '股票变动数量' => ins.number_of_shares,
-          '平均价格' => ins.average_price.to_f,
-          '交易价格' => ins.share_total_price.to_f,
-          '创建时间' => ins.created_at.strftime("%m-%d %H:%M")
+          '股票变动数量' => ih.number_of_shares,
+          '平均价格' => ih.average_price.to_f,
+          '交易价格' => ih.share_total_price.to_f,
+          '创建时间' => ih.created_at.strftime("%m-%d %H:%M")
         }
       end
     end

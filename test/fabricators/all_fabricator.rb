@@ -29,10 +29,14 @@ end
 
 Fabricator(:insider_history) do
   date { Fabricate.sequence(:date) }
-  name { Fabricate.sequence(:name) }
   title 'Major Shareholder'
   number_of_shares (-220809)
   average_price 1.92.to_d
   share_total_price 423953.28.to_d
   stock
+  insider
+end
+
+Fabricator(:insider) do
+  name { Fabricate.sequence(:name) }
 end

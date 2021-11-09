@@ -38,6 +38,7 @@ class InsiderHistoryParser < ParserBase
 
     table_ary[1..].each do |e|
       number_of_holding = e[7] == "" ? nil : e[7].to_i
+      insider = Insider.find_or_create(name: e[1])
 
       case e[3]
       when 'Sell', 'Issued'
@@ -49,13 +50,13 @@ class InsiderHistoryParser < ParserBase
       InsiderHistory.find_or_create(
         {
           date: Date.strptime(e[0], '%m/%d/%Y'),
-          name:  e[1],
           title: e[2],
           number_of_holding: number_of_holding,
           number_of_shares: e[4].tr(',', '').to_i*xx,
           average_price: d2b(e[5]),
           share_total_price: d2b(e[6]),
-          stock: stock
+          stock: stock,
+          insider: insider
         }
       )
     end
