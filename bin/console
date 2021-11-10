@@ -4,6 +4,13 @@
 # it name must be console, don't change it.
 
 require_relative '../config/environment'
-
 require 'irb'
-IRB.start(__FILE__)
+
+DB.transaction do
+  unless ARGV[0] == '--no-sandbox'
+    DB.rollback_on_exit
+    puts 'Running console on sandbox mode.'
+  end
+
+  IRB.start(__FILE__)
+end
