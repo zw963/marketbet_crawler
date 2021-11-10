@@ -46,4 +46,5 @@ group :test do
   gem 'fabrication'
   gem 'hashr'
   gem 'warning'
+  gem 'm'
 end

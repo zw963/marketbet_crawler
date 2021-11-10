@@ -8,6 +8,8 @@ require 'pathname'
 # load earlier, should be accessible by rake task and app.
 APP_ROOT = Pathname(Dir.pwd)
 
+require_relative 'load_env'
+
 # 这行代码是必需的，因为在没有启动 rack 的情况下， RACK_ENV 可能为空
 # 而此时，无法判断当前该使用那个环境的 DATABASE_URL.
 ENV['RACK_ENV'] = ENV['RACK_ENV'] || 'development'
