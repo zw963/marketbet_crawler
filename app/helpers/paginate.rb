@@ -10,11 +10,11 @@ class App < Roda
   end
 
   def paginate(records)
-    next_page = records.next_page
-    prev_page = records.prev_page
     page_size = records.page_size
-    "#{page_path(prev_page, '上一页', page_size)}\
-第#{records.current_page}页，总共 #{records.page_count} 页 \
-#{page_path(next_page, '下一页', page_size)}"
+    page_count = records.page_count
+
+    "#{page_path(1, '首页', page_size)}#{page_path(records.prev_page, '上一页', page_size)}\
+第#{records.current_page}页，总共 #{page_count} 页 \
+#{page_path(records.next_page, '下一页', page_size)}#{page_path(page_count, '末页', page_size)}"
   end
 end
