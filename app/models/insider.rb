@@ -1,4 +1,5 @@
 class Insider < Sequel::Model
+  one_to_many :insider_histories
 end
 
 # Table: insiders

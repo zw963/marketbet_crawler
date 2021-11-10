@@ -8,6 +8,7 @@ class RetrieveInsiderHistory
     sort_column = context.sort_column || 'date'
     sort_direction = context.sort_direction
     stock_id = context.stock_id
+    insider_id = context.insider_id
 
     if sort_column.present?
       sort = case sort_column.to_s
@@ -32,6 +33,8 @@ class RetrieveInsiderHistory
 
     if stock_id.present?
       insider_histories = insider_histories.where(stock_id: stock_id)
+    elsif insider_id.present?
+      insider_histories = insider_histories.where(insider_id: insider_id)
     else
       insider_histories = insider_histories.where(
         Sequel.or(
@@ -76,7 +79,8 @@ class RetrieveInsiderHistory
         {
           'ID' => ih.id,
           '股票' => "#{stock.exchange.name}/#{stock.name}",
-          'stock_id' => stock.id,
+          'stock_id' => ih.stock_id,
+          'insider_id' => ih.insider_id,
           '日期' => ih.date.to_s,
           '名称' => ih.insider.name,
           '职位' => title,

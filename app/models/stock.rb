@@ -2,6 +2,10 @@ class Stock < Sequel::Model
   many_to_one :exchange
   one_to_many :institutions
   one_to_many :insider_histories
+
+  def display_name
+    "#{exchange.name}/#{name}"
+  end
 end
 
 # Table: stocks

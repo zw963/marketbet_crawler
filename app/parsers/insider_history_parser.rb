@@ -47,18 +47,27 @@ class InsiderHistoryParser < ParserBase
         xx = 1
       end
 
-      InsiderHistory.find_or_create(
-        {
-          date: Date.strptime(e[0], '%m/%d/%Y'),
-          title: e[2],
-          number_of_holding: number_of_holding,
-          number_of_shares: e[4].tr(',', '').to_i*xx,
-          average_price: d2b(e[5]),
-          share_total_price: d2b(e[6]),
-          stock: stock,
-          insider: insider
-        }
-      )
+      date = Date.strptime(e[0], '%m/%d/%Y')
+
+      DB.transaction do
+        InsiderHistory.find_or_create(
+          {
+            date: date,
+            title: e[2],
+            number_of_holding: number_of_holding,
+            number_of_shares: e[4].tr(',', '').to_i*xx,
+            average_price: d2b(e[5]),
+            share_total_price: d2b(e[6]),
+            stock: stock,
+            insider: insider
+          }
+        )
+        insider.update(
+          last_update_date: date,
+          last_trade_stock: stock.name,
+          number_of_trade_times: insider.number_of_trade_times.to_i + 1
+        )
+      end
     end
   end
 end

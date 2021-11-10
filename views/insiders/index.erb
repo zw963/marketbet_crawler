@@ -1,0 +1,25 @@
+<table class="highlight centered responsive-table">
+  <thead>
+    <tr>
+      <th><%== link_path('ID', 'id') %></th>
+      <th><%== link_path('名称', 'name') %></th>
+      <th><%== link_path('最后交易日期', 'last_trade_date') %></th>
+      <th><%== link_path('最后交易股票', 'last_trade_stock') %></th>
+      <th><%== link_path('交易次数', 'number_of_trade_times') %></th>
+      <th><%== link_path('股票数量', 'trade_on_stock_amount') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%== each_partial(@insiders, 'insiders/insider') %>
+  </tbody>
+</table>
+
+<%== paginate @insiders %>
+
+<% content_for(:title) do %>
+  insider list
+<% end %>
+
+<% content_for(:page_title) do %>
+  <a href="/insiders">Insider list</a>
+<% end %>

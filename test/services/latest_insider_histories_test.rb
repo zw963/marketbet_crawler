@@ -21,7 +21,6 @@ describe "retrieve latest institutions" do
     assert_equal ["2021-08-09", "2021-08-11", "2021-08-12", "2021-08-13", "2021-08-14"], (insider_histories.map {|x| x['日期'] })
     assert_equal({
       "股票"=>"exchange/stock",
-      "stock_id" => 1,
       "日期"=>"2021-08-14",
       "职位"=> 'Major Shareholder(大股东)',
       "股票变动数量"=>-220809,
@@ -29,6 +28,6 @@ describe "retrieve latest institutions" do
       "交易价格" => 423953.28,
       "创建时间" =>'08-04 00:00'
     },
-      insider_histories.last.except("ID", "名称"))
+      insider_histories.last.except("ID", "名称", "stock_id", "insider_id"))
   end
 end

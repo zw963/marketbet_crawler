@@ -1,0 +1,8 @@
+<tr>
+  <td><%= insider[:id] %></td>
+  <td><%= insider[:name] %></td>
+  <td><%= insider[:last_trade_date] %></td>
+  <td><%= insider[:last_trade_stock] %></td>
+  <td><a href="/insiders/<%= insider[:id] %>"><%= insider[:number_of_trade_times] %></a></td>
+  <td><%= insider[:trade_on_stock_amount].to_i %></td>
+</tr>

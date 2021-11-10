@@ -81,6 +81,18 @@ class App < Roda
         r.hash_routes('insider_histories/index')
       end
 
+      r.on 'insiders' do
+        r.is do
+          r.hash_routes('insiders/index')
+        end
+
+        r.on Integer do |id|
+        @insider = Insider[id]
+
+        r.hash_routes('insiders/show')
+      end
+      end
+
       r.is 'latest-institutions' do
         r.hash_routes('institutions/index')
       end
