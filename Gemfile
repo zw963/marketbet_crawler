@@ -34,7 +34,7 @@ gem 'graphql'
 group :development do
   gem 'gruff', group: :development
   # gem 'activerecord', require: 'active_record'
-  gem 'pry-rescue'
+  # gem 'pry-rescue'
   gem 'roda-enhanced_logger'
   gem 'puma'
 end
