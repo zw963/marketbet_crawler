@@ -4,7 +4,6 @@
 # it name must be console, don't change it.
 
 require_relative '../config/environment'
-require 'irb'
 
 DB.transaction do
   unless ARGV[0] == '--no-sandbox'
@@ -12,5 +11,15 @@ DB.transaction do
     puts 'Running console on sandbox mode.'
   end
 
-  IRB.start(__FILE__)
+  ARGV.delete('--no-sandbox')
+
+  begin
+    $0 = 'pry'
+    require 'pry'
+    opts = Pry::CLI.parse_options
+    Pry::CLI.start(opts)
+  rescue LoadError
+    require 'irb'
+    IRB.start(__FILE__)
+  end
 end
