@@ -1,4 +1,6 @@
 app_name: marketbet_crawler
+console_command: bundle exec bin/console
+log_root: log
 
 env:
   RACK_ENV: 'development'

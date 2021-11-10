@@ -1,7 +1,7 @@
 ENV['RACK_ENV'] = 'test'
 require "rack/test"
 require 'database_cleaner-sequel'
-
+require_relative '../config/db'
 require 'warning'
 
 Gem.path.each do |path|
@@ -10,13 +10,12 @@ Gem.path.each do |path|
   Warning.ignore(/warning: method redefined; discarding old absolute_path\?/, path)
 end
 
-require_relative '../config/db'
-
 if not Dir.empty?('db/migrations')
   Sequel.extension :migration
   Sequel::Migrator.check_current(DB, 'db/migrations')
 end
 
+# transaction 和 fiber_concurrency 一起不工作, 因此采用 truncation
 DatabaseCleaner[:sequel].strategy = :truncation
 
 OUTER_APP = Rack::Builder.parse_file("config.ru").first.freeze.app
