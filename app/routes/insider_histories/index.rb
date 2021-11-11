@@ -3,7 +3,7 @@ class App
     is true do |r|
       days = r.params['days'].presence || 7
 
-      @log = Log.last(type: 'insider_parser')
+      @log = Log.where(type: 'insider_parser').exclude(finished_at: nil).last
 
       sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
 

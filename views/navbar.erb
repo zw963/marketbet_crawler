@@ -1,0 +1,12 @@
+<nav>
+  <div class="nav-wrapper">
+    <a href="#" class="brand-logo">Logo</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li class="<%= request.path == '/stocks' ? 'active' : '' %>"><a href="/stocks">Stocks</a></li>
+      <li class="<%= request.path == '/insiders' ? 'active' : '' %>"><a href="/insiders">Insiders</a></li>
+      <li class="<%= request.path == '/latest-insider-histories' ? 'active' : '' %>"><a href="/latest-insider-histories">Latest Insider Histories</a></li>
+      <li class="<%= request.path == '/latest-institutions' ? 'active' : '' %>"><a href="/latest-institutions">Latest Institutions</a></li>
+      <li class="<%= request.path == '/investing-latest-news' ? 'active' : '' %>"><a href="/investing-latest-news">Investing latest news</a></li>
+    </ul>
+  </div>
+</nav>

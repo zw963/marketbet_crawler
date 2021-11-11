@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><%== content_for(:title) || "Stocks" %></title>
+    <title><%== content_for(:title) || 'Stocks' %></title>
     <%== stylesheet_tag 'app' %>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body>
+    <%== render 'navbar'  %>
     <div id="app">
     </div>
-    <h1><%== content_for(:page_title) || content_for(:title) %></h1>
     <%== yield %>
     <%== javascript_tag 'app' %>
     <%== opal_require 'app' %>
