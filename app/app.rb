@@ -11,7 +11,7 @@ class App < Roda
   plugin :status_handler
   status_handler(404) do
     @error_message ||= "404"
-    view('error', layout: false)
+    view('error')
   end
   plugin :delete_empty_headers
   plugin :public, gzip: true, brotli: true
