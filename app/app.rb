@@ -4,7 +4,7 @@ class App < Roda
     'X-Frame-Options'=>'deny',
     'X-Content-Type-Options'=>'nosniff',
     'X-XSS-Protection'=>'1; mode=block'
-  plugin :render, escape: true
+  plugin :render, escape: true, views: 'app/views'
   plugin :content_for
   plugin :partials
   plugin :path
