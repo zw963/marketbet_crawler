@@ -1,14 +1,16 @@
 <%
 next_earnings_date = stock[:next_earnings_date]
 if next_earnings_date.present?
-  date_time_difference = (Date.today - next_earnings_date).to_i
+  date_time_difference = (next_earnings_date - Date.today).to_i
 
   case date_time_difference
-when 0, -1, 1
-  color = 'red lighten-2'
-when -2, +2
-  color = 'blue lighten-2'
-end
+  when 0
+    color = 'red lighten-1'
+  when 1
+    color = 'red lighten-3'
+  when 2
+    color = 'red lighten-5'
+  end
 end
 %>
 
@@ -21,5 +23,5 @@ end
   <td><%= stock[:ipo_price] %></td>
   <td><%= stock[:ipo_placement] %></td>
   <td><%= stock[:ipo_date] %></td>
-  <td class=<%= color %>><%= next_earnings_date %></td>
+  <td class="<%= color %>"><%= next_earnings_date %></td>
 </tr>
