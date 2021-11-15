@@ -24,7 +24,8 @@ function init_pg () {
     sudo -u postgres psql -p 5432 -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
 
     # For install sequel_pg succesful, we have to add pg_config into $PATH
-    PATH=/usr/pgsql-14/bin:$PATH
+    sed -i '1iPATH=/usr/pgsql-14/bin:$PATH'
+
 }
 
 if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
