@@ -8,6 +8,7 @@ class RetrieveInstitutions
     sort_column = context.sort_column || 'stock_id'
     sort_direction = context.sort_direction
     firm_id = context.firm_id
+    stock_id = context.stock_id
     stock_name = context.stock_name
 
     if sort_column.present?
@@ -25,7 +26,9 @@ class RetrieveInstitutions
 
     institutions = Institution.eager_graph({stock: :exchange}, :firm)
 
-    if stock_name.present?
+    if stock_id.present?
+      institutions = institutions.where(stock_id: stock_id)
+    elsif stock_name.present?
       institutions = institutions.where(:stock[:name] => stock_name)
     elsif firm_id.present?
       institutions = institutions.where(firm_id: firm_id)

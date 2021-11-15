@@ -6,6 +6,7 @@ class RetrieveInsiders
     sort_direction = context.sort_direction || 'desc'
     page = context.page || 1
     per = context.per || 20
+    stock_id = context.stock_id
     name = context.name
 
     if sort_column.present?
@@ -25,7 +26,9 @@ class RetrieveInsiders
 
     insiders = Insider.dataset
 
-    if name.present?
+    if stock_id.present?
+      insiders = insiders.where(stock_id: stock_id)
+    elsif name.present?
       insiders = insiders.where(name: name)
     end
 
