@@ -19,6 +19,6 @@ describe 'test /stocks' do
 
     get "/stocks.json"
 
-    last_response.body.must_equal({ge: 1, lu: 2}.to_json)
+    last_response.body.must_equal({ge: 'ge', lu: 'lu'}.to_json)
   end
 end
