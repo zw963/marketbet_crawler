@@ -56,6 +56,15 @@ class App < Roda
         @id = id
         r.hash_routes('firms/update')
       end
+
+      r.is 'add-ts-keyword' do
+        puts '*'*50 + 'Updating ts keyword' + '*'*50
+        new_keyword = r.params['new_keyword']
+        DB.run("INSERT INTO zhparser.zhprs_custom_word values('#{new_keyword}') ON CONFLICT DO NOTHING;")
+        DB.run("SELECT sync_zhprs_custom_word();")
+        DB.run("UPDATE investing_latest_news SET source = source, title = title;")
+        r.redirect request.referrer
+      end
     end
 
     r.get do

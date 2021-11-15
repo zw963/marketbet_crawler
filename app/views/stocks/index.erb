@@ -1,21 +1,8 @@
-<form action="/stocks" method="get">
-  <div class="row">
-    <div class="col s12">
-      <div class="row">
-        <div class="input-field col s2">
-          <i class="material-icons prefix">search</i>
-          <input type="text" name="name" id="autocomplete-input" class="autocomplete">
-          <label for="autocomplete-input">输入股票代码</label>
-        </div>
-
-        <div class="input-field col s3">
-          <input type="submit" value="查找" />
-        </div>
-      </div>
-    </div>
+<div class="row">
+  <div class="col s12">
+    <%== create_form('stock-complete', placeholder: '输入股票代码') %>
   </div>
-</form>
-
+</div>
 <table class="highlight centered responsive-table">
   <thead>
     <tr>

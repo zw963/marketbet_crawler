@@ -1,14 +1,14 @@
 class App
   hash_routes('stocks/index') do
     is true do |r|
-      sort_column, sort_direction, name, page, per = r.params.values_at('sort_column', 'sort_direction', 'name', 'page', 'per')
+      sort_column, sort_direction, q, page, per = r.params.values_at('sort_column', 'sort_direction', 'q', 'page', 'per')
 
       result = RetrieveStocks.(
         sort_column: sort_column,
         sort_direction: sort_direction,
         page: page,
         per: per,
-        name: name
+        name: q
       )
 
       if result.success?
@@ -19,7 +19,7 @@ class App
         end
 
         r.json do
-          @stocks = Stock.as_hash(:name, :id)
+          Stock.as_hash(:name, :name)
         end
       else
         @error_message = result.message

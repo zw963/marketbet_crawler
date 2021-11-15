@@ -26,26 +26,35 @@ end
 
 $document.ready do
   get_json('/stocks.json').then do |json|
-    change_firm_display_name_callback = proc do |_, trigger|
-      form = $document.at_css('#modal1 form')
-      form.action = "/firms/#{`trigger.dataset.firmId`}"
-      form.at_css('input').value = `trigger.dataset.firmName`
-      form.at_css('h4').text = '修改机构信息'
-    end
-
-    open_dropdown_callback = proc do |dropdown_trigger|
-      a_eles = $document.css('#dropdown1 li a')
-      a_eles[0]['href'] = `dropdown_trigger.href`
-      a_eles[0].text = '查看机构信息'
-      a_eles[1]['data-firm-id'] = `dropdown_trigger.dataset.firmId`
-      a_eles[1]['data-firm-name'] = `dropdown_trigger.innerText`
-      a_eles[1].text = '修改名称备注'
-    end
-
     %x{
-var elems = document.querySelectorAll('.autocomplete');
+var elems = document.querySelectorAll('.stock-complete');
 var instances = M.Autocomplete.init(elems, {"data": #{json.to_n}});
+    }
+  end
 
+  $document.on(:click, ".add-ts-keyword") do |e|
+    e.prevent
+    # e.on is a button that has been clicked
+    e.on.inner_text = "Clicked!"
+  end
+
+  change_firm_display_name_callback = proc do |_, trigger|
+    form = $document.at_css('#modal1 form')
+    form.action = "/firms/#{`trigger.dataset.firmId`}"
+    form.at_css('input').value = `trigger.dataset.firmName`
+    form.at_css('h4').text = '修改机构信息'
+  end
+
+  open_dropdown_callback = proc do |dropdown_trigger|
+    a_eles = $document.css('#dropdown1 li a')
+    a_eles[0]['href'] = `dropdown_trigger.href`
+    a_eles[0].text = '查看机构信息'
+    a_eles[1]['data-firm-id'] = `dropdown_trigger.dataset.firmId`
+    a_eles[1]['data-firm-name'] = `dropdown_trigger.innerText`
+    a_eles[1].text = '修改名称备注'
+  end
+
+  %x{
 var elems = document.querySelectorAll('.modal');
 var instances = M.Modal.init(elems, {"onOpenStart": #{change_firm_display_name_callback.to_n}});
 
@@ -54,6 +63,5 @@ var instances = M.Dropdown.init(elems, {"onOpenStart": #{open_dropdown_callback.
 
 var elems = document.querySelectorAll('.tooltipped');
 var instances = M.Tooltip.init(elems, {"enterDelay": 1000});
-    }
-  end
+  }
 end

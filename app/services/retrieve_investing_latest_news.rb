@@ -6,6 +6,7 @@ class RetrieveInvestingLatestNews
     sort_direction = context.sort_direction || 'desc'
     page = context.page || 1
     per = context.per || 20
+    q = context.q
 
     if sort_column.present?
       sort = case sort_column.to_s
@@ -18,12 +19,13 @@ class RetrieveInvestingLatestNews
       sort = sort.desc
     end
 
-    news = InvestingLatestNews.order(sort).paginate(page.to_i, per.to_i)
+    news = InvestingLatestNews.dataset
 
-    if news.empty?
-      context.fail!(message: "没有最新的结果！")
-    else
-      context.news = news
+    if q.present?
+      news = news.where(Sequel.lit('textsearchable_index_col @@ to_tsquery(?)', q))
     end
+
+    context.news = news.order(sort).paginate(page.to_i, per.to_i)
+    context.fail!(message: "没有结果！") if news.empty?
   end
 end
