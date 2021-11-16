@@ -62,7 +62,7 @@ class InsiderHistoryParser < ParserBase
           }
         )
         insider.update(
-          last_update_date: date,
+          last_trade_date: date,
           last_trade_stock: stock.name,
           number_of_trade_times: insider.number_of_trade_times.to_i + 1
         )
