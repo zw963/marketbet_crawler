@@ -62,7 +62,7 @@ class App < Roda
         new_keyword = r.params['new_keyword']
         DB.run("INSERT INTO zhparser.zhprs_custom_word values('#{new_keyword}') ON CONFLICT DO NOTHING;")
         DB.run("SELECT sync_zhprs_custom_word();")
-        DB.run("UPDATE investing_latest_news SET source = source, title = title;")
+        DB.run("UPDATE investing_latest_news SET title = title, preview = preview;")
         r.redirect request.referrer
       end
     end

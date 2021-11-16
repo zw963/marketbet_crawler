@@ -7,7 +7,7 @@ Sequel.migration do
     run "ALTER TEXT SEARCH CONFIGURATION zhparser ADD MAPPING FOR n,v,a,i,e,l,j,x WITH simple;"
     run "ALTER role all SET zhparser.multi_short=on;" # 1 短词复合
     run "ALTER role all SET zhparser.multi_duality=on;" # 2 二元复合
-    run "ALTER role all SET zhparser.multi_zmain=on;" # 主要单字复合
+    # run "ALTER role all SET zhparser.multi_zmain=on;" # 主要单字复合
     # run "ALTER role all SET zhparser.multi_zall=on;" # 所有单字复合
   end
 
