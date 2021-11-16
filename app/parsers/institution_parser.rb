@@ -17,11 +17,9 @@ class InstitutionParser < ParserBase
           if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
 
-            stock_exchange, stock_name = symbol.split('/')
-            exchange = Exchange.find_or_create(name: stock_exchange)
-            stock = Stock.find(name: stock_name, exchange: exchange)
+            exchange = Exchange.find_or_create(name: symbol.split('/')[0])
+            stock = Stock.find_or_create(name: symbol, exchange: exchange)
 
-            stock = Stock.find_or_create(name: stock_name, exchange: exchange)
             latest_data = tables[1..]
 
             div = page.at_css('div#cphPrimaryContent_tabInstitutionalOwnership')

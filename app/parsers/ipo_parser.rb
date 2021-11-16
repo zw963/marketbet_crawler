@@ -27,11 +27,10 @@ class IpoParser < ParserBase
               if matched_info.nil?
                 warn "Parse \`#{ipo_info_text}' failed."
               else
-                captures = matched_info.captures
-                stock_exchange, stock_name = symbol.split('/')
-                exchange = Exchange.find_or_create(name: stock_exchange)
-                stock = Stock.find_or_create(name: stock_name, exchange: exchange)
+                exchange = Exchange.find_or_create(name: symbol.split('/')[0])
+                stock = Stock.find_or_create(name: symbol, exchange: exchange)
 
+                captures = matched_info.captures
                 ipo_price_range = captures[3].split('-').map {|x| BigDecimal(x.delete('$')) }
                 ipo_placement = captures[0]
 

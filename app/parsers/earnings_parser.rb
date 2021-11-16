@@ -12,9 +12,8 @@ class EarningsParser < ParserBase
     symbols.uniq.each_slice(1).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
         Thread.new(instance) do |browser|
-          stock_exchange, stock_name = symbol.split('/')
-          exchange = Exchange.find_or_create(name: stock_exchange)
-          stock = Stock.find_or_create(name: stock_name, exchange: exchange)
+          exchange = Exchange.find_or_create(name: symbol.split('/')[0])
+          stock = Stock.find_or_create(name: symbol, exchange: exchange)
           next if stock.next_earnings_date.present? && stock.next_earnings_date >= Date.today
 
           context = browser.contexts.create

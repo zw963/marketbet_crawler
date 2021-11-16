@@ -32,9 +32,8 @@ class InsiderHistoryParser < ParserBase
   end
 
   def save_to_insider_histories(table_ary, symbol)
-    stock_exchange, stock_name = symbol.split('/')
-    exchange = Exchange.find_or_create(name: stock_exchange)
-    stock = Stock.find_or_create(name: stock_name, exchange: exchange)
+    exchange = Exchange.find_or_create(name: symbol.split('/')[0])
+    stock = Stock.find_or_create(name: symbol, exchange: exchange)
 
     table_ary[1..].each do |e|
       number_of_holding = e[7] == "" ? nil : e[7].to_i
