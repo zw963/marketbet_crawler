@@ -32,12 +32,8 @@ class RetrieveInsiders
       insiders = insiders.where(name: name)
     end
 
-    insiders = insiders.order(sort).paginate(page.to_i, per.to_i)
+    context.insiders = insiders.order(sort).paginate(page.to_i, per.to_i)
 
-    if insiders.empty?
-      context.fail!(message: "没有最新的结果！")
-    else
-      context.insiders = insiders
-    end
+    context.fail!(message: "没有最新的结果！") if insiders.empty?
   end
 end

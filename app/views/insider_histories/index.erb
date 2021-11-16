@@ -4,6 +4,17 @@
   <h5>Finished at <%== @log.finished_at  %></h5>
 <% end %>
 
+<div class="row">
+  <div class="col s12">
+    <%== create_form('stock-complete', placeholder: '输入股票代码') %>
+  </div>
+</div>
+
+<% if @error_message.present? %>
+  <p><%== @error_message %></p>
+<% end %>
+
+
 <table class="highlight centered responsive-table">
   <thead>
     <tr>
