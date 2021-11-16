@@ -7,9 +7,9 @@ ADD COLUMN textsearchable_index_col tsvector GENERATED ALWAYS
     (
         to_tsvector(
           'zhparser',
-           coalesce(source, '')
-             || ' ' ||
            coalesce(title, '')
+             || ' ' ||
+           coalesce(preview, '')
         )
    )
 STORED;
