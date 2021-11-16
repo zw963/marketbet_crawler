@@ -69,7 +69,7 @@ class RetrieveInstitutions
 
         {
           'ID' => ins.id,
-          '股票' => "#{stock.exchange.name}/#{stock.name}",
+          '股票' => stock.name,
           'stock_id' => stock.id,
           '日期' => ins.date.to_s,
           '机构名称' => firm_name,

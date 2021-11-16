@@ -81,7 +81,7 @@ class RetrieveInsiderHistory
 
         {
           'ID' => ih.id,
-          '股票' => "#{stock.exchange.name}/#{stock.name}",
+          '股票' => stock.name,
           'stock_id' => ih.stock_id,
           'insider_id' => ih.insider_id,
           '日期' => ih.date.to_s,

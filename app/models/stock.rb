@@ -4,7 +4,7 @@ class Stock < Sequel::Model
   one_to_many :insider_histories
 
   def display_name
-    "#{exchange.name}/#{name}"
+    self[:name].split('/')[1]
   end
 end
 

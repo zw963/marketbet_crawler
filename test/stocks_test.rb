@@ -3,8 +3,8 @@ require 'test_helper'
 describe 'test /stocks' do
   it 'test /stocks return a stock lists' do
     exchange = Exchange.create(name: 'nyse')
-    create(:stock, name: 'ge', exchange: exchange, percent_of_institutions: 0.5525, id: 1)
-    create(:stock, name: 'lu', exchange: exchange, percent_of_institutions: 0.2233, id: 2)
+    create(:stock, name: 'nyse/ge', exchange: exchange, percent_of_institutions: 0.5525, id: 1)
+    create(:stock, name: 'nyse/lu', exchange: exchange, percent_of_institutions: 0.2233, id: 2)
 
     get "/stocks"
 
@@ -14,11 +14,11 @@ describe 'test /stocks' do
 
   it 'test /stocks.json return json' do
     exchange = Exchange.create(name: 'nyse')
-    create(:stock, name: 'ge', exchange: exchange, percent_of_institutions: 0.5525, id: 1)
-    create(:stock, name: 'lu', exchange: exchange, percent_of_institutions: 0.2233, id: 2)
+    create(:stock, name: 'nyse/ge', exchange: exchange, percent_of_institutions: 0.5525, id: 1)
+    create(:stock, name: 'nyse/lu', exchange: exchange, percent_of_institutions: 0.2233, id: 2)
 
     get "/stocks.json"
 
-    last_response.body.must_equal({ge: 'ge', lu: 'lu'}.to_json)
+    last_response.body.must_equal({'nyse/ge' => 'nyse/ge', 'nyse/lu' => 'nyse/lu'}.to_json)
   end
 end

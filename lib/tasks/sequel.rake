@@ -8,7 +8,7 @@ namespace :db do
   end
 
   task :init_models => [:init_db] do |_t, _args|
-    require_relative '../../config/models'
+    require_relative '../../config/model'
     Dir['app/models/**/*.rb'].each {|m| load m }
   end
 

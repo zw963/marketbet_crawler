@@ -34,7 +34,7 @@ we provide a conveniently command for start our app with irb too, live in `bin/i
 
 ### config/application.rb
 
-It is the place application config live, `config/environment.rb` require it, it require `config/models`.
+It is the place application config live, `config/environment.rb` require it, it require `config/model`.
 
 With whatever you want put here for application specified config.
 
