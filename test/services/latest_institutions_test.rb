@@ -5,8 +5,8 @@ describe "retrieve latest institutions" do
     Timecop.freeze('2021-08-06')
     assert_equal 0, Institution.all.count
 
-    exchange = create(:exchange, name: 'exchange')
-    stock = create(:stock, name: 'stock', exchange: exchange, id: 1)
+    exchange = create(:exchange, name: 'nyse')
+    stock = create(:stock, name: 'nyse/ge', exchange: exchange, id: 1)
     firm1 = create(:firm, id: 1)
     firm2 = create(:firm, display_name: '黑石_2', id: 2)
     firm3 = create(:firm, display_name: '黑石_3', id: 3)
@@ -23,7 +23,7 @@ describe "retrieve latest institutions" do
     institutions = result.institutions
     assert_equal ["黑石_5", "黑石_4", "黑石_3", "黑石_2"], (institutions.map {|x| x['机构名称'] })
     assert_equal({
-      "股票"=>"exchange/stock",
+      "股票"=>"nyse/ge",
       "stock_id" => 1,
       "日期"=>"2021-08-03",
       "机构名称"=>"黑石_2",

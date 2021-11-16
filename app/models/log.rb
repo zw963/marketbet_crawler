@@ -1,4 +1,19 @@
 class Log < Sequel::Model
+  def finished_at_string
+    if finished_at.is_today?
+      finished_at.strftime('今天 %H:%M')
+    else
+      finished_at.strftime('%Y-%m-%d %H:%M')
+    end
+  end
+
+  def created_at_string
+    if created_at.is_today?
+      created_at.strftime('今天 %H:%M')
+    else
+      created_at.strftime('%Y-%m-%d %H:%M')
+    end
+  end
 end
 
 # Table: logs

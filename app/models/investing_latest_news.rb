@@ -1,9 +1,6 @@
 class InvestingLatestNews < Sequel::Model
   def display_time
-    today = Date.today.to_time
-    tomorrow = (Date.today + 1).to_time
-
-    if (today...tomorrow).cover?(self[:publish_time])
+    if publish_time.is_today?
       self[:publish_time_string]
     else
       self[:publish_time].to_date

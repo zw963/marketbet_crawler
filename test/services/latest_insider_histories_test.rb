@@ -5,8 +5,8 @@ describe "retrieve latest institutions" do
     Timecop.freeze('2021-08-14')
     assert_equal 0, InsiderHistory.all.count
 
-    exchange = create(:exchange, name: 'exchange')
-    stock = create(:stock, name: 'stock', exchange: exchange, id: 1)
+    exchange = create(:exchange, name: 'nyse')
+    stock = create(:stock, name: 'nyse/ge', exchange: exchange, id: 1)
     create(:insider_history, stock: stock, date: '2021-08-14', created_at: '2021-08-04')
     create(:insider_history, stock: stock, date: '2021-08-13')
     create(:insider_history, stock: stock, date: '2021-08-12')
@@ -20,7 +20,7 @@ describe "retrieve latest institutions" do
     insider_histories = result.insider_histories
     assert_equal ["2021-08-09", "2021-08-11", "2021-08-12", "2021-08-13", "2021-08-14"], (insider_histories.map {|x| x['日期'] })
     assert_equal({
-      "股票"=>"exchange/stock",
+      "股票"=>"nyse/ge",
       "日期"=>"2021-08-14",
       "职位"=> 'Major Shareholder(大股东)',
       "股票变动数量"=>-220809,

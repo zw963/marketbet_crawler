@@ -1,7 +1,6 @@
 <% if @log.present? %>
-  <h3>Latest Data:</h3>
-  <h3>Start at: <%== @log.created_at %></h3>
-  <h3>Finished at <%== @log.finished_at  %></h3>
+  <h3>Start at: <%== @log.created_at_string %></h3>
+  <h3>Finished at: <%== @log.finished_at_string  %></h3>
 <% end %>
 
 <div class="row">
