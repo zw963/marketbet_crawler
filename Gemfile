@@ -41,7 +41,6 @@ end
 
 group :test do
   gem 'database_cleaner-sequel'
-  gem 'minitest-global_expectations'
   gem 'timecop'
   gem 'fabrication'
   gem 'hashr'
