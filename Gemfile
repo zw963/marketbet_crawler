@@ -14,7 +14,6 @@ gem 'interactor'
 gem 'roda'
 gem 'falcon'
 gem 'tilt'
-gem 'rake'
 gem 'rack-test', require: false
 
 # templates
@@ -27,7 +26,7 @@ gem "opal-sprockets"
 gem "roda-sprockets"
 gem 'snabberb'
 # gem 'paggio', github: 'hmdne/paggio'
-gem 'opal-browser', github: 'opal/opal-browser'
+gem 'opal-browser'
 gem 'refrigerator'
 gem 'graphql'
 
