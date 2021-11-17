@@ -1,4 +1,6 @@
 ENV['RACK_ENV'] = 'test'
+require 'minitest/autorun'
+require 'minitest/pride'
 require "rack/test"
 require 'database_cleaner-sequel'
 require_relative '../config/db'
