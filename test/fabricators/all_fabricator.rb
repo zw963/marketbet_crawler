@@ -5,13 +5,16 @@ Fabricate.sequence(:name) { |i| "Name #{i}" }
 Fabricate.sequence(:date) {|_n| Date.today + rand(-100..100) }
 
 Fabricator(:institution) do
-  number_of_holding 69830
+  holding_cost 7.27
   market_value 940000
-  stock
-  percent_of_shares_for_stock 0.024.to_d
-  percent_of_shares_for_institution 0.02.to_d
   market_value_dollar_string "$0.94M"
+  number_of_holding 182902
+  percent_of_shares_for_institution 0.02.to_d
+  percent_of_shares_for_stock 0.024.to_d
+  quarterly_changes 171276
+  quarterly_changes_percent 14.732
   firm
+  stock
 end
 
 Fabricator(:firm) do
@@ -20,11 +23,11 @@ end
 
 Fabricator(:stock) do
   name { Fabricate.sequence(:name) }
-  exchange
+  exchange { Exchange.find_or_create(name: 'nyse') }
 end
 
 Fabricator(:exchange) do
-  name { %w(otcmkts nyse nasdaq nyseamerican lon).sample }
+  name 'nyse'
 end
 
 Fabricator(:insider_history) do

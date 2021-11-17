@@ -6,7 +6,7 @@ class RetrieveStocks
     sort_direction = context.sort_direction
     page = context.page || 1
     per = context.per || 20
-    name = context.name
+    stock_name = context.stock_name
 
     if sort_column.present?
       sort = case sort_column.to_s
@@ -29,8 +29,8 @@ class RetrieveStocks
       .qualify
       .select_append(:exchange[:name].as(:exchange_name))
 
-    if name.present?
-      stocks = stocks.where(:stocks[:name] => name)
+    if stock_name.present?
+      stocks = stocks.where(:stocks[:name] => stock_name)
     end
 
     stocks = stocks.order(sort).paginate(page.to_i, per.to_i)

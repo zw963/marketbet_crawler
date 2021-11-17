@@ -29,7 +29,8 @@ class RetrieveInstitutions
     if stock_id.present?
       institutions = institutions.where(stock_id: stock_id)
     elsif stock_name.present?
-      institutions = institutions.where(:stock[:name] => stock_name)
+      stock_id = Stock.find(name: stock_name)&.id
+      institutions = institutions.where(stock_id: stock_id)
     elsif firm_id.present?
       institutions = institutions.where(firm_id: firm_id)
     else
