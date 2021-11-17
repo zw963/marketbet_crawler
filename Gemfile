@@ -39,10 +39,11 @@ group :development do
 end
 
 group :test do
+  gem 'minitest', '5.14.2'
+  gem 'm'
   gem 'database_cleaner-sequel'
   gem 'timecop'
   gem 'fabrication'
   gem 'hashr'
   gem 'warning'
-  gem 'm'
 end

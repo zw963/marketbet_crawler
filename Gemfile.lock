@@ -76,6 +76,7 @@ GEM
       rake (>= 0.9.2.2)
     mapping (1.1.1)
     method_source (1.0.0)
+    minitest (5.14.2)
     nio4r (2.5.8)
     only_blank (1.2.1)
       fast_blank (>= 1.0)
@@ -178,6 +179,7 @@ DEPENDENCIES
   hot_reloader
   interactor
   m
+  minitest (= 5.14.2)
   only_blank
   opal
   opal-browser
