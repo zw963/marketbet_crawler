@@ -14,6 +14,7 @@ gem 'interactor'
 gem 'roda'
 gem 'falcon'
 gem 'tilt'
+gem 'rake', '13.0.6'
 gem 'rack-test', require: false
 
 # templates
