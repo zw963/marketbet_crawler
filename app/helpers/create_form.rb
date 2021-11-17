@@ -7,10 +7,11 @@ class App < Roda
     icon: "search",
     param: 'q',
     grid_offset: nil,
-    onclick: "this.closest('form').submit(); return false;"
+    onclick: "this.closest('form').submit(); return false;",
+    autocomplete: "on"
   )
 <<-HEREDOC
-<form action="#{action}" autocomplete="on" method="#{method}">
+<form action="#{action}" autocomplete="#{autocomplete}" method="#{method}">
   <div class="input-field col s4 #{grid_offset}">
     <input type="text" name="#{param}" id="autocomplete-input" class="#{class_name}" value="#{request.params[param]}" aria-label="Search">
     <i class="material-icons prefix submit-icon" onclick="#{onclick}">#{icon}</i>

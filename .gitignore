@@ -4,3 +4,4 @@ node_modules
 public/assets
 Procfile
 Procfile.local
+*.custom

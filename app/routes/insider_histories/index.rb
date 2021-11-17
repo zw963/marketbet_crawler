@@ -2,11 +2,10 @@ class App
   hash_routes('insider_histories/index') do
     is true do |r|
       days = r.params['days'].presence || 7
-      stock_name = r.params['q']
 
       @log = Log.where(type: 'insider_parser').exclude(finished_at: nil).last
 
-      sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
+      sort_column, sort_direction, stock_name = r.params.values_at('sort_column', 'sort_direction', 'stock_name')
 
       sort_column = sort_column.presence || :date
       sort_direction = sort_direction.presence || :desc

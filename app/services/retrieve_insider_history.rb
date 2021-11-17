@@ -30,14 +30,15 @@ class RetrieveInsiderHistory
     # eager_graph loads all records in a single query using JOINs, allowing you to filter
     # or order based on columns in associated tables. However, eager_graph is usually
     # slower than eager, especially if multiple one_to_many or many_to_many associations are joined.
-    insider_histories = InsiderHistory.eager_graph({stock: :exchange}, :insider)
+    insider_histories = InsiderHistory.eager(:stock, :insider)
 
     if stock_id.present?
       insider_histories = insider_histories.where(stock_id: stock_id)
     elsif insider_id.present?
       insider_histories = insider_histories.where(insider_id: insider_id)
     elsif stock_name.present?
-      insider_histories = insider_histories.where(:stock[:name] => stock_name)
+      stock_id = Stock.find(name: stock_name)&.id
+      insider_histories = insider_histories.where(stock_id: stock_id)
     else
       insider_histories = insider_histories.where(
         Sequel.or(
