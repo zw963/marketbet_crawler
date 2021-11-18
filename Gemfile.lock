@@ -138,6 +138,7 @@ GEM
     sequel_pg (1.14.0)
       pg (>= 0.18.0, != 1.2.0)
       sequel (>= 4.38.0)
+    service_actor (3.1.2)
     snabberb (1.5.4)
       opal (>= 1.1)
     sprockets (4.0.2)
@@ -195,6 +196,7 @@ DEPENDENCIES
   sassc
   sequel-annotate
   sequel_pg
+  service_actor
   snabberb
   sqlite3
   terminal-table

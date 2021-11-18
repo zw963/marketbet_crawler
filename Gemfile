@@ -11,8 +11,9 @@ gem 'pg'
 gem 'sqlite3'
 gem 'only_blank'
 gem 'interactor'
+gem 'service_actor'
+# gem 'dry-monads', require: 'dry/monads/all'
 gem 'roda'
-gem 'falcon'
 gem 'tilt'
 gem 'rake', '13.0.6'
 gem 'rack-test', require: false
@@ -47,4 +48,8 @@ group :test do
   gem 'fabrication'
   gem 'hashr'
   gem 'warning'
+end
+
+group :production do
+  gem 'falcon'
 end
