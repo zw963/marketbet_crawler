@@ -1,21 +1,17 @@
-class RetrieveInvestingLatestNews
-  include Interactor
+class RetrieveInvestingLatestNews < Actor
+  input :sort_column, default: 'id', type: String
+  input :sort_direction, default: 'desc', type: String
+  input :page, default: 1, type: [Integer, String]
+  input :per, default: 20, type: [Integer, String]
+  input :q, default: nil, type: String
 
   def call
-    sort_column = context.sort_column || 'id'
-    sort_direction = context.sort_direction || 'desc'
-    page = context.page || 1
-    per = context.per || 20
-    q = context.q
+    sort = case sort_column.to_s
+           when *InvestingLatestNews.columns.map(&:name)
+             :investing_latest_news[sort_column.to_sym]
+           end
 
-    if sort_column.present?
-      sort = case sort_column.to_s
-             when *InvestingLatestNews.columns.map(&:name)
-               :investing_latest_news[sort_column.to_sym]
-             end
-    end
-
-    if sort.present? and sort_direction.to_s == 'desc'
+    if sort_direction.to_s == 'desc'
       sort = sort.desc
     end
 
@@ -25,7 +21,7 @@ class RetrieveInvestingLatestNews
       news = news.where(Sequel.lit('textsearchable_index_col @@ to_tsquery(?)', q))
     end
 
-    context.news = news.order(sort).paginate(page.to_i, per.to_i)
-    context.fail!(message: "没有结果！") if news.empty?
+    result.news = news.order(sort).paginate(page.to_i, per.to_i)
+    result.fail!(message: "没有结果！") if news.empty?
   end
 end

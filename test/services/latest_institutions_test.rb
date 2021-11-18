@@ -46,7 +46,7 @@ describe "retrieve latest institutions" do
     create(:institution, date: '2021-08-02', created_at: '2021-08-04')
 
     assert_equal 1, Institution.all.count
-    result = RetrieveInstitutions.call(days: 3)
+    result = RetrieveInstitutions.result(days: 3)
     assert_equal false, result.success?
     assert_nil result.institutions
     assert_equal '没有最新的结果！', result.message

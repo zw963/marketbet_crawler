@@ -1,11 +1,27 @@
 require 'test_helper'
 
 describe 'routes/insider_histories/index' do
-  it 'should retrive insider histories' do
+  it 'should retrive last 7 days insider histories' do
     create(:insider_history, stock: create(:stock, name: 'nyse/ge'))
     get '/latest-insider-histories'
     assert last_response.ok?
-    get '/latest-insider-histories?stock_name=nyse/lu'
+  end
+
+  it 'should retrive last 30 days insider histories' do
+    create(:insider_history, stock: create(:stock, name: 'nyse/ge'))
+    get '/latest-insider-histories', {'days' => 30}
+    assert last_response.ok?
+  end
+
+  it 'should return insider histories for stock nyse/ge' do
+    create(:insider_history, stock: create(:stock, name: 'nyse/ge'))
+    get '/latest-insider-histories', {'stock_name' => 'nyse/ge'}
+    assert last_response.ok?
+  end
+
+  it 'should return insider histories for stock nyse/ge' do
+    create(:insider_history, stock: create(:stock, name: 'nyse/ge'))
+    get '/latest-insider-histories', {'xxx' => 'aaa'}
     assert last_response.ok?
   end
 end

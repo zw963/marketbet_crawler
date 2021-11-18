@@ -96,10 +96,10 @@ class App < Roda
         end
 
         r.on Integer do |id|
-        @insider = Insider[id]
+          @insider = Insider[id]
 
-        r.hash_routes('insiders/show')
-      end
+          r.hash_routes('insiders/show')
+        end
       end
 
       r.is 'latest-institutions' do

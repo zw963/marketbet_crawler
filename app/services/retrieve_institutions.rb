@@ -1,26 +1,23 @@
-class RetrieveInstitutions
-  include Interactor
+class RetrieveInstitutions < Actor
+  input :days, default: 7, type: [Integer, String]
+  input :sort_column, default: 'date', type: String
+  input :sort_direction, default: 'desc', type: String
+  input :firm_id, default: nil, type: Integer
+  input :stock_id, default: nil, type: Integer
+  input :stock_name, default: nil, type: String
 
   def call
     today = Date.today
     now = today.to_datetime
-    days = context.days.to_i
-    sort_column = context.sort_column || 'stock_id'
-    sort_direction = context.sort_direction
-    firm_id = context.firm_id
-    stock_id = context.stock_id
-    stock_name = context.stock_name
 
-    if sort_column.present?
-      sort = case sort_column.to_s
-             when *Institution.columns.map(&:name)
-               :institutions[sort_column.to_sym]
-             when 'stock_name'
-               :stock[:name]
-             end
-    end
+    sort = case sort_column.to_s
+           when *Institution.columns.map(&:name)
+             :institutions[sort_column.to_sym]
+           when 'stock_name'
+             :stock[:name]
+           end
 
-    if sort.present? and sort_direction.to_s == 'desc'
+    if sort_direction.to_s == 'desc'
       sort = sort.desc
     end
 
@@ -47,9 +44,9 @@ class RetrieveInstitutions
     institutions = institutions.order(sort).all
 
     if institutions.empty?
-      context.fail!(message: "没有最新的结果！")
+      result.fail!(message: "没有最新的结果！")
     else
-      context.institutions = institutions.map do |ins|
+      result.institutions = institutions.map do |ins|
         stock = ins.stock
 
         _x = ins.market_value.divmod(10000)
@@ -86,5 +83,11 @@ class RetrieveInstitutions
         }
       end
     end
+  end
+
+  private
+
+  def days
+    result.days.to_i
   end
 end

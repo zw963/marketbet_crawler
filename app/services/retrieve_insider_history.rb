@@ -1,24 +1,21 @@
-class RetrieveInsiderHistory
-  include Interactor
+class RetrieveInsiderHistory < Actor
+  input :days, default: 7, type: [Integer, String]
+  input :sort_column, default: 'date', type: String
+  input :sort_direction, default: 'desc', type: String
+  input :stock_name, default: nil, type: String
+  input :stock_id, default: nil, type: Integer
+  input :insider_id, default: nil, type: Integer
 
   def call
     today = Date.today
     now = today.to_datetime
-    days = context.days.to_i
-    sort_column = context.sort_column || 'date'
-    sort_direction = context.sort_direction
-    stock_id = context.stock_id
-    insider_id = context.insider_id
-    stock_name = context.stock_name
 
-    if sort_column.present?
-      sort = case sort_column.to_s
-             when *InsiderHistory.columns.map(&:name)
-               :insider_histories[sort_column.to_sym]
-             when 'insider_name'
-               :insiders[:name]
-             end
-    end
+    sort = case sort_column.to_s
+           when *InsiderHistory.columns.map(&:name)
+             :insider_histories[sort_column.to_sym]
+           when 'insider_name'
+             :insiders[:name]
+           end
 
     if sort.present? and sort_direction.to_s == 'desc'
       sort = sort.desc
@@ -69,31 +66,35 @@ class RetrieveInsiderHistory
       'president' => '总裁'
     }
 
-    if insider_histories.empty?
-      context.fail!(message: "没有最新的结果！")
-    else
-      context.insider_histories = insider_histories.map do |ih|
-        title = ih.title
-        stock = ih.stock
+    result.fail!(message: "没有最新的结果！") if insider_histories.empty?
 
-        unless mapping[title.downcase].to_s.downcase == title.downcase
-          title = "#{title}(#{mapping[title.downcase]})"
-        end
+    result.insider_histories = insider_histories.map do |ih|
+      title = ih.title
+      stock = ih.stock
 
-        {
-          'ID' => ih.id,
-          '股票' => stock.name,
-          'stock_id' => ih.stock_id,
-          'insider_id' => ih.insider_id,
-          '日期' => ih.date.to_s,
-          '名称' => ih.insider.name,
-          '职位' => title,
-          '股票变动数量' => ih.number_of_shares,
-          '平均价格' => ih.average_price.to_f,
-          '交易价格' => ih.share_total_price.to_f,
-          '创建时间' => ih.created_at.strftime("%m-%d %H:%M")
-        }
+      unless mapping[title.downcase].to_s.downcase == title.downcase
+        title = "#{title}(#{mapping[title.downcase]})"
       end
+
+      {
+        'ID' => ih.id,
+        '股票' => stock.name,
+        'stock_id' => ih.stock_id,
+        'insider_id' => ih.insider_id,
+        '日期' => ih.date.to_s,
+        '名称' => ih.insider.name,
+        '职位' => title,
+        '股票变动数量' => ih.number_of_shares,
+        '平均价格' => ih.average_price.to_f,
+        '交易价格' => ih.share_total_price.to_f,
+        '创建时间' => ih.created_at.strftime("%m-%d %H:%M")
+      }
     end
+  end
+
+  private
+
+  def days
+    result.days.to_i
   end
 end

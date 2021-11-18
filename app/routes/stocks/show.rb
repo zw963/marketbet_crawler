@@ -1,13 +1,10 @@
 class App
   hash_routes('stocks/show') do
     is true do |r|
-      sort_column, sort_direction = r.params.values_at('sort_column', 'sort_direction')
-
-      sort_column = sort_column.presence || :date
-      sort_direction = sort_direction.presence || :desc
-
       @log1 = Log.last(type: 'institution_parser')
-      result = RetrieveInstitutions.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: @stock.id)
+      params = {**r.params, stock_id: @stock.id}
+
+      result = RetrieveInstitutions.result(params)
 
       miss1, miss2 = nil, nil
 
@@ -19,7 +16,7 @@ class App
       end
 
       @log2 = Log.last(type: 'insider_parser')
-      result = RetrieveInsiderHistory.call(sort_column: sort_column, sort_direction: sort_direction, stock_id: @stock.id)
+      result = RetrieveInsiderHistory.result(params)
 
       if result.success?
         @insider_histories = result.insider_histories
