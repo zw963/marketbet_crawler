@@ -10,6 +10,23 @@
       icon: 'send',
       grid_offset: 'offset-s1'
     ) %>
+    <%== create_form(
+      'remove-ts-keyword',
+      placeholder: '删除自定义关键字',
+      action: '/remove-ts-keyword',
+      param: 'keyword',
+      method: 'post',
+      icon: 'send',
+      grid_offset: 'offset-s1'
+    ) %>
+    <%== create_form(
+      'sync-ts-keyword',
+      placeholder: '更新自定义关键字',
+      action: '/sync-ts-keyword',
+      method: 'post',
+      icon: 'send',
+      grid_offset: 'offset-s1'
+    ) %>
   </div>
 </div>
 
