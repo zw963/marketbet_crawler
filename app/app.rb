@@ -78,8 +78,13 @@ class App < Roda
       end
 
       r.is 'sync-ts-keyword' do
-        DB.run("SELECT sync_zhprs_custom_word();")
-        DB.run("UPDATE investing_latest_news SET title = title, preview = preview;")
+        # DB.run("SELECT sync_zhprs_custom_word();")
+        # DB.run("UPDATE investing_latest_news SET title = title, preview = preview;")
+
+        db = PG.connect(URI(DB_URL))
+        db.exec("SELECT sync_zhprs_custom_word();")
+        db.exec("UPDATE investing_latest_news SET title = title, preview = preview;")
+
         r.redirect r.referer
       end
     end
