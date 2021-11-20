@@ -5,6 +5,7 @@ namespace :db do
 
   task :init_db => [:load_env] do |_t, _args|
     require_relative '../../config/db'
+    require_relative '../migration_helper'
   end
 
   task :init_models => [:init_db] do |_t, _args|
@@ -41,6 +42,8 @@ namespace :db do
   desc "Run migrations"
   task :migrate, [:version] => [:init_db] do |_t, args|
     Sequel.extension :migration
+    DB.extension :pg_triggers
+
     version = args[:version].to_i if args[:version]
     # puts DB.url
 

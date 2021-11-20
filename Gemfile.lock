@@ -137,6 +137,8 @@ GEM
     sequel_pg (1.14.0)
       pg (>= 0.18.0, != 1.2.0)
       sequel (>= 4.38.0)
+    sequel_postgresql_triggers (1.5.0)
+      sequel
     service_actor (3.1.2)
     snabberb (1.5.4)
       opal (>= 1.1)
@@ -194,6 +196,7 @@ DEPENDENCIES
   sassc
   sequel-annotate
   sequel_pg
+  sequel_postgresql_triggers
   service_actor
   snabberb
   sqlite3

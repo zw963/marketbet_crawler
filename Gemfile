@@ -7,6 +7,7 @@ gem "ferrum"
 gem 'terminal-table'
 gem 'sequel_pg', require: 'sequel'
 gem 'sequel-annotate'
+gem 'sequel_postgresql_triggers'
 gem 'pg'
 gem 'sqlite3'
 gem 'only_blank'

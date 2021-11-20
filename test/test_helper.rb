@@ -14,6 +14,8 @@ end
 
 if not Dir.empty?('db/migrations')
   Sequel.extension :migration
+  require 'migration_helper'
+  include MigrationHelper
   Sequel::Migrator.check_current(DB, 'db/migrations')
 end
 
