@@ -59,19 +59,28 @@ class App < Roda
 
       r.is 'add-ts-keyword' do
         new_keyword = r.params['new_keyword']
-        DB.run("INSERT INTO zhparser.zhprs_custom_word values('#{new_keyword}') ON CONFLICT DO NOTHING;")
-        r.redirect request.referrer
+
+        if new_keyword.present?
+          DB.run(Sequel.lit("INSERT INTO zhparser.zhprs_custom_word values(?) ON CONFLICT DO NOTHING;", new_keyword))
+        end
+
+        r.redirect r.referer
       end
 
       r.is 'remove-ts-keyword' do
         keyword = r.params['keyword']
-        DB.run("DELETE FROM zhparser.zhprs_custom_word WHERE word='#{keyword}';")
-        r.redirect request.referrer
+
+        if keyword.present?
+          DB.run(Sequel.lit("DELETE FROM zhparser.zhprs_custom_word WHERE word=?;", keyword))
+        end
+
+        r.redirect r.referer
       end
 
       r.is 'sync-ts-keyword' do
-        DB.run("SELECT sync_zhprs_custom_word();UPDATE investing_latest_news SET title = title, preview = preview;")
-        r.redirect request.referrer
+        DB.run("SELECT sync_zhprs_custom_word();")
+        DB.run("UPDATE investing_latest_news SET title = title, preview = preview;")
+        r.redirect r.referer
       end
     end
 
