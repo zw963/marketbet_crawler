@@ -31,11 +31,9 @@ Sequel.migration do
       String :publish_time_string, :text=>true, :null=>false
       DateTime :publish_time, :null=>false
       DateTime :created_at, :null=>false
-      String :textsearchable_index_col
       DateTime :updated_at
       
       index [:publish_time]
-      index [:textsearchable_index_col], :name=>:investing_latest_news_textsearch_idx_index
       index [:url]
     end
     
