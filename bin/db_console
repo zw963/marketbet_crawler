@@ -1,6 +1,14 @@
 #!/usr/bin/env ruby
 
-require 'irb'
-require_relative '../config/model'
+require_relative '../config/db'
 
-IRB.start(__FILE__)
+adapter, user, database = DB.opts.values_at(:adapter, :user, :database)
+
+case adapter
+when "postgres"
+  system "sudo -u #{user} psql -d #{database}"
+when "sqlite"
+  system "sqlite3 #{database}"
+else
+  puts "Adapter #{adapter} not supported"
+end
