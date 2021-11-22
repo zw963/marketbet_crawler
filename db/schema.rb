@@ -89,7 +89,7 @@ Sequel.migration do
     create_table(:institutions) do
       primary_key :id
       Integer :number_of_holding, :null=>false
-      Integer :market_value
+      BigDecimal :market_value
       BigDecimal :percent_of_shares_for_stock
       BigDecimal :percent_of_shares_for_institution
       BigDecimal :quarterly_changes_percent

@@ -4,7 +4,7 @@ Sequel.migration do
       primary_key :id
       String :name, null: false
       Integer :number_of_holding, null: false
-      Integer :market_value
+      BigDecimal :market_value
       BigDecimal :percent_of_shares_for_stock
       BigDecimal :percent_of_shares_for_institution
       BigDecimal :quarterly_changes_percent

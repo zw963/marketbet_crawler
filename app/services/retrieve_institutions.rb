@@ -73,7 +73,7 @@ class RetrieveInstitutions < Actor
           '机构名称' => firm_name,
           'firm_id' => ins.firm.id,
           '机构持有数量' => ins.number_of_holding,
-          '市场价值' => "#{value}万(#{ins.market_value_dollar_string})",
+          '市场价值' => "#{value.to_i}万(#{ins.market_value_dollar_string})",
           '占股票百分比' => (ins.percent_of_shares_for_stock*100).to_f.to_s + "%",
           '占机构百分比' => (ins.percent_of_shares_for_institution*100).to_f.to_s + "%",
           '机构季度变动百分比' => value1,
