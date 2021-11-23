@@ -78,11 +78,10 @@ class App < Roda
       end
 
       r.is 'sync-ts-keyword' do
-        # DB.run("SELECT sync_zhprs_custom_word();")
-        # DB.run("UPDATE investing_latest_news SET title = title, preview = preview;")
-
         db = PG.connect(URI(DB_URL))
         db.exec("SELECT sync_zhprs_custom_word();")
+        # UPDATE 语句必须在一个新的线程中运行，来反射到上面的 sync 函数的改变。
+        # 因为 DB.run 使用线程池，无法确保使用新的线程，因此，这里必须使用 ruby-pg 直接运行。
         db.exec("UPDATE investing_latest_news SET title = title, preview = preview;")
 
         r.redirect r.referer
