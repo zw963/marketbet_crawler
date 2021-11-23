@@ -33,6 +33,7 @@ Sequel.migration do
       DateTime :created_at, :null=>false
       DateTime :updated_at
       String :textsearchable_index_col
+      TrueClass :is_read, :default=>false
       
       index [:publish_time]
       index [:textsearchable_index_col], :name=>:investing_latest_news_textsearch_idx_index

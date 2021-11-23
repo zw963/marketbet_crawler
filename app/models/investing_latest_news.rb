@@ -6,6 +6,16 @@ class InvestingLatestNews < Sequel::Model
       self[:publish_time].to_date
     end
   end
+
+  def page_class
+    if self.is_read == false
+      # 在 render 中别 query 的同时，更改某个字段的值，这个特性 stream 不支持。
+      self.update(is_read: true)
+      "cyan darken-4"
+    else
+      "cyan darken-3"
+    end
+  end
 end
 
 # Table: investing_latest_news
