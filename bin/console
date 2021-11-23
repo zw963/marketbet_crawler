@@ -8,17 +8,17 @@ require_relative '../config/environment'
 DB.transaction do
   unless ARGV[0] == '--no-sandbox'
     DB.rollback_on_exit
-    warn 'Running console on sandbox mode.'
+    puts 'Running console on sandbox mode.'
   end
 
   ARGV.delete('--no-sandbox')
 
-  if system 'which pry &>/dev/null'
+  begin
     $0 = 'pry'
     require 'pry'
     opts = Pry::CLI.parse_options
     Pry::CLI.start(opts)
-  else
+  rescue LoadError
     require 'irb'
     IRB.start(__FILE__)
   end
