@@ -17,7 +17,7 @@ class RetrieveInsiderHistory < Actor
              :insiders[:name]
            end
 
-    if sort.present? and sort_direction.to_s == 'desc'
+    if sort_direction.to_s == 'desc'
       sort = sort.desc
     end
 
