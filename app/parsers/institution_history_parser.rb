@@ -76,11 +76,11 @@ class InstitutionHistoryParser < ParserBase
 
       name = e[1]
 
-      firm = Firm.find_or_create(name: name)
+      institution = Institution.find_or_create(name: name)
 
       InstitutionHistory.find_or_create(
         {
-          firm_id: firm.id,
+          institution_id: institution.id,
           date: Date.strptime(e[0], '%m/%d/%Y'),
           stock: stock,
           number_of_holding: number_of_holding,

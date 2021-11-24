@@ -1,6 +1,6 @@
 class InstitutionHistory < Sequel::Model
   many_to_one :stock
-  many_to_one :firm
+  many_to_one :institution
 end
 
 # Table: institution_histories
@@ -18,10 +18,10 @@ end
 #  date                              | date                        |
 #  created_at                        | timestamp without time zone |
 #  stock_id                          | integer                     |
-#  firm_id                           | integer                     |
+#  institution_id                    | integer                     |
 # Indexes:
 #  institutions_pkey | PRIMARY KEY btree (id)
 # Foreign key constraints:
-#  institutions_firm_id_fkey  | (firm_id) REFERENCES firms(id)
+#  institutions_firm_id_fkey  | (institution_id) REFERENCES institutions(id)
 #  institutions_stock_id_fkey | (stock_id) REFERENCES stocks(id)
 # ---------------------------------------------------------------------------------------------------------------

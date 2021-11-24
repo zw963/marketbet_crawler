@@ -13,11 +13,11 @@ Fabricator(:institution_history) do
   percent_of_shares_for_stock 0.024.to_d
   quarterly_changes 171276
   quarterly_changes_percent 14.732
-  firm
+  institution
   stock
 end
 
-Fabricator(:firm) do
+Fabricator(:institution) do
   name { Fabricate.sequence(:name) }
 end
 

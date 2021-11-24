@@ -3,11 +3,11 @@
   <td><%= institution_history['日期'] %></td>
   <td>
     <%
-    firm_id = institution_history['firm_id']
-    firm_name = institution_history['机构名称']
-    firm_url = "/firms/#{firm_id}"
+    institution_id = institution_history['institution_id']
+    institution_name = institution_history['机构名称']
+    institution_url = "/institutions/#{institution_id}"
     %>
-  <a class='dropdown-trigger' href='<%= firm_url %>' data-target='dropdown1' data-firm-id="<%= firm_id %>" ><%= firm_name %></a>
+  <a class='dropdown-trigger' href='<%= institution_url %>' data-target='dropdown1' data-firm-id="<%= institution_id %>" ><%= institution_name %></a>
   </td>
   <td><%= institution_history['机构季度变动百分比'] %></td>
   <td class="<%= institution_history['颜色'] %>-text"><%= institution_history['机构季度变动数量'] %></td>

@@ -7,18 +7,18 @@ describe "retrieve latest institution histories" do
 
     exchange = create(:exchange, name: 'nyse')
     stock = create(:stock, name: 'nyse/ge', exchange: exchange, id: 1)
-    firm1 = create(:firm, id: 1)
-    firm2 = create(:firm, display_name: '黑石_2', id: 2)
-    firm3 = create(:firm, display_name: '黑石_3', id: 3)
-    firm4 = create(:firm, display_name: '黑石_4', id: 4)
-    firm5 = create(:firm, display_name: '黑石_5', id: 5)
-    create(:institution_history, date: '2021-08-02', created_at: '2021-08-04', firm: firm1, stock: stock)
-    create(:institution_history, date: '2021-08-03', created_at: '2021-08-04', firm: firm2, stock: stock)
-    create(:institution_history, date: '2021-08-04', created_at: '2021-08-04', firm: firm3, stock: stock)
-    create(:institution_history, date: '2021-08-05', created_at: '2021-08-04', firm: firm4, stock: stock)
-    create(:institution_history, date: '2021-08-02', firm: firm5, stock: stock)
+    institution1 = create(:institution, id: 1)
+    institution2 = create(:institution, display_name: '黑石_2', id: 2)
+    institution3 = create(:institution, display_name: '黑石_3', id: 3)
+    institution4 = create(:institution, display_name: '黑石_4', id: 4)
+    institution5 = create(:institution, display_name: '黑石_5', id: 5)
+    create(:institution_history, date: '2021-08-02', created_at: '2021-08-04', institution: institution1, stock: stock)
+    create(:institution_history, date: '2021-08-03', created_at: '2021-08-04', institution: institution2, stock: stock)
+    create(:institution_history, date: '2021-08-04', created_at: '2021-08-04', institution: institution3, stock: stock)
+    create(:institution_history, date: '2021-08-05', created_at: '2021-08-04', institution: institution4, stock: stock)
+    create(:institution_history, date: '2021-08-02', institution: institution5, stock: stock)
     assert_equal 5, InstitutionHistory.all.count
-    result = RetrieveInstitutionHistory.call(days: 3, sort_column: 'firm_id', sort_direction: 'desc')
+    result = RetrieveInstitutionHistory.call(days: 3, sort_column: 'institution_id', sort_direction: 'desc')
     assert_equal true, result.success?
     institution_histories = result.institution_histories
     assert_equal ["黑石_5", "黑石_4", "黑石_3", "黑石_2"], (institution_histories.map {|x| x['机构名称'] })
@@ -27,7 +27,7 @@ describe "retrieve latest institution histories" do
       "stock_id" => 1,
       "日期"=>"2021-08-03",
       "机构名称"=>"黑石_2",
-      "firm_id" => 2,
+      "institution_id" => 2,
       "机构持有数量"=>182902,
       "市场价值"=>"94.0万($0.94M)",
       "占股票百分比"=>"2.4%",

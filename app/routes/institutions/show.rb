@@ -1,7 +1,7 @@
 class App
-  hash_routes('firms/show') do
+  hash_routes('institutions/show') do
     is true do |r|
-      result = RetrieveInstitutionHistory.result(**r.params, firm_id: @firm.id)
+      result = RetrieveInstitutionHistory.result(**r.params, institution_id: @institution.id)
 
       if result.success?
         @institution_histories = result.institution_histories
@@ -11,7 +11,7 @@ class App
         r.halt
       end
 
-      view 'firms/show'
+      view 'institutions/show'
     end
   end
 end

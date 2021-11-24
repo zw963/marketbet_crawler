@@ -38,10 +38,10 @@ var instances = M.Autocomplete.init(elems, {"data": #{json.to_n}});
     e.on.inner_text = "Clicked!"
   end
 
-  change_firm_display_name_callback = proc do |_, trigger|
+  change_institution_display_name_callback = proc do |_, trigger|
     form = $document.at_css('#modal1 form')
-    form.action = "/firms/#{`trigger.dataset.firmId`}"
-    form.at_css('input').value = `trigger.dataset.firmName`
+    form.action = "/institutions/#{`trigger.dataset.institutionId`}"
+    form.at_css('input').value = `trigger.dataset.institutionName`
     form.at_css('h4').text = '修改机构信息'
   end
 
@@ -49,14 +49,14 @@ var instances = M.Autocomplete.init(elems, {"data": #{json.to_n}});
     a_eles = $document.css('#dropdown1 li a')
     a_eles[0]['href'] = `dropdown_trigger.href`
     a_eles[0].text = '查看机构信息'
-    a_eles[1]['data-firm-id'] = `dropdown_trigger.dataset.firmId`
-    a_eles[1]['data-firm-name'] = `dropdown_trigger.innerText`
+    a_eles[1]['data-institution-id'] = `dropdown_trigger.dataset.InstitutionId`
+    a_eles[1]['data-institution-name'] = `dropdown_trigger.innerText`
     a_eles[1].text = '修改名称备注'
   end
 
   %x{
 var elems = document.querySelectorAll('.modal');
-var instances = M.Modal.init(elems, {"onOpenStart": #{change_firm_display_name_callback.to_n}});
+var instances = M.Modal.init(elems, {"onOpenStart": #{change_institution_display_name_callback.to_n}});
 
 var elems = document.querySelectorAll('.dropdown-trigger');
 var instances = M.Dropdown.init(elems, {"onOpenStart": #{open_dropdown_callback.to_n}});

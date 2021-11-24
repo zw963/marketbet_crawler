@@ -7,12 +7,6 @@ Sequel.migration do
       index [:name], :name=>:exchanges_name_key, :unique=>true
     end
     
-    create_table(:firms) do
-      primary_key :id
-      String :name, :text=>true, :null=>false
-      String :display_name, :text=>true
-    end
-    
     create_table(:insiders) do
       primary_key :id
       String :name, :text=>true
@@ -20,6 +14,12 @@ Sequel.migration do
       Integer :number_of_trade_times
       String :last_trade_stock, :text=>true
       Integer :trade_on_stock_amount
+    end
+    
+    create_table(:institutions) do
+      primary_key :id
+      String :name, :text=>true, :null=>false
+      String :display_name, :text=>true
     end
     
     create_table(:investing_latest_news, :ignore_index_errors=>true) do
@@ -102,7 +102,7 @@ Sequel.migration do
       Date :date
       DateTime :created_at
       foreign_key :stock_id, :stocks, :key=>[:id]
-      foreign_key :firm_id, :firms, :key=>[:id]
+      foreign_key :institution_id, :institutions, :key=>[:id]
     end
   end
 end

@@ -58,9 +58,9 @@ class App < Roda
         r.hash_routes('graphql')
       end
 
-      r.is 'firms', Integer do |id|
+      r.is 'institutions', Integer do |id|
         @id = id
-        r.hash_routes('firms/update')
+        r.hash_routes('institutions/update')
       end
 
       r.is 'add-ts-keyword' do
@@ -107,10 +107,10 @@ class App < Roda
         end
       end
 
-      r.is 'firms', Integer do |id|
-        @firm = Firm[id]
+      r.is 'institutions', Integer do |id|
+        @institution = Institution[id]
 
-        r.hash_routes('firms/show')
+        r.hash_routes('institutions/show')
       end
 
       r.is 'latest-insider-histories' do

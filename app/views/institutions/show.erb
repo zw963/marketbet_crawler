@@ -20,9 +20,5 @@
 </table>
 
 <% content_for(:title) do %>
-  <%==
-  name = @firm.name
-  name = "#{name} (#{@firm.display_name})" if @firm.display_name.present?
-  name
-  %>
+  <%== @institution.display_name %>
 <% end %>

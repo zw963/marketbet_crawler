@@ -2,7 +2,7 @@ class RetrieveInstitutionHistory < Actor
   input :days, default: 7, type: [Integer, String]
   input :sort_column, default: 'date', type: String
   input :sort_direction, default: 'desc', type: String
-  input :firm_id, default: nil, type: Integer
+  input :institution_id, default: nil, type: Integer
   input :stock_id, default: nil, type: Integer
   input :stock_name, default: nil, type: String
 
@@ -21,15 +21,15 @@ class RetrieveInstitutionHistory < Actor
       sort = sort.desc
     end
 
-    institution_histories = InstitutionHistory.eager_graph({stock: :exchange}, :firm)
+    institution_histories = InstitutionHistory.eager_graph({stock: :exchange}, :institution)
 
     if stock_id.present?
       institution_histories = institution_histories.where(stock_id: stock_id)
     elsif stock_name.present?
       stock_id = Stock.find(name: stock_name)&.id
       institution_histories = institution_histories.where(stock_id: stock_id)
-    elsif firm_id.present?
-      institution_histories = institution_histories.where(firm_id: firm_id)
+    elsif institution_id.present?
+      institution_histories = institution_histories.where(institution_id: institution_id)
     else
       institution_histories = institution_histories.where(
         Sequel.or(
@@ -63,15 +63,15 @@ class RetrieveInstitutionHistory < Actor
           value2 = ins.quarterly_changes
         end
 
-        firm_name = ins.firm.display_name.presence || ins.firm.name
+        institution_name = ins.institution.display_name.presence || ins.institution.name
 
         {
           'ID' => ins.id,
           '股票' => stock.name,
           'stock_id' => stock.id,
           '日期' => ins.date.to_s,
-          '机构名称' => firm_name,
-          'firm_id' => ins.firm.id,
+          '机构名称' => institution_name,
+          'institution_id' => ins.institution.id,
           '机构持有数量' => ins.number_of_holding,
           '市场价值' => "#{value.to_f}万(#{ins.market_value_dollar_string})",
           '占股票百分比' => (ins.percent_of_shares_for_stock*100).to_f.to_s + "%",

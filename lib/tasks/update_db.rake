@@ -3,10 +3,10 @@ namespace :db do
     require_relative '../../config/environment'
     # DB.rollback_on_exit
   end
-  task :update_institution_firm_id do
+  task :update_institution_histories_institution_id do
     InstitutionHistory.all do |ins|
-      firm = Firm.find_or_create(name: ins.name)
-      ins.update(firm_id: firm.id)
+      institution = Institution.find_or_create(name: ins.name)
+      ins.update(institution_id: institution.id)
     end
   end
 

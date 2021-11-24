@@ -1,12 +1,12 @@
 require 'test_helper'
 
-describe 'routes/firms/show' do
-  it 'should return firm' do
-    firm = create(:firm, id: 1)
-    get '/firms/1'
+describe 'routes/institutions/show' do
+  it 'should return institution' do
+    institution = create(:institution, id: 1)
+    get '/institutions/1'
     refute last_response.ok?
-    create(:institution_history, firm: firm)
-    get '/firms/1'
+    create(:institution_history, institution: institution)
+    get '/institutions/1'
     assert last_response.ok?
   end
 end
