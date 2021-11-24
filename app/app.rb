@@ -8,6 +8,12 @@ class App < Roda
   plugin :content_for
   plugin :partials
   plugin :path
+  case ENV['RACK_ENV']
+  when 'production', 'test'
+    plugin :common_logger, LOGGER
+  when 'development'
+    plugin :enhanced_logger
+  end
   plugin :status_handler
   status_handler(404) do
     @error_message ||= "404"
