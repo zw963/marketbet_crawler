@@ -1,15 +1,15 @@
 class App
-  hash_routes('institutions/index') do
+  hash_routes('institution_histories/index') do
     is true do |r|
       @log = Log.where(type: 'institution_parser').exclude(finished_at: nil).last
 
       days = r.params['days'].presence || (Date.today.monday? ? 3 : 1)
 
-      result = RetrieveInstitutions.result(**r.params, 'days' => days)
+      result = RetrieveInstitutionHistory.result(**r.params, 'days' => days)
 
       r.html do
-        @institutions = result.institutions || []
-        view 'institutions/index'
+        @institution_histories = result.institution_histories || []
+        view 'institution_histories/index'
       end
     end
   end

@@ -4,7 +4,7 @@ require 'bigdecimal/util'
 Fabricate.sequence(:name) { |i| "Name #{i}" }
 Fabricate.sequence(:date) {|_n| Date.today + rand(-100..100) }
 
-Fabricator(:institution) do
+Fabricator(:institution_history) do
   holding_cost 7.27
   market_value 940000
   market_value_dollar_string "$0.94M"

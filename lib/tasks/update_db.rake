@@ -4,7 +4,7 @@ namespace :db do
     # DB.rollback_on_exit
   end
   task :update_institution_firm_id do
-    Institution.all do |ins|
+    InstitutionHistory.all do |ins|
       firm = Firm.find_or_create(name: ins.name)
       ins.update(firm_id: firm.id)
     end

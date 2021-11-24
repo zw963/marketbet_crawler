@@ -13,7 +13,7 @@ if days.nil?
   end
 end
 
-result = RetrieveInstitutions.call(days: days)
+result = RetrieveInstitutionHistory.call(days: days)
 
 if result.success?
   table = Terminal::Table.new do |t|
@@ -33,7 +33,7 @@ if result.success?
       "创建时间"
     ]
 
-    result.institutions.each {|e| t.add_row(e.values) }
+    result.institution_histories.each {|e| t.add_row(e.values) }
     t.style = {:all_separators => true}
   end
 

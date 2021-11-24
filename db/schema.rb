@@ -89,7 +89,7 @@ Sequel.migration do
       foreign_key :insider_id, :insiders, :key=>[:id]
     end
     
-    create_table(:institutions) do
+    create_table(:institution_histories) do
       primary_key :id
       Integer :number_of_holding, :null=>false
       BigDecimal :market_value

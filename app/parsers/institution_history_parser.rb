@@ -1,4 +1,4 @@
-class InstitutionParser < ParserBase
+class InstitutionHistoryParser < ParserBase
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
@@ -30,7 +30,7 @@ class InstitutionParser < ParserBase
               stock.update(percent_of_institutions: BigDecimal(percent)/100)
             end
 
-            save_to_institutions(latest_data, stock)
+            save_to_institution_history(latest_data, stock)
           end
 
         ensure
@@ -45,7 +45,7 @@ class InstitutionParser < ParserBase
     instance.quit
   end
 
-  def save_to_institutions(latest_data, stock)
+  def save_to_institution_history(latest_data, stock)
     latest_data.each do |e|
       e[3] =~ /\$([\d.,]+)(.?)/
       market_value = BigDecimal($1)
@@ -78,7 +78,7 @@ class InstitutionParser < ParserBase
 
       firm = Firm.find_or_create(name: name)
 
-      Institution.find_or_create(
+      InstitutionHistory.find_or_create(
         {
           firm_id: firm.id,
           date: Date.strptime(e[0], '%m/%d/%Y'),

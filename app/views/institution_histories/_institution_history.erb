@@ -1,0 +1,20 @@
+<tr>
+  <td><a href="/stocks/<%= institution_history['stock_id'] %>"><%= institution_history['股票'] %></a></td>
+  <td><%= institution_history['日期'] %></td>
+  <td>
+    <%
+    firm_id = institution_history['firm_id']
+    firm_name = institution_history['机构名称']
+    firm_url = "/firms/#{firm_id}"
+    %>
+  <a class='dropdown-trigger' href='<%= firm_url %>' data-target='dropdown1' data-firm-id="<%= firm_id %>" ><%= firm_name %></a>
+  </td>
+  <td><%= institution_history['机构季度变动百分比'] %></td>
+  <td class="<%= institution_history['颜色'] %>-text"><%= institution_history['机构季度变动数量'] %></td>
+  <td><%= institution_history['机构持有数量'] %></td>
+  <td><%= institution_history['占股票百分比'] %></td>
+  <td><%= institution_history['占机构百分比'] %></td>
+  <td><%= institution_history['市场价值'] %></td>
+  <td><%= institution_history['机构平均成本'] %></td>
+  <td><%= institution_history['创建时间'] %></td>
+</tr>

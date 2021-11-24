@@ -1,4 +1,4 @@
-class RetrieveInstitutions < Actor
+class RetrieveInstitutionHistory < Actor
   input :days, default: 7, type: [Integer, String]
   input :sort_column, default: 'date', type: String
   input :sort_direction, default: 'desc', type: String
@@ -11,8 +11,8 @@ class RetrieveInstitutions < Actor
     now = today.to_datetime
 
     sort = case sort_column.to_s
-           when *Institution.columns.map(&:name)
-             :institutions[sort_column.to_sym]
+           when *InstitutionHistory.columns.map(&:name)
+             :institution_histories[sort_column.to_sym]
            when 'stock_name'
              :stock[:name]
            end
@@ -21,17 +21,17 @@ class RetrieveInstitutions < Actor
       sort = sort.desc
     end
 
-    institutions = Institution.eager_graph({stock: :exchange}, :firm)
+    institution_histories = InstitutionHistory.eager_graph({stock: :exchange}, :firm)
 
     if stock_id.present?
-      institutions = institutions.where(stock_id: stock_id)
+      institution_histories = institution_histories.where(stock_id: stock_id)
     elsif stock_name.present?
       stock_id = Stock.find(name: stock_name)&.id
-      institutions = institutions.where(stock_id: stock_id)
+      institution_histories = institution_histories.where(stock_id: stock_id)
     elsif firm_id.present?
-      institutions = institutions.where(firm_id: firm_id)
+      institution_histories = institution_histories.where(firm_id: firm_id)
     else
-      institutions = institutions.where(
+      institution_histories = institution_histories.where(
         Sequel.or(
           date: today-days..today,
           created_at: now...(today + 1).to_datetime
@@ -41,12 +41,12 @@ class RetrieveInstitutions < Actor
 
     # 注意，这里加个 all 方法，下面 map 的时候，元素才是 institution
     # 没这个 all, 返回的直接是哈希。
-    institutions = institutions.order(sort).all
+    institution_histories = institution_histories.order(sort).all
 
-    if institutions.empty?
+    if institution_histories.empty?
       result.fail!(message: "没有最新的结果！")
     else
-      result.institutions = institutions.map do |ins|
+      result.institution_histories = institution_histories.map do |ins|
         stock = ins.stock
 
         _x = ins.market_value.divmod(10000)

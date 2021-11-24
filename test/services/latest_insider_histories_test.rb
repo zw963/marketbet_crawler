@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe "retrieve latest institutions" do
+describe "retrieve latest institution histories" do
   it "get the expected insider list" do
     Timecop.freeze('2021-08-14')
     assert_equal 0, InsiderHistory.all.count

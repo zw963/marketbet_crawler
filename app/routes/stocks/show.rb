@@ -4,12 +4,12 @@ class App
       @log1 = Log.last(type: 'institution_parser')
       params = {**r.params, stock_id: @stock.id}
 
-      result = RetrieveInstitutions.result(params)
+      result = RetrieveInstitutionHistory.result(params)
 
       miss1, miss2 = nil, nil
 
       if result.success?
-        @institutions = result.institutions
+        @institution_histories = result.institution_histories
       else
         @error_message1 = "机构交易: finished at #{@log1.finished_at}" if @log1.present?
         miss1 = true

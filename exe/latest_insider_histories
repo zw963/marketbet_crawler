@@ -20,7 +20,7 @@ if result.success?
       "平均价格",
       "交易价格"
     ]
-    result.insider_histroies.each {|e| t.add_row(e.values) }
+    result.insider_histories.each {|e| t.add_row(e.values) }
     t.style = {:all_separators => true}
   end
 
