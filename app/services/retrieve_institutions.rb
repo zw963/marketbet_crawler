@@ -79,7 +79,8 @@ class RetrieveInstitutions < Actor
           '机构季度变动百分比' => value1,
           '机构季度变动数量' => value2,
           '机构平均成本' => ins.holding_cost.to_f,
-          '创建时间' => ins.created_at.strftime("%m-%d %H:%M")
+          '创建时间' => ins.created_at.strftime("%m-%d %H:%M"),
+          '颜色' => value1.to_i > 0 ? 'green' : 'red'
         }
       end
     end

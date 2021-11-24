@@ -10,7 +10,7 @@
   <a class='dropdown-trigger' href='<%= firm_url %>' data-target='dropdown1' data-firm-id="<%= firm_id %>" ><%= firm_name %></a>
   </td>
   <td><%= institution['机构季度变动百分比'] %></td>
-  <td><%= institution['机构季度变动数量'] %></td>
+  <td class="<%= institution['颜色'] %>-text"><%= institution['机构季度变动数量'] %></td>
   <td><%= institution['机构持有数量'] %></td>
   <td><%= institution['占股票百分比'] %></td>
   <td><%= institution['占机构百分比'] %></td>

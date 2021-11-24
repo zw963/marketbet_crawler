@@ -87,7 +87,8 @@ class RetrieveInsiderHistory < Actor
         '股票变动数量' => ih.number_of_shares,
         '平均价格' => ih.average_price.to_f,
         '交易价格' => ih.share_total_price.to_f,
-        '创建时间' => ih.created_at.strftime("%m-%d %H:%M")
+        '创建时间' => ih.created_at.strftime("%m-%d %H:%M"),
+        '颜色' => ih.number_of_shares.to_i > 0 ? 'green' : 'red'
       }
     end
   end
