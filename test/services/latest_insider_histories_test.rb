@@ -26,7 +26,8 @@ describe "retrieve latest institutions" do
       "股票变动数量"=>-220809,
       "平均价格" => 1.92,
       "交易价格" => 423953.28,
-      "创建时间" =>'08-04 00:00'
+      "创建时间" =>'08-04 00:00',
+      "颜色" => "red"
     },
       insider_histories.first.except("ID", "名称", "stock_id", "insider_id"))
   end

@@ -35,7 +35,8 @@ describe "retrieve latest institutions" do
       "机构季度变动百分比"=>"1473.2%",
       "机构季度变动数量"=>171276,
       "机构平均成本"=>7.27,
-      "创建时间"=>"08-04 00:00"
+      "创建时间"=>"08-04 00:00",
+      "颜色" => 'green'
     },
       institutions.last.except("ID"))
   end
