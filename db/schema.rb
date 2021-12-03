@@ -40,6 +40,28 @@ Sequel.migration do
       index [:url]
     end
     
+    create_table(:jin10_message_categories, :ignore_index_errors=>true) do
+      primary_key :id
+      String :name, :text=>true
+      
+      index [:name], :name=>:jin10_message_categories_name_key, :unique=>true
+    end
+    
+    create_table(:jin10_messages, :ignore_index_errors=>true) do
+      primary_key :id
+      String :title, :text=>true
+      Date :publish_date
+      String :publish_time_string, :text=>true
+      String :category, :text=>true
+      String :url, :text=>true
+      TrueClass :important, :default=>false
+      DateTime :created_at
+      DateTime :updated_at
+      
+      index [:important]
+      index [:title, :publish_date], :unique=>true
+    end
+    
     create_table(:logs) do
       primary_key :id
       String :type, :text=>true, :null=>false
