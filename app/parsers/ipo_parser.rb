@@ -58,8 +58,5 @@ class IpoParser < ParserBase
     end
 
     log.update(finished_at: Time.now)
-
-  ensure
-    instance.quit
   end
 end

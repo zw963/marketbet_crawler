@@ -26,9 +26,6 @@ class InsiderHistoryParser < ParserBase
     end
 
     log.update(finished_at: Time.now)
-
-  ensure
-    instance.quit
   end
 
   def save_to_insider_histories(table_ary, symbol)

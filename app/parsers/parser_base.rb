@@ -1,4 +1,4 @@
-class MyLogger
+class ChromeHeadlessLogger
   def initialize(logger)
     @logger = logger
   end
@@ -9,17 +9,30 @@ end
 
 class ParserBase
   include Singleton
-  attr_accessor :symbols, :instance, :page
+  attr_accessor :symbols, :instance, :page, :logger
 
   def initialize
     # self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
-    self.instance = Ferrum::Browser.new(
-      logger: MyLogger.new(Logger.new('log/chrome_headless.log', 10, 1024000)),
-      headless: true,
+    options = {
+      # logger: ChromeHeadlessLogger.new(Logger.new('log/chrome_headless.log', 10, 1024000)),
       pending_connection_errors: false,
-      window_size: [1024, 768],
+      window_size: [1280, 800],
       timeout: 30,
-      browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false' })
+      browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false' },
+      headless: true,
+    }
+
+    if ENV['RACK_ENV'] == 'development'
+      options.update(
+        headless: false,
+        slowmo: 0.2
+      )
+      self.logger = Logger.new($stdout)
+    else
+      self.logger = Logger.new('log/chrome_headless.log', 10, 1024000)
+    end
+
+    self.instance = Ferrum::Browser.new(options)
   end
 
   def p2b(percent)
@@ -48,10 +61,46 @@ class ParserBase
     rescue Ferrum::TimeoutError, Ferrum::PendingConnectionsError
       if tries < 7
         seconds = (1.8**tries).ceil
-        puts "[#{Thread.current.object_id}] Retrying #{url} in #{seconds} seconds because #{$!}"
+        puts "[#{Thread.current.object_id}] Retrying in #{seconds} seconds because #{$!.backtrace.join("\n")}"
         sleep(seconds)
         retry
       end
+    ensure
+      instance.quit
+    end
+  end
+
+  def retry_timeout(seconds, waiting_for_if:, when_timeout_do: proc {}, message: '')
+    raise 'waiting_for_if must be a Proc object' unless waiting_for_if.is_a? Proc
+    raise 'when_timeout_do must be a Proc object' unless when_timeout_do.is_a? Proc
+
+    tries = 0
+    begin
+      tries += 1
+      Timeout.timeout(seconds) do
+        loop do
+          sleep 0.5
+          break unless waiting_for_if.call
+        end
+      end
+    rescue TimeoutError
+      logger.info message if message.present?
+      logger.info "Timeout after waiting #{seconds} seconds, Retried #{tries} times."
+      when_timeout_do.call
+      retry
+    end
+  end
+
+  def timeout(seconds, &block)
+    begin
+      Timeout.timeout(seconds) do
+        loop do
+          sleep 0.5
+          break unless block.call
+        end
+      end
+    rescue Timeout::Error
+      logger.info 'Timeout'
     end
   end
 end

@@ -28,8 +28,6 @@ class InvestingLatestNewsParser < ParserBase
     end
 
     log.update(finished_at: Time.now)
-  ensure
-    instance.quit
   end
 
   def time2time(chinese_time_string)

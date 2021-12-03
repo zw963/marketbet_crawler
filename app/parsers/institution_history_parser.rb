@@ -40,9 +40,6 @@ class InstitutionHistoryParser < ParserBase
     end
 
     log.update(finished_at: Time.now)
-
-  ensure
-    instance.quit
   end
 
   def save_to_institution_history(latest_data, stock)
