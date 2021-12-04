@@ -136,6 +136,10 @@ class App < Roda
       r.is 'investing-latest-news' do
         r.hash_routes('investings/latest_news')
       end
+
+      r.is 'jin10-latest-messages' do
+        r.hash_routes('jin10/latest_messages')
+      end
     end
   end
 end
