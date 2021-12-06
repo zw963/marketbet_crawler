@@ -47,20 +47,11 @@ Sequel.migration do
       index [:name], :name=>:jin10_message_categories_name_key, :unique=>true
     end
     
-    create_table(:jin10_messages, :ignore_index_errors=>true) do
+    create_table(:jin10_message_tags, :ignore_index_errors=>true) do
       primary_key :id
-      String :title, :text=>true
-      Date :publish_date
-      String :publish_time_string, :text=>true
-      String :category, :text=>true
-      String :url, :text=>true
-      TrueClass :important, :default=>false
-      DateTime :created_at
-      DateTime :updated_at
-      String :keyword, :text=>true
+      String :name, :text=>true
       
-      index [:important]
-      index [:title, :publish_date], :unique=>true
+      index [:name], :name=>:jin10_message_tags_name_key, :unique=>true
     end
     
     create_table(:logs) do
@@ -74,6 +65,24 @@ Sequel.migration do
       String :filename, :text=>true, :null=>false
       
       primary_key [:filename]
+    end
+    
+    create_table(:jin10_messages, :ignore_index_errors=>true) do
+      primary_key :id
+      String :title, :text=>true
+      Date :publish_date
+      String :publish_time_string, :text=>true
+      String :url, :text=>true
+      TrueClass :important, :default=>false
+      DateTime :created_at
+      DateTime :updated_at
+      String :keyword, :default=>"", :text=>true, :null=>false
+      String :tag, :default=>"", :text=>true, :null=>false
+      Integer :jin10_message_tag_id
+      foreign_key :jin10_message_category_id, :jin10_message_categories, :key=>[:id]
+      
+      index [:important]
+      index [:title, :publish_date], :unique=>true
     end
     
     create_table(:new_stocks) do
