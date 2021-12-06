@@ -57,6 +57,7 @@ Sequel.migration do
       TrueClass :important, :default=>false
       DateTime :created_at
       DateTime :updated_at
+      String :keyword, :text=>true
       
       index [:important]
       index [:title, :publish_date], :unique=>true
