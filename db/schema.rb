@@ -82,6 +82,7 @@ Sequel.migration do
       foreign_key :jin10_message_category_id, :jin10_message_categories, :key=>[:id]
       
       index [:important]
+      index [:jin10_message_tag_id]
       index [:title, :publish_date], :unique=>true
     end
     
