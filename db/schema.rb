@@ -77,7 +77,6 @@ Sequel.migration do
       DateTime :created_at
       DateTime :updated_at
       String :keyword, :default=>"", :text=>true, :null=>false
-      String :tag, :default=>"", :text=>true, :null=>false
       Integer :jin10_message_tag_id
       foreign_key :jin10_message_category_id, :jin10_message_categories, :key=>[:id]
       

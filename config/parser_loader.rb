@@ -1,7 +1,9 @@
 require 'hot_reloader'
+require_relative 'model'
 
 loader = Zeitwerk::Loader.new
 loader.push_dir("#{APP_ROOT}/app/parsers")
+loader.push_dir("#{APP_ROOT}/app/models")
 HotReloader.eager_load(loader)
 
 require "capybara/cuprite"

@@ -1,3 +1,5 @@
+require 'singleton'
+
 class ChromeHeadlessLogger
   def initialize(logger)
     @logger = logger

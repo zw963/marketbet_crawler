@@ -1,14 +1,13 @@
 class Jin10MessagesParser < ParserBase
   # 匹配这些中文标点符号 。 ？ ！ ， 、 ； ： “ ” ‘ ' （ ） 《 》 〈 〉 【 】 『 』 「 」 ﹃ ﹄ 〔 〕 … — ～ ﹏ ￥
-  # 外加空格
-  CHINESE_PUNCTUATION_MARKS_REGEX = %r{\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5| |/}
+  # 外加白空格 和 /
+  CHINESE_PUNCTUATION_MARKS_REGEX = %r{\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5|\s+|/}
 
   def parse
     session = Capybara::Session.new(:cuprite)
     session.visit('https://ucenter.jin10.com')
 
     until session.has_css?('#J_loginPhone')
-      puts 'waiting login form'
       sleep 0.5
     end
 
@@ -37,19 +36,14 @@ class Jin10MessagesParser < ParserBase
     message_parser_proc = proc do
       start_time = Time.now
       (group_count-1).times do |i|
-        puts 'try click 更多'
+        logger.info 'Clicking 更多'
         session.first(:xpath, './/span[contains(text(), "更多")]').click
-        puts 'click 更多 done'
 
         until (popup = session.first('.classify-popup .scroll-view-container', minimum: 0))
           sleep 0.5
         end
 
-        begin
-          click_node = popup.all(:xpath, './/span[text()=" 全部 "]')[i]
-        rescue NoMethodError
-          pry!
-        end
+        click_node = popup.all(:xpath, './/span[text()=" 全部 "]')[i]
         category_ele = click_node.first(:xpath, '../preceding-sibling::dt')
         category = category_ele.text
         logger.info "Clicking #{category}/全部"
@@ -92,11 +86,7 @@ class Jin10MessagesParser < ParserBase
             new_record.update(important: true)
           end
 
-          LOGGER.level = Logger::INFO
-          puts text
-          puts "keyword: #{keyword}"
           Jin10Message.create(new_record)
-          LOGGER.level = Logger::WARN
         end
       rescue Capybara::ElementNotFound
         logger.error $!.full_message
