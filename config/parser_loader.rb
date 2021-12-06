@@ -1,4 +1,9 @@
-require 'hot_reloader'
+require 'bundler'
+
+require_relative 'load_env'
+# 在生产环境, 添加export BUNDLE_WITHOUT=development:test, 来跳过所有不需要的 gem
+Bundler.require(:default, ENV.fetch('RACK_ENV', "development"))
+
 require_relative 'model'
 
 loader = Zeitwerk::Loader.new
@@ -20,7 +25,7 @@ Capybara.register_driver(:cuprite) do |app|
   if ENV['RACK_ENV'] == 'development'
     options.update(
       headless: true,
-      slowmo: 0.2
+      slowmo: 0.25
     )
   end
 
