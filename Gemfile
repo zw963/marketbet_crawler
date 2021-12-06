@@ -37,7 +37,6 @@ group :development do
   # gem 'activerecord', require: 'active_record'
   # gem 'pry-rescue'
   gem 'roda-enhanced_logger'
-  gem 'puma'
 end
 
 group :test do
@@ -50,6 +49,13 @@ group :test do
   gem 'warning'
 end
 
+group :development, :test do
+  gem 'capybara'
+  gem 'cuprite'
+end
+
 group :production do
   gem 'falcon'
 end
+
+gem 'puma'
