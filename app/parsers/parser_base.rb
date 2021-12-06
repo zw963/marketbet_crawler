@@ -61,7 +61,7 @@ class ParserBase
     rescue Ferrum::TimeoutError, Ferrum::PendingConnectionsError
       if tries < 7
         seconds = (1.8**tries).ceil
-        puts "[#{Thread.current.object_id}] Retrying in #{seconds} seconds because #{$!.backtrace.join("\n")}"
+        puts "[#{Thread.current.object_id}] Retrying in #{seconds} seconds because #{$!.full_message}"
         sleep(seconds)
         retry
       end
