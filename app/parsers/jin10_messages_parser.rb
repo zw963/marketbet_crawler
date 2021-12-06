@@ -31,7 +31,7 @@ class Jin10MessagesParser < ParserBase
       sleep 0.5
     end
 
-    sleep_seconds = 300
+    sleep_seconds = 400
 
     message_parser_proc = proc do
       start_time = Time.now
