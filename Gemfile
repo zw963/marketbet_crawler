@@ -49,10 +49,10 @@ group :test do
   gem 'warning'
 end
 
-group :development, :test do
-  gem 'capybara'
-  gem 'cuprite'
-end
+# group :development, :test do
+gem 'capybara'
+gem 'cuprite'
+# end
 
 group :production do
   gem 'falcon'
