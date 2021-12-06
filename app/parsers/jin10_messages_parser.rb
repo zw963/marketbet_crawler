@@ -1,98 +1,66 @@
 class Jin10MessagesParser < ParserBase
+  # 匹配这些中文标点符号 。 ？ ！ ， 、 ； ： “ ” ‘ ' （ ） 《 》 〈 〉 【 】 『 』 「 」 ﹃ ﹄ 〔 〕 … — ～ ﹏ ￥
+  # 外加空格
+  CHINESE_PUNCTUATION_MARKS_REGEX = %r{\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5| |/}
+
   def parse
-    instance.goto 'https://ucenter.jin10.com'
+    session = Capybara::Session.new(:cuprite)
+    session.visit('https://ucenter.jin10.com')
 
-    while not (
-      (form=instance.at_css('#J_loginForm')) &&
-        (login=form.at_css('#J_loginPhone')) &&
-        login.focusable?
-    )
-      sleep 1
+    until session.has_css?('#J_loginPhone')
+      puts 'waiting login form'
+      sleep 0.5
     end
 
-    login.focus.type(ENV['JIN10_USER'])
-    form.at_css('#J_loginPassword').focus.type(ENV['JIN10_PASS'])
-    form.at_css('button[type="submit"]').click
-
-    unless instance.at_css('#J_logout_wrap')
-      sleep 3
+    session.within '#J_loginForm' do
+      session.fill_in id: 'J_loginPhone', with: ENV['JIN10_USER']
+      session.fill_in id: 'J_loginPassword', with: ENV['JIN10_PASS']
+      session.click_button '登录'
     end
 
-    message_parser_proc = Proc.new do
-      url = 'https://www.jin10.com'
-      instance.goto url
-      logger.info "goto #{url}"
+    until session.has_css?('div.ucenter-menu span.ucenter-menu_title')
+      sleep 0.5
+    end
 
-      log = Log.create(type: 'jin10_latest_messages_parser')
+    url = 'https://www.jin10.com'
+    session.visit url
+    logger.info "goto #{url}"
 
-      while (group_count = instance.css('ul.classify-list li').count) < 2
-        sleep 0.5
-      end
+    log = Log.create(type: 'jin10_latest_messages_parser')
 
-      instance.execute("if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
-      }")
+    while (group_count = session.all('ul.classify-list li').count) < 2
+      sleep 0.5
+    end
 
-      old_id, new_id = nil, nil
-      old_category, new_category = nil, nil
-      should_redo, redo_done, redo_times = false, false, 1
+    sleep_seconds = 300
 
+    message_parser_proc = proc do
+      start_time = Time.now
       (group_count-1).times do |i|
-        more_link = wait_for_valid { instance.at_xpath('.//span[contains(text(), "更多")]') }
-        more_link.click
+        puts 'try click 更多'
+        session.first(:xpath, './/span[contains(text(), "更多")]').click
+        puts 'click 更多 done'
 
-        retry_timeout(
-          5,
-          waiting_for_if: proc { not instance.at_css('.classify-popup .scroll-view-container') },
-          when_timeout_do: proc { more_link.click },
-          message: 'Try click "更多" scroll-view again.'
-        )
-
-        while not (popup = instance.at_css('.classify-popup .scroll-view-container'))
-          sleep 1
+        until (popup = session.first('.classify-popup .scroll-view-container', minimum: 0))
+          sleep 0.5
         end
 
-        if should_redo
-          popup.at_css(".classify-panel-bd-item dl dt span").click
-          redo_times.times do
-            logger.info 'page down!'
-            instance.keyboard.type(:pagedown)
-            sleep 1
-          end
-          redo_done = true
+        begin
+          click_node = popup.all(:xpath, './/span[text()=" 全部 "]')[i]
+        rescue NoMethodError
+          pry!
         end
-
-        click_node = popup.xpath('.//span[contains(text(), "全部")]')[i]
-        new_category = click_node.at_xpath('../preceding-sibling::dt').text
+        category_ele = click_node.first(:xpath, '../preceding-sibling::dt')
+        category = category_ele.text
+        logger.info "Clicking #{category}/全部"
         click_node.click
-        logger.info "Click category #{new_category}, previous category: #{old_category}"
 
-        timeout 5 do
-          instance.at_css('.classify-popup .scroll-view-container')
+        until (message = session.first('#jin_flash_list .jin-flash-item-container', minimum: 0))
+          sleep 0.5
         end
 
-        unless (message = instance.at_css('#jin_flash_list .jin-flash-item-container'))
-          sleep 1
-        end
-
-        new_id = message.attribute(:id)
-        logger.info "new_id #{new_id}, old_id: #{old_id}"
-        sleep 1
-
-        if old_category != new_category && new_id == old_id
-          # 如果不同分类，但是元素没有刷新，表示市场讯息没有如期刷新，即 click 没有生效.
-          should_redo = true
-          redo_times += 1 if redo_done
-          logger.info 'Redoing because link not clickable'
-          redo
-        end
-
-        old_id = message.attribute(:id)
-        old_category = new_category
-
-        if (title = message.at_css('.right-content'))
-
-          category = Jin10MessageCategory.find_or_create(name: old_category)
+        if (title = message.first('.right-content', minimum: 0))
+          category = Jin10MessageCategory.find_or_create(name: category)
 
           record = Jin10Message.find(
             title: title.text,
@@ -101,32 +69,56 @@ class Jin10MessagesParser < ParserBase
 
           next if record.present?
 
+          text = title.text
+
+          if text.start_with?('【')
+            keyword = text[/【(.*)】.*/, 1]
+            if not keyword.match? CHINESE_PUNCTUATION_MARKS_REGEX and keyword.size < 8
+              tag = Jin10MessageTag.find_or_create(name: keyword)
+            end
+          end
+
           new_record = {
-            title: title.text,
+            title: text,
+            keyword: keyword || '',
+            tag: tag,
             publish_date: Date.today,
-            publish_time_string: message.at_css('.item-time').text,
+            publish_time_string: message.first('.item-time').text,
             category: category,
             url: ''
           }
 
-          if message.at_css('.jin-flash-item.flash').attribute('class').include?('is-important')
+          if message.first('.jin-flash-item.flash')['class'].include?('is-important')
             new_record.update(important: true)
           end
 
+          LOGGER.level = Logger::INFO
+          puts text
+          puts "keyword: #{keyword}"
           Jin10Message.create(new_record)
+          LOGGER.level = Logger::WARN
         end
-      rescue Ferrum::NodeNotFoundError
-        logger.error $!.backtrace.join("\n")
+      rescue Capybara::ElementNotFound
+        logger.error $!.full_message
         next
       end
 
+      # # 这里还要检测登录的问题
+      # # form.modal-form input#login_phone, form.modal-form input#login_pwd
+      # # form.modal-form button.user-submit
+
       log.update(finished_at: Time.now)
 
+      end_time = Time.now
+
+      elapsed_seconds = (end_time - start_time).to_i
+
       # 确保 retry_timeout 可以 timeout
-      sleep 600
+      logger.info "Done, wait for #{sleep_seconds - elapsed_seconds} seconds"
+      sleep sleep_seconds
     end
 
-    retry_timeout 600, message: 'Try https://www.jin10.com again', waiting_for_if: message_parser_proc
+    retry_timeout sleep_seconds, message: 'Refresh again', waiting_for_if: message_parser_proc
   end
 
   def wait_for_valid(&block)

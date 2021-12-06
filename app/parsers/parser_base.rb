@@ -16,16 +16,16 @@ class ParserBase
     options = {
       # logger: ChromeHeadlessLogger.new(Logger.new('log/chrome_headless.log', 10, 1024000)),
       pending_connection_errors: false,
-      window_size: [1280, 800],
+      window_size: [1600, 900],
       timeout: 30,
-      browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false' },
+      browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false', 'start-maximized': true},
       headless: true,
     }
 
     if ENV['RACK_ENV'] == 'development'
       options.update(
         headless: false,
-        slowmo: 0.2
+        slowmo: 0.5
       )
       self.logger = Logger.new($stdout)
     else
@@ -91,7 +91,7 @@ class ParserBase
     end
   end
 
-  def timeout(seconds, &block)
+  def timeout(seconds, message: '', &block)
     begin
       Timeout.timeout(seconds) do
         loop do
@@ -100,7 +100,7 @@ class ParserBase
         end
       end
     rescue Timeout::Error
-      logger.info 'Timeout'
+      logger.info "Timeout: #{message}!"
     end
   end
 end
