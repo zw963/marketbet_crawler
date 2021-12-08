@@ -26,18 +26,8 @@ class RetrieveInsiders < Actor
       insiders = insiders.where(name: name)
     end
 
-    result.insiders = insiders.order(sort).paginate(page, per)
+    result.insiders = insiders.order(sort).paginate(page.to_i, per.to_i)
 
     result.fail!(message: "没有最新的结果！") if insiders.empty?
-  end
-
-  private
-
-  def page
-    result.page.to_i
-  end
-
-  def per
-    result.per.to_i
   end
 end

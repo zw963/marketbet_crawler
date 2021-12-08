@@ -33,7 +33,7 @@ class RetrieveInstitutionHistory < Actor
     else
       institution_histories = institution_histories.where(
         Sequel.or(
-          date: today-days..today,
+          date: today-days.to_i..today,
           created_at: now...(today + 1).to_datetime
         )
       )
@@ -84,11 +84,5 @@ class RetrieveInstitutionHistory < Actor
         }
       end
     end
-  end
-
-  private
-
-  def days
-    result.days.to_i
   end
 end

@@ -48,7 +48,7 @@ GEM
       sequel
     erubi (1.10.0)
     execjs (2.8.1)
-    fabrication (2.22.0)
+    fabrication (2.23.0)
     falcon (0.39.2)
       async
       async-container (~> 0.16.0)

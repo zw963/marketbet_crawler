@@ -39,7 +39,7 @@ class RetrieveInsiderHistory < Actor
     else
       insider_histories = insider_histories.where(
         Sequel.or(
-          date: today-days..today,
+          date: today-days.to_i..today,
           created_at: now...(today + 1).to_datetime
         )
       )
@@ -91,11 +91,5 @@ class RetrieveInsiderHistory < Actor
         '颜色' => ih.number_of_shares.to_i > 0 ? 'green' : 'red'
       }
     end
-  end
-
-  private
-
-  def days
-    result.days.to_i
   end
 end
