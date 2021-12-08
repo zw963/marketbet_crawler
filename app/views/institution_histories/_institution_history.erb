@@ -7,7 +7,7 @@
     institution_name = institution_history['机构名称']
     institution_url = "/institutions/#{institution_id}"
     %>
-  <a class='dropdown-trigger' href='<%= institution_url %>' data-target='dropdown1' data-firm-id="<%= institution_id %>" ><%= institution_name %></a>
+  <a class='institution-history-dropdown-trigger' href='<%= institution_url %>' data-target='dropdown1' data-institution-id="<%= institution_id %>" ><%= institution_name %></a>
   </td>
   <td><%= institution_history['机构季度变动百分比'] %></td>
   <td class="<%= institution_history['颜色'] %>-text"><%= institution_history['机构季度变动数量'] %></td>

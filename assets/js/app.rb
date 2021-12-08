@@ -11,6 +11,14 @@ require 'browser/http'
 
 # require 'opal-parser'
 
+$document.ready do
+  institution_history_dropdown()
+  change_institution_display_name_modal_dialog()
+  investing_latest_news_tips()
+  get_stocks_json()
+end
+
+
 def get_json(path)
   promise = Promise.new
 
@@ -24,37 +32,50 @@ def get_json(path)
   promise
 end
 
-$document.ready do
+def get_stocks_json
   get_json('/stocks.json').then do |json|
     %x{
 var elems = document.querySelectorAll('.stock-complete');
 var instances = M.Autocomplete.init(elems, {"data": #{json.to_n}});
     }
   end
+end
 
-  change_institution_display_name_callback = proc do |_, trigger|
+def institution_history_dropdown
+  # 点开 dropdown 的时候执行
+  callback = proc do |trigger|
+    a_eles = $document.css('#dropdown1 li a')
+    a_eles[0].text = '查看机构信息'
+    a_eles[1].text = '修改名称备注'
+
+    # set dropdown menu data
+    a_eles[0]['href'] = `trigger.href`
+    a_eles[1]['data-institution-id'] = `trigger.dataset.institutionId`
+    a_eles[1]['data-institution-name'] = `trigger.innerText`
+  end
+
+  %x{
+var elems = document.querySelectorAll('.institution-history-dropdown-trigger');
+var instances = M.Dropdown.init(elems, {"onOpenStart": #{callback.to_n}});
+  }
+end
+
+def change_institution_display_name_modal_dialog
+  # 点击 “修改名称备注” 之后，创建 modal dialog 的时候执行.
+  callback = proc do |_, trigger|
     form = $document.at_css('#modal1 form')
     form.action = "/institutions/#{`trigger.dataset.institutionId`}"
     form.at_css('input').value = `trigger.dataset.institutionName`
     form.at_css('h4').text = '修改机构信息'
   end
-
-  open_dropdown_callback = proc do |dropdown_trigger|
-    a_eles = $document.css('#dropdown1 li a')
-    a_eles[0]['href'] = `dropdown_trigger.href`
-    a_eles[0].text = '查看机构信息'
-    a_eles[1]['data-institution-id'] = `dropdown_trigger.dataset.InstitutionId`
-    a_eles[1]['data-institution-name'] = `dropdown_trigger.innerText`
-    a_eles[1].text = '修改名称备注'
-  end
-
   %x{
 var elems = document.querySelectorAll('.modal');
-var instances = M.Modal.init(elems, {"onOpenStart": #{change_institution_display_name_callback.to_n}});
+var instances = M.Modal.init(elems, {"onOpenStart": #{callback.to_n}});
+  }
+end
 
-var elems = document.querySelectorAll('.dropdown-trigger');
-var instances = M.Dropdown.init(elems, {"onOpenStart": #{open_dropdown_callback.to_n}});
-
+def investing_latest_news_tips
+  %x{
 var elems = document.querySelectorAll('.tooltipped');
 var instances = M.Tooltip.init(elems, {"enterDelay": 1000});
   }
