@@ -52,3 +52,22 @@ Fabricator(:investing_latest_news) do
   publish_time_string { '34 分钟以前' }
   publish_time { Time.parse('2021-11-09 17:36:07') }
 end
+
+Fabricator(:jin10_message_tag) do
+  name { Fabricate.sequence(:name) }
+end
+
+Fabricator(:jin10_message_category) do
+  name { Fabricate.sequence(:name) }
+end
+
+Fabricator(:jin10_message) do
+  important false
+  category { Fabricate(:jin10_message_category) }
+  tag { Fabricate(:jin10_message_tag) }
+  keyword { "行情" }
+  publish_date { Date.parse('2021-12-06') }
+  publish_time_string { "21:33:06" }
+  title {"【行情】特斯拉(TSLA.O)盘前短线走低，现跌3.34%。"}
+  url { '' }
+end

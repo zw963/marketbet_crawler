@@ -79,9 +79,11 @@ Sequel.migration do
       String :keyword, :default=>"", :text=>true, :null=>false
       Integer :jin10_message_tag_id
       foreign_key :jin10_message_category_id, :jin10_message_categories, :key=>[:id]
+      String :textsearchable_index_col
       
       index [:important]
       index [:jin10_message_tag_id]
+      index [:textsearchable_index_col], :name=>:jin10_messages_textsearch_idx_index
       index [:title, :publish_date], :unique=>true
     end
     

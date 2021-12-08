@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col s12">
+    <%== create_form('news-complete', placeholder: '输入关键字') %>
+    <%== create_form(
+      'add-ts-keyword',
+      placeholder: '新增自定义关键字',
+      action: '/add-ts-keyword',
+      param: 'new_keyword',
+      method: 'post',
+      icon: 'send',
+      grid_offset: 'offset-s1'
+    ) %>
+    <%== create_form(
+      'remove-ts-keyword',
+      placeholder: '删除自定义关键字',
+      action: '/remove-ts-keyword',
+      param: 'keyword',
+      method: 'post',
+      icon: 'send',
+      grid_offset: 'offset-s1'
+    ) %>
+    <%== create_form(
+      'sync-ts-keyword',
+      placeholder: '更新自定义关键字',
+      action: '/sync-ts-keyword',
+      method: 'post',
+      icon: 'refresh',
+      grid_offset: 'offset-s1',
+      use_input: false
+    ) %>
+  </div>
+</div>
+
+<% if @error_message.present? %>
+  <p><%== @error_message %></p>
+<% end %>
+
+<table class="highlight centered responsive-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>标题</th>
+      <th><%== link_path('发布时间', 'created_at') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%== each_partial(@messages, 'jin10/message', local: :message) %>
+  </tbody>
+</table>
+
+<%== paginate @messages %>

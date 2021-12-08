@@ -22,8 +22,6 @@ class App < Roda
   plugin :delete_empty_headers
   plugin :public, gzip: true, brotli: true
 
-  plugin :enhanced_logger if ENV['RACK_ENV'] == 'development'
-
   cache = case ENV['RACK_ENV']
           when 'development'
             Sprockets::Cache::MemoryStore.new(65536)
@@ -137,7 +135,7 @@ class App < Roda
         r.hash_routes('investings/latest_news')
       end
 
-      r.is 'jin10-latest-messages' do
+      r.is 'jin10-messages' do
         r.hash_routes('jin10/latest_messages')
       end
     end

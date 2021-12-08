@@ -26,7 +26,7 @@ class ParserBase
 
     if ENV['RACK_ENV'] == 'development'
       options.update(
-        headless: false,
+        headless: true,
         slowmo: 0.5
       )
       self.logger = Logger.new($stdout)

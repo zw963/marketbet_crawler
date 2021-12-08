@@ -7,8 +7,8 @@ class Jin10MessagesParser < ParserBase
     session = Capybara::Session.new(:cuprite)
     session.visit('https://ucenter.jin10.com')
 
-    until session.has_css?('#J_loginPhone')
-      sleep 0.5
+    until session.has_css?('#J_loginPhone', wait: 10)
+      sleep 5
     end
 
     session.within '#J_loginForm' do
@@ -27,8 +27,8 @@ class Jin10MessagesParser < ParserBase
 
     log = Log.create(type: 'jin10_latest_messages_parser')
 
-    while (group_count = session.all('ul.classify-list li').count) < 2
-      sleep 0.5
+    while (group_count = session.all('ul.classify-list li', wait: 10).count) < 2
+      sleep 5
     end
 
     sleep_seconds = 400

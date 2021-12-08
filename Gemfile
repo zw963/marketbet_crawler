@@ -23,12 +23,12 @@ gem 'erubi', '>= 1.5'
 gem 'sassc'
 gem 'terser'
 gem 'brotli'
-gem 'opal'
+gem 'opal', '1.3.1'
+gem 'opal-browser'
 gem "opal-sprockets"
 gem "roda-sprockets"
 gem 'snabberb'
 # gem 'paggio', github: 'hmdne/paggio'
-gem 'opal-browser'
 gem 'refrigerator'
 gem 'graphql'
 
