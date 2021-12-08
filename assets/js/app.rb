@@ -32,12 +32,6 @@ var instances = M.Autocomplete.init(elems, {"data": #{json.to_n}});
     }
   end
 
-  $document.on(:click, ".add-ts-keyword") do |e|
-    e.prevent
-    # e.on is a button that has been clicked
-    e.on.inner_text = "Clicked!"
-  end
-
   change_institution_display_name_callback = proc do |_, trigger|
     form = $document.at_css('#modal1 form')
     form.action = "/institutions/#{`trigger.dataset.institutionId`}"
