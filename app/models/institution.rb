@@ -3,7 +3,8 @@ class Institution < Sequel::Model
 
   def display_name
     name = self[:name]
-    name = "#{name} (#{self[:display_name]})" if self[:display_name].present?
+    display_name = self[:display_name]
+    name = "#{name} (#{display_name})" if display_name.present? and display_name != name
     name
   end
 end
