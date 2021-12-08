@@ -5,11 +5,9 @@ require_relative 'load_env'
 Bundler.require(:default, ENV.fetch('RACK_ENV', "development"))
 
 require_relative 'model'
-
-loader = Zeitwerk::Loader.new
-loader.push_dir("#{APP_ROOT}/app/parsers")
-loader.push_dir("#{APP_ROOT}/app/models")
-HotReloader.eager_load(loader)
+load "#{APP_ROOT}/app/parsers/parser_base.rb"
+Dir["#{APP_ROOT}/app/parsers/**/*.rb"].each {|m| load m }
+Dir["#{APP_ROOT}/app/models/**/*.rb"].each {|m| load m }
 
 require "capybara/cuprite"
 Capybara.javascript_driver = :cuprite
