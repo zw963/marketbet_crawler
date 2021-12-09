@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col s12">
     <form action="<%= request.path %>" autocomplete="on" method="get">
-      <div class="input-field col s2 tooltipped" data-position="bottom" data-tooltip="选择消息分类">
+      <div class="input-field col s2 tooltipped" data-position="bottom" data-tooltip="选择消息类别">
         <select name="category_id" class="tooltipped" data-position="bottom" data-tooltip="测试一下">
-          <option value="" disabled selected>选择消息分类</option>
+          <option value="" selected>所有类别</option>
           <% @message_categories.each do |category| %>
             <%= selected = category[:id] == request.params['category_id'].to_i ? 'selected' : '' %>
             <option <%= selected %> value="<%= category[:id] %>"><%= category[:name] %></option>
@@ -12,8 +12,8 @@
       </div>
       <div class="input-field col s2 tooltipped" data-position="bottom" data-tooltip="选择查看几天的消息">
         <select name="days">
-          <option value="" disabled selected>查看几天</option>
-          <% (1..10).each do |day| %>
+          <option value="1" selected>当天</option>
+          <% (2..9).each do |day| %>
             <%= selected = day == request.params['days'].to_i ? 'selected' : '' %>
             <option <%= selected %> value="<%= day %>">最近<%= day %>天</option>
           <% end %>
