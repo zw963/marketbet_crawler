@@ -1,4 +1,4 @@
-require 'js/bin/materialize'
+require 'js/materialize.min'
 
 require 'opal'
 require 'promise'
