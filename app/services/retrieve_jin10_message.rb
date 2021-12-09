@@ -20,7 +20,10 @@ class RetrieveJin10Message < Actor
     messages = Jin10Message.dataset
 
     if days.to_i == 1
+      # 默认只显示当天的
       messages = Jin10Message.where(publish_date: Sequel.lit('current_date'))
+    else
+      messages = Jin10Message.where {|r| r.publish_date > Sequel.lit("current_date - interval ?", "#{days} days")}
     end
 
     if category_id.present?

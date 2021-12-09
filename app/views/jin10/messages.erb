@@ -10,8 +10,19 @@
         </select>
       </div>
       <div class="input-field col s2">
+        <select name="days">
+          <option value="<%= request.params['days'] %>" disabled selected>查看几天</option>
+          <% 10.times do |day| %>
+            <option value="<%= day %>"><%= day %>天</option>
+          <% end %>
+        </select>
+      </div>
+      <div class="input-field col s2">
         <input type="text" name="q" id="autocomplete-input" value="<%= request.params['q'] %>" aria-label="Search" placeholder="输入搜索关键字">
         <i class="material-icons prefix submit-icon" onclick="this.closest('form').submit(); return false;">search</i>
+      </div>
+      <div class="input-field col s3">
+        <p>返回数量: <%= @messages.pagination_record_count %></p>
       </div>
     </form>
   </div>
