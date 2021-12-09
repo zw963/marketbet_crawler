@@ -63,14 +63,12 @@ class RetrieveInstitutionHistory < Actor
           value2 = ins.quarterly_changes
         end
 
-        institution_name = ins.institution.display_name.presence || ins.institution.name
-
         {
           'ID' => ins.id,
           '股票' => stock.name,
           'stock_id' => stock.id,
           '日期' => ins.date.to_s,
-          '机构名称' => institution_name,
+          '机构名称' => ins.institution.display_name,
           'institution_id' => ins.institution.id,
           '机构持有数量' => ins.number_of_holding,
           '市场价值' => "#{value.to_f}万(#{ins.market_value_dollar_string})",
