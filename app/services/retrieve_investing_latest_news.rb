@@ -2,7 +2,7 @@ class RetrieveInvestingLatestNews < Actor
   input :sort_column, default: 'id', type: String
   input :sort_direction, default: 'desc', type: String
   input :page, default: 1, type: [Integer, String]
-  input :per, default: 20, type: [Integer, String]
+  input :per, default: 30, type: [Integer, String]
   input :q, default: nil, type: String
 
   def call

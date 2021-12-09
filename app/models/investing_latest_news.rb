@@ -1,7 +1,7 @@
 class InvestingLatestNews < Sequel::Model
   def display_time
     if publish_time.is_today?
-      self[:publish_time_string]
+      self[:publish_time].strftime('%H:%M')
     else
       self[:publish_time].to_date
     end
