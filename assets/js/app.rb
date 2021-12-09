@@ -1,18 +1,18 @@
-require 'opal'
 require 'js/bin/materialize'
 
-require 'native'
+require 'opal'
 require 'promise'
-require 'browser/setup/mini'
+require 'browser/setup/traditional'
 require 'browser/http'
 
-# require 'snabberb'
+# requireg 'snabberb'
 # require_tree './components'
 
 # require 'opal-parser'
 
 $document.ready do
   institution_history_dropdown()
+  select_dropdown()
   change_institution_display_name_modal_dialog()
   investing_latest_news_tips()
   get_stocks_json()
@@ -44,14 +44,27 @@ end
 def institution_history_dropdown
   # 点开 dropdown 的时候执行
   callback = proc do |trigger|
-    a_eles = $document.css('#dropdown1 li a')
-    a_eles[0].text = '查看机构信息'
-    a_eles[1].text = '修改名称备注'
+    dropdown = $document.at_css('#dropdown1')
+    dropdown.clear
 
-    # set dropdown menu data
-    a_eles[0]['href'] = `trigger.href`
-    a_eles[1]['data-institution-id'] = `trigger.dataset.institutionId`
-    a_eles[1]['data-institution-name'] = `trigger.innerText`
+    institution_id = `trigger.dataset.institutionId`
+    institution_name = `trigger.innerText`
+    institution_href = `trigger.href`
+
+    DOM do
+      li do
+        a "link1", href: institution_href
+      end
+      li do
+        a(
+          "link2",
+          "class" => 'modal-trigger',
+          "href" => "#modal1",
+          "data-institution-id" => institution_id,
+          "data-institution-name" => institution_name
+         )
+      end
+    end.append_to(dropdown)
   end
 
   %x{
@@ -78,5 +91,12 @@ def investing_latest_news_tips
   %x{
 var elems = document.querySelectorAll('.tooltipped');
 var instances = M.Tooltip.init(elems, {"enterDelay": 1000});
+  }
+end
+
+def select_dropdown
+  %x{
+var elems = document.querySelectorAll('select');
+  var instances = M.FormSelect.init(elems, {});
   }
 end

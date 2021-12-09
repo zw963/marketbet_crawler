@@ -7,6 +7,8 @@ class App < Roda
 
       @messages = result.messages
 
+      @message_categories = Jin10MessageCategory.select(:id, :name).naked.all
+
       r.html do
         view 'jin10/messages'
       end
