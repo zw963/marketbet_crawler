@@ -22,13 +22,13 @@ describe "retrieve latest institution histories" do
     assert_equal true, result.success?
     institution_histories = result.institution_histories
     assert_equal [
-      "Name5", "Name4 (黑石_4)", "Name3", "Name2 (黑石_2)"
+      "Name5", "黑石_4", "Name3", "黑石_2"
     ], (institution_histories.map {|x| x['机构名称'] })
     assert_equal({
       "股票"=>"nyse/ge",
       "stock_id" => 1,
       "日期"=>"2021-08-03",
-      "机构名称"=>"Name2 (黑石_2)",
+      "机构名称"=>"黑石_2",
       "institution_id" => 2,
       "机构持有数量"=>182902,
       "市场价值"=>"94.0万($0.94M)",

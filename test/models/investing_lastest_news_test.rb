@@ -8,7 +8,7 @@ describe 'investing lastest news' do
       publish_time: '2021-11-15 21:15:20'
     )
     Timecop.freeze('2021-11-15 21:45:10')
-    assert_equal "30 分钟前", news.display_time.to_s
+    assert_equal "21:15", news.display_time.to_s
     Timecop.freeze('2021-11-16 22:00:10')
     assert_equal '2021-11-15', news.display_time.to_s
   end

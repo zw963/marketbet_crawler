@@ -6,6 +6,6 @@ describe 'routes/institutions/update' do
     assert_equal 'institution1', institution.display_name
     post '/institutions/1', {display_name: "new_institution"}
     assert last_response.redirect?
-    assert_equal "institution1 (new_institution)", institution.reload.display_name
+    assert_equal "new_institution", institution.reload.display_name
   end
 end
