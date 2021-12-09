@@ -12,9 +12,9 @@ require 'browser/http'
 
 $document.ready do
   institution_history_dropdown()
-  select_dropdown()
+  set_select_dropdown()
   change_institution_display_name_modal_dialog()
-  investing_latest_news_tips()
+  set_tooltips()
   get_stocks_json()
 end
 
@@ -87,14 +87,14 @@ var instances = M.Modal.init(elems, {"onOpenStart": #{callback.to_n}});
   }
 end
 
-def investing_latest_news_tips
+def set_tooltips
   %x{
 var elems = document.querySelectorAll('.tooltipped');
 var instances = M.Tooltip.init(elems, {"enterDelay": 1000});
   }
 end
 
-def select_dropdown
+def set_select_dropdown
   %x{
 var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems, {});

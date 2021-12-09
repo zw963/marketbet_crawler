@@ -1,19 +1,21 @@
 <div class="row">
   <div class="col s12">
     <form action="<%= request.path %>" autocomplete="on" method="get">
-      <div class="input-field col s2">
-        <select name="category_id">
-          <option value="" disabled selected>选择消息类别</option>
+      <div class="input-field col s2 tooltipped" data-position="bottom" data-tooltip="选择消息分类">
+        <select name="category_id" class="tooltipped" data-position="bottom" data-tooltip="测试一下">
+          <option value="" disabled selected>选择消息分类</option>
           <% @message_categories.each do |category| %>
-            <option value="<%= category[:id] %>"><%= category[:name] %></option>
+            <%= selected = category[:id] == request.params['category_id'].to_i ? 'selected' : '' %>
+            <option <%= selected %> value="<%= category[:id] %>"><%= category[:name] %></option>
           <% end %>
         </select>
       </div>
-      <div class="input-field col s2">
+      <div class="input-field col s2 tooltipped" data-position="bottom" data-tooltip="选择查看几天的消息">
         <select name="days">
-          <option value="<%= request.params['days'] %>" disabled selected>查看几天</option>
-          <% 10.times do |day| %>
-            <option value="<%= day %>"><%= day %>天</option>
+          <option value="" disabled selected>查看几天</option>
+          <% (1..10).each do |day| %>
+            <%= selected = day == request.params['days'].to_i ? 'selected' : '' %>
+            <option <%= selected %> value="<%= day %>">最近<%= day %>天</option>
           <% end %>
         </select>
       </div>
@@ -21,8 +23,8 @@
         <input type="text" name="q" id="autocomplete-input" value="<%= request.params['q'] %>" aria-label="Search" placeholder="输入搜索关键字">
         <i class="material-icons prefix submit-icon" onclick="this.closest('form').submit(); return false;">search</i>
       </div>
-      <div class="input-field col s3">
-        <p>返回数量: <%= @messages.pagination_record_count %></p>
+      <div class="input-field col s3 offset-s1">
+        <p>返回数量: <%= @messages.pagination_record_count %>条</p>
       </div>
     </form>
   </div>
