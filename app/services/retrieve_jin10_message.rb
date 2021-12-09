@@ -5,7 +5,7 @@ class RetrieveJin10Message < Actor
   input :per, default: 100, type: [Integer, String]
   input :q, default: nil, type: String
   input :days, default: 1, type: [Integer, String]
-  input :category_id, default:nil, type: [String, Integer]
+  input :category_ids, default:[], type: [Array]
 
   def call
     sort = case sort_column.to_s
@@ -26,9 +26,8 @@ class RetrieveJin10Message < Actor
       messages = Jin10Message.where {|r| r.publish_date > Sequel.lit("current_date - interval ?", "#{days} days")}
     end
 
-    if category_id.present?
-      category = Jin10MessageCategory[category_id]
-      messages = messages.where(category: category)
+    if category_ids.present?
+      messages = messages.where(jin10_message_category_id: category_ids)
     end
 
     if q.present?
