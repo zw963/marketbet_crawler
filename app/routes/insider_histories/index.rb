@@ -3,7 +3,7 @@ class App
     is true do |r|
       @log = Log.where(type: 'insider_parser').exclude(finished_at: nil).last
 
-      result = RetrieveInsiderHistory.call(r.params)
+      result = RetrieveInsiderHistory.result(r.params)
       @error_message = result.message if result.failure?
       @insider_histories = result.insider_histories || []
 
