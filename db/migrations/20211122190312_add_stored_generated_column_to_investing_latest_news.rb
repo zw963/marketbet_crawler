@@ -1,19 +1,19 @@
 Sequel.migration do
   up do
-    run <<'HEREDOC'
-ALTER TABLE investing_latest_news
-ADD COLUMN textsearchable_index_col tsvector GENERATED ALWAYS
-    AS
-    (
-        to_tsvector(
-          'zhparser',
-           coalesce(title, '')
-             || ' ' ||
-           coalesce(preview, '')
-        )
-   )
-STORED;
-HEREDOC
+    run <<~'HEREDOC'
+      ALTER TABLE investing_latest_news
+      ADD COLUMN textsearchable_index_col tsvector GENERATED ALWAYS
+          AS
+          (
+              to_tsvector(
+                'zhparser',
+                 coalesce(title, '')
+                   || ' ' ||
+                 coalesce(preview, '')
+              )
+         )
+      STORED;
+    HEREDOC
     run 'CREATE INDEX investing_latest_news_textsearch_idx_index ON investing_latest_news USING GIN (textsearchable_index_col);'
   end
 

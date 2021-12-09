@@ -35,9 +35,9 @@ class IpoParser < ParserBase
                 ipo_placement = captures[0]
 
                 ipo_placement_number = case ipo_placement
-                                       when /\$([\d\.]+) million/
+                                       when /\$([\d.]+) million/
                                          $1.to_d * 1000000
-                                       when /\$([\d\.]+) billion/
+                                       when /\$([\d.]+) billion/
                                          $1.to_d * 1000000000
                                        end
 

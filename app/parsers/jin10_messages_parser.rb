@@ -7,9 +7,7 @@ class Jin10MessagesParser < ParserBase
     session = Capybara::Session.new(:cuprite)
     session.visit('https://ucenter.jin10.com')
 
-    until session.has_css?('#J_loginPhone', wait: 10)
-      sleep 5
-    end
+    sleep 5 until session.has_css?('#J_loginPhone', wait: 10)
 
     session.within '#J_loginForm' do
       session.fill_in id: 'J_loginPhone', with: ENV['JIN10_USER']
@@ -17,9 +15,7 @@ class Jin10MessagesParser < ParserBase
       session.click_button '登录'
     end
 
-    until session.has_css?('div.ucenter-menu span.ucenter-menu_title')
-      sleep 0.5
-    end
+    sleep 0.5 until session.has_css?('div.ucenter-menu span.ucenter-menu_title')
 
     url = 'https://www.jin10.com'
     session.visit url
@@ -69,7 +65,6 @@ class Jin10MessagesParser < ParserBase
           )
 
           next if record.present?
-
 
           if text.start_with?('【')
             keyword = text[/【(.*)】.*/, 1]
@@ -123,6 +118,7 @@ class Jin10MessagesParser < ParserBase
       if (ele.moving? rescue nil)
         break ele
       end
+
       sleep 0.5
     end
   end

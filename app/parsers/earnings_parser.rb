@@ -5,7 +5,7 @@ class EarningsParser < ParserBase
   def parse
     raise 'symbols must be exists' if symbols.nil?
 
-    stock_symbol_mapping = YAML.load_file(APP_ROOT.join('config/mapping.yml')).dig('stock_symbol_mapping')
+    stock_symbol_mapping = YAML.load_file(APP_ROOT.join('config/mapping.yml'))['stock_symbol_mapping']
 
     log = Log.create(type: 'earnings_parser')
 
@@ -34,7 +34,7 @@ class EarningsParser < ParserBase
             stock.save
           end
         ensure
-          context.dispose unless context.nil?
+          context&.dispose
         end
       end.each(&:join)
     end

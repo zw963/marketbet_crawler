@@ -18,7 +18,6 @@ $document.ready do
   get_stocks_json()
 end
 
-
 def get_json(path)
   promise = Promise.new
 
@@ -43,7 +42,7 @@ end
 
 def institution_history_dropdown
   # 点开 dropdown 的时候执行
-  callback = proc do |trigger|
+  callback = proc do |_trigger|
     dropdown = $document.at_css('#dropdown1')
     dropdown.clear
 
@@ -62,7 +61,7 @@ def institution_history_dropdown
           "href" => "#modal1",
           "data-institution-id" => institution_id,
           "data-institution-name" => institution_name
-         )
+        )
       end
     end.append_to(dropdown)
   end
@@ -75,7 +74,7 @@ end
 
 def change_institution_display_name_modal_dialog
   # 点击 “修改名称备注” 之后，创建 modal dialog 的时候执行.
-  callback = proc do |_, trigger|
+  callback = proc do |_, _trigger|
     form = $document.at_css('#modal1 form')
     form.action = "/institutions/#{`trigger.dataset.institutionId`}"
     form.at_css('input').value = `trigger.dataset.institutionName`

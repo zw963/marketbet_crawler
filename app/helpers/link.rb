@@ -1,5 +1,5 @@
 class App < Roda
-    path :link do |title, current_column|
+  path :link do |title, current_column|
     params = request.params.dup
     sort_column = params.delete('sort_column')
     sort_direction = params.delete('sort_direction')

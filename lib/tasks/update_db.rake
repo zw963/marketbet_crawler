@@ -30,7 +30,6 @@ namespace :db do
         last_trade_stock: last.stock.name,
         number_of_trade_times: insider_histories.count,
         trade_on_stock_amount: insider_histories.group_and_count(:stock_id).all.size
-
       )
     end
   end

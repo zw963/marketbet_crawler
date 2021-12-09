@@ -5,11 +5,10 @@ class Jin10MessagesParserOld < ParserBase
   def parse
     instance.goto 'https://ucenter.jin10.com'
 
-    while not (
-      (form=instance.at_css('#J_loginForm')) &&
+    until (form=instance.at_css('#J_loginForm')) &&
         (login=form.at_css('#J_loginPhone')) &&
         login.focusable?
-    )
+
       sleep 0.5
     end
 
@@ -46,6 +45,7 @@ class Jin10MessagesParserOld < ParserBase
       # form.modal-form button.user-submit
 
       old_id, old_category, new_category = nil, nil, nil
+      skipped_category = ['贵金属', '石油', '外汇', '期货', '数字货币', '科技', '地缘局势'].freeze
 
       (group_count-1).times do |i|
         message = nil
@@ -81,13 +81,13 @@ class Jin10MessagesParserOld < ParserBase
           pry! if category_ele.nil?
           new_category = category_ele.text
 
-          raise Jin10SkipCategoryException if ['贵金属', '石油', '外汇', '期货', '数字货币', '科技', '地缘局势'].include? new_category
+          raise Jin10SkipCategoryException if skipped_category.include? new_category
 
           popup.at_css(".classify-panel-bd-item dl dt span").click
 
           logger.info "Will move to #{e}'th page" if e > 0
 
-          e.times do |i|
+          e.times do |_i|
             # 表示找不到下一个 全部 link, 尝试往下翻页再尝试点击 link
             sleep 0.8
             # logger.info 'keyboard move pagedown!'
@@ -180,6 +180,7 @@ class Jin10MessagesParserOld < ParserBase
       if (ele.moving? rescue nil)
         break ele
       end
+
       sleep 0.5
     end
   end

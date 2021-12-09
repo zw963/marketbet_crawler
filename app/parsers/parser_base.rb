@@ -4,6 +4,7 @@ class ChromeHeadlessLogger
   def initialize(logger)
     @logger = logger
   end
+
   def puts(*args)
     @logger << (args)
   end
@@ -94,15 +95,13 @@ class ParserBase
   end
 
   def timeout(seconds, message: '', &block)
-    begin
-      Timeout.timeout(seconds) do
-        loop do
-          sleep 0.5
-          break unless block.call
-        end
+    Timeout.timeout(seconds) do
+      loop do
+        sleep 0.5
+        break unless block.call
       end
-    rescue Timeout::Error
-      logger.info "Timeout: #{message}!"
     end
+  rescue Timeout::Error
+    logger.info "Timeout: #{message}!"
   end
 end

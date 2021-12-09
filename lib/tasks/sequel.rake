@@ -92,6 +92,6 @@ def get_db_url
   env_database_url="#{ENV.fetch('RACK_ENV', 'development')}_database_url".upcase # e.g DEVELOPMENT_DATABASE_URL
   db_url = ENV.delete(env_database_url) || ENV.delete('DATABASE_URL')
   database_pattern = db_url.split('//')[1]
-  database = database_pattern.sub(/[^:]+:[^:]+@[^:]+:\d+\//, '')
+  database = database_pattern.sub(%r{[^:]+:[^:]+@[^:]+:\d+/}, '')
   [database, db_url]
 end

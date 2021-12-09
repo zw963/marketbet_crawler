@@ -35,7 +35,7 @@ class Minitest::Test
 
   def query(query_path=nil)
     test_home = APP_ROOT.join('test/graphql').realpath
-    current_path = Pathname(caller[0][/(.*):\d+.*/, 1])
+    current_path = Pathname(caller(1..1).first[/(.*):\d+.*/, 1])
     relative_path = current_path.relative_path_from(test_home)
     name = relative_path.basename.sub(/_test|_spec/, '').sub_ext('.graphql')
     query_file = if query_path
@@ -47,7 +47,7 @@ class Minitest::Test
     if query_file.exist?
       File.read(query_file)
     else
-      fail "#{query_file} 文件不存在."
+      raise "#{query_file} 文件不存在."
     end
   end
 

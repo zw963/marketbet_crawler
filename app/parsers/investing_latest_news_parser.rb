@@ -15,6 +15,7 @@ class InvestingLatestNewsParser < ParserBase
 
     news_urls.each do |text, url|
       next if InvestingLatestNews.find(url: url)
+
       title, source, publish_time, preview = text.scan(/(.*)提供者(.*) - (.*?(?:以前|\d+年\d+月\d+日))(.*)/m).flatten
       publish_time.strip!
       InvestingLatestNews.create(

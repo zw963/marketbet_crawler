@@ -24,7 +24,7 @@ namespace :assets do
     warn "Creating brotli compressed assets"
     public_path = App.sprockets_options[:public_path]
     sprockets_manifest_json_file = Dir.glob("#{public_path}/.sprockets-manifest*.json").first
-    assets = JSON.load_file(sprockets_manifest_json_file).dig("assets").values
+    assets = JSON.load_file(sprockets_manifest_json_file)["assets"].values
     assets.each do |asset|
       asset_file = "#{public_path}/#{asset}"
       writer = Brotli::Writer.new File.open("#{asset_file}.br", "w")
