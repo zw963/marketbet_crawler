@@ -37,6 +37,8 @@ class Jin10MessagesParser < ParserBase
       start_time = Time.now
       (group_count-1).times do |i|
         logger.info 'Clicking 更多'
+
+        # Ferrum::TimeoutError
         session.first(:xpath, './/span[contains(text(), "更多")]').click
 
         until (popup = session.first('.classify-popup .scroll-view-container', minimum: 0))
@@ -47,23 +49,27 @@ class Jin10MessagesParser < ParserBase
         category_ele = click_node.first(:xpath, '../preceding-sibling::dt')
         category = category_ele.text
         logger.info "Clicking #{category}/全部"
+
+        # Ferrum::TimeoutError
         click_node.click
 
         until (message = session.first('#jin_flash_list .jin-flash-item-container', minimum: 0))
           sleep 0.5
         end
 
+        # Capybara::Cuprite::ObsoleteNode
         if (title = message.first('.right-content', minimum: 0))
           category = Jin10MessageCategory.find_or_create(name: category)
+          text = title.text.gsub(/\s/, '')
 
           record = Jin10Message.find(
-            title: title.text,
+            # Capybara::Cuprite::ObsoleteNode
+            title: text,
             publish_date: Date.today
           )
 
           next if record.present?
 
-          text = title.text
 
           if text.start_with?('【')
             keyword = text[/【(.*)】.*/, 1]
