@@ -1,3 +1,11 @@
+trap(:QUIT) {
+  t = Thread.list.first
+  puts "#" * 90
+  p t
+  puts t.backtrace
+  puts "#" * 90
+}
+
 require 'bundler'
 
 require_relative 'load_env'
@@ -15,7 +23,7 @@ Capybara.register_driver(:cuprite) do |app|
   options = {
     pending_connection_errors: false,
     window_size: [1600, 900],
-    timeout: 30,
+    process_timeout: 15,
     browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false', 'start-maximized': true},
     headless: true,
   }
@@ -23,7 +31,7 @@ Capybara.register_driver(:cuprite) do |app|
   if ENV['RACK_ENV'] == 'development'
     options.update(
       headless: true,
-      slowmo: 0.25
+      slowmo: 0.5
     )
   end
 
