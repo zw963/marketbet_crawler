@@ -1,5 +1,15 @@
 #!/bin/bash
 
+function init_chrome () {
+    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+        sudo dnf localinstall google-chrome-stable_current_x86_64.rpm
+    fi
+}
+
 function package_exists () {
     if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
         dpkg -l "$*"
