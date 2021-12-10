@@ -44,12 +44,19 @@ function init_pg () {
     fi
 }
 
-if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
-    if ! package_exists nodejs; then
+function init_nodejs () {
+    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
         curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
         sudo apt-get install -y nodejs
+    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
+        if ! package_exists nodejs; then
+            curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
+            sudo yum install -y nodejs
+        fi
     fi
+}
 
+if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
     if ! package_exists nginx; then
         ## Replace focal with your corresponding Ubuntu release.
         cat <<'HEREDOC' > /etc/apt/sources.list.d/nginx.list
@@ -73,11 +80,6 @@ HEREDOC
     fi
 
 elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
-    if ! package_exists nodejs; then
-        curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
-        sudo yum install -y nodejs
-    fi
-
     if ! rpm -q --quiet python3-certbot-nginx; then
         yum install -y certbot python3-certbot-nginx
         # 1. Run `sudo certbot --nginx' to configure current domain.
