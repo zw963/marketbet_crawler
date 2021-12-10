@@ -19,7 +19,7 @@ class Jin10MessagesParser < ParserBase
 
     url = 'https://www.jin10.com'
     session.visit url
-    logger.info "goto #{url}"
+    logger.warn "goto #{url}"
 
     log = Log.create(type: 'jin10_latest_messages_parser')
 
@@ -32,7 +32,7 @@ class Jin10MessagesParser < ParserBase
     message_parser_proc = proc do
       start_time = Time.now
       (group_count-1).times do |i|
-        logger.info 'Clicking 更多'
+        logger.warn 'Clicking 更多'
 
         # Ferrum::TimeoutError
         session.first(:xpath, './/span[contains(text(), "更多")]').click
@@ -44,7 +44,7 @@ class Jin10MessagesParser < ParserBase
         click_node = popup.all(:xpath, './/span[text()=" 全部 "]')[i]
         category_ele = click_node.first(:xpath, '../preceding-sibling::dt')
         category = category_ele.text
-        logger.info "Clicking #{category}/全部"
+        logger.warn "Clicking #{category}/全部"
 
         # Ferrum::TimeoutError
         click_node.click
@@ -105,7 +105,7 @@ class Jin10MessagesParser < ParserBase
       elapsed_seconds = (end_time - start_time).to_i
 
       # 确保 retry_timeout 可以 timeout
-      logger.info "Done, wait for #{sleep_seconds - elapsed_seconds} seconds"
+      logger.warn "Done, wait for #{sleep_seconds - elapsed_seconds} seconds"
       sleep sleep_seconds
     end
 
