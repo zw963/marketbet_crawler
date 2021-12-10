@@ -23,17 +23,17 @@ class ParserBase
       timeout: 30,
       browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false', 'start-maximized': true},
       headless: true,
+      slowmo: 0.5
     }
 
     if ENV['RACK_ENV'] == 'development'
       options.update(
-        headless: true,
+        headless: false,
         slowmo: 0.5
       )
-      self.logger = Logger.new($stdout)
-    else
-      self.logger = Logger.new('log/chrome_headless.log', 10, 1024000)
     end
+
+    self.logger = Logger.new($stdout)
 
     self.instance = Ferrum::Browser.new(options)
   end

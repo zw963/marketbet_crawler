@@ -3,7 +3,9 @@ end
 
 class Jin10MessagesParserOld < ParserBase
   def parse
-    instance.goto 'https://ucenter.jin10.com'
+    url = 'https://ucenter.jin10.com'
+    logger.info "Visiting #{url}"
+    instance.goto url
 
     until (form=instance.at_css('#J_loginForm')) &&
         (login=form.at_css('#J_loginPhone')) &&
@@ -11,30 +13,40 @@ class Jin10MessagesParserOld < ParserBase
 
       sleep 0.5
     end
+    logger.info "Visiting #{url} done"
 
     login.focus.type(ENV['JIN10_USER'])
     form.at_css('#J_loginPassword').focus.type(ENV['JIN10_PASS'])
     instance.network.wait_for_idle
+    logger.info 'try clicking'
     form.at_css('button[type="submit"]').click
+    logger.info 'click done'
 
     # 好大的坑啊，这里好多应该用 until 的地方，用的是 unless.
     # 先不改了，备忘.
-    unless instance.at_css('#J_logout_wrap .ucenter-menu_title')
+    logger.info 'waiting enter user center'
+    until instance.at_css('div.ucenter-menu span.ucenter-menu_title')
+      # instance.screenshot(path: 'pngs/ccc.png')
       sleep 3
     end
+    logger.info 'login down'
 
     sleep_time = 420
 
     message_parser_proc = proc do
       url = 'https://www.jin10.com'
+      logger.info "visiting #{url}"
       instance.goto url
-      logger.info "goto #{url}"
 
       log = Log.create(type: 'jin10_latest_messages_parser')
 
       while (group_count = instance.css('ul.classify-list li').count) < 2
-        sleep 0.5
+        sleep 5
       end
+      logger.info "visit #{url} done"
+
+      instance.screenshot(path: 'pngs/bbb.png')
+      sleep 1000
 
       instance.execute("if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';

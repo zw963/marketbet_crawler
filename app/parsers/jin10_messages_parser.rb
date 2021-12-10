@@ -5,34 +5,52 @@ class Jin10MessagesParser < ParserBase
 
   def parse
     session = Capybara::Session.new(:cuprite)
-    session.visit('https://ucenter.jin10.com')
 
-    sleep 5 until session.has_css?('#J_loginPhone', wait: 10)
+    # proc1 = proc do
+    url = 'https://ucenter.jin10.com'
+    logger.info "Visiting #{url}"
+    session.visit(url)
+    sleep 5 until session.has_css?('#J_loginPhone')
+    logger.info "Visiting #{url} done."
 
+    logger.info 'Try logining'
     session.within '#J_loginForm' do
       session.fill_in id: 'J_loginPhone', with: ENV['JIN10_USER']
       session.fill_in id: 'J_loginPassword', with: ENV['JIN10_PASS']
+      logger.info 'clicking 登录'
       session.click_button '登录'
+      logger.info 'clicking 登录 done.'
     end
 
-    sleep 0.5 until session.has_css?('div.ucenter-menu span.ucenter-menu_title')
+    logger.info 'Entrying user center'
+    sleep 5 until session.has_css?('div.ucenter-menu span.ucenter-menu_title')
+    logger.info 'Entrying user center done.'
+    # end
+
+    # session.save_screenshot("pngs/aaa.png")
+    sleep 10
+    # retry_timeout 30, waiting_for_if: proc1, when_timeout_do:
 
     url = 'https://www.jin10.com'
+    logger.info "visiting #{url}"
     session.visit url
-    logger.warn "goto #{url}"
 
     log = Log.create(type: 'jin10_latest_messages_parser')
 
-    while (group_count = session.all('ul.classify-list li', wait: 10).count) < 2
+    times = 0
+    while (group_count = session.all('ul.classify-list li').count) < 2
+      times += 1
+      session.save_screenshot("pngs/#{times}.png")
       sleep 5
     end
+    logger.info "visiting #{url} done"
 
     sleep_seconds = 400
 
     message_parser_proc = proc do
       start_time = Time.now
       (group_count-1).times do |i|
-        logger.warn 'Clicking 更多'
+        logger.info 'Clicking 更多'
 
         # Ferrum::TimeoutError
         session.first(:xpath, './/span[contains(text(), "更多")]').click
@@ -44,7 +62,7 @@ class Jin10MessagesParser < ParserBase
         click_node = popup.all(:xpath, './/span[text()=" 全部 "]')[i]
         category_ele = click_node.first(:xpath, '../preceding-sibling::dt')
         category = category_ele.text
-        logger.warn "Clicking #{category}/全部"
+        logger.info "Clicking #{category}/全部"
 
         # Ferrum::TimeoutError
         click_node.click
@@ -105,7 +123,7 @@ class Jin10MessagesParser < ParserBase
       elapsed_seconds = (end_time - start_time).to_i
 
       # 确保 retry_timeout 可以 timeout
-      logger.warn "Done, wait for #{sleep_seconds - elapsed_seconds} seconds"
+      logger.info "Done, wait for #{sleep_seconds - elapsed_seconds} seconds"
       sleep sleep_seconds
     end
 
