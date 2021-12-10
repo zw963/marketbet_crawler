@@ -19,23 +19,29 @@ function package_exists () {
 }
 
 function init_pg () {
-    # 导入 pg 源
-    sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-    # 关闭 centos 内置的 pg 模块
-    sudo dnf -qy module disable postgresql
-    # 安装 pg
-    sudo dnf install -y postgresql14-devel
-    # 初始化数据库
-    sudo /usr/pgsql-14/bin/postgresql-14-setup initdb
+    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+        sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+        wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+        sudo apt-get update
+        sudo apt-get -y install postgresql libpq-dev
+    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
+        # 导入 pg 源
+        sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+        # 关闭 centos 内置的 pg 模块
+        sudo dnf -qy module disable postgresql
+        # 安装 pg
+        sudo dnf install -y postgresql14-devel
+        # 初始化数据库
+        sudo /usr/pgsql-14/bin/postgresql-14-setup initdb
 
-    sudo systemctl enable postgresql-14
-    sudo systemctl start postgresql-14
+        sudo systemctl enable postgresql-14
+        sudo systemctl start postgresql-14
 
-    sudo -u postgres psql -p 5432 -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
+        sudo -u postgres psql -p 5432 -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
 
-    # For install sequel_pg succesful, we have to add pg_config into $PATH
-    sed -i '1iPATH=/usr/pgsql-14/bin:$PATH'
-
+        # For install sequel_pg succesful, we have to add pg_config into $PATH
+        sed -i '1iPATH=/usr/pgsql-14/bin:$PATH'
+    fi
 }
 
 if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then

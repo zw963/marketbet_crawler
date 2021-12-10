@@ -1,6 +1,7 @@
 Sequel.migration do
   up do
-    run <<~'HEREDOC'
+    if DB.adapter_scheme == :postgres
+      run <<~'HEREDOC'
       ALTER TABLE jin10_messages
       ADD COLUMN textsearchable_index_col tsvector GENERATED ALWAYS
           AS
@@ -11,13 +12,16 @@ Sequel.migration do
           )
       STORED;
     HEREDOC
-    run 'CREATE INDEX jin10_messages_textsearch_idx_index ON jin10_messages USING GIN (textsearchable_index_col);'
+      run 'CREATE INDEX jin10_messages_textsearch_idx_index ON jin10_messages USING GIN (textsearchable_index_col);'
+    end
   end
 
   down do
-    alter_table(:jin10_messages) do
-      drop_index :textsearch_idx, if_exists: true
-      drop_column :textsearchable_index_col, if_exists: true
+    if DB.adapter_scheme == :postgres
+      alter_table(:jin10_messages) do
+        drop_index :textsearch_idx, if_exists: true
+        drop_column :textsearchable_index_col, if_exists: true
+      end
     end
   end
 end
