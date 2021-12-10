@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require_relative '../config/parser_loader'
 
-ins = Jin10MessagesParserOld.instance
+ins = Jin10MessagesParser.instance
 
 file = File.open('tmp/parse_jin10_done',  'a')
 file.puts '*'*100
