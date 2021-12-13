@@ -12,9 +12,13 @@ end
 
 class ParserBase
   include Singleton
-  attr_accessor :symbols, :instance, :page, :logger
+  attr_accessor :symbols, :page, :logger, :options, :use_ferrum_directly
+  attr_writer :instance, :session
 
   def initialize
+    self.logger = Logger.new($stdout)
+    logger.level = :warn if ENV['RACK_ENV'] == 'production'
+
     # self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
     options = {
       # logger: ChromeHeadlessLogger.new(Logger.new('log/chrome_headless.log', 10, 1024000)),
@@ -23,19 +27,35 @@ class ParserBase
       timeout: 30,
       browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false', 'start-maximized': true},
       headless: true,
+      slowmo: 0.5
     }
 
     if ENV['RACK_ENV'] == 'development'
       options.update(
-        headless: true,
+        headless: false,
         slowmo: 0.5
       )
-      self.logger = Logger.new($stdout)
-    else
-      self.logger = Logger.new('log/chrome_headless.log', 10, 1024000)
     end
 
-    self.instance = Ferrum::Browser.new(options)
+    self.options = options
+  end
+
+  def instance
+    if @instance.nil?
+      self.use_ferrum_directly = true
+      @instance = Ferrum::Browser.new(self.options)
+    end
+
+    @instance
+  end
+
+  def session
+    if @session.nil?
+      self.use_ferrum_directly = false
+      @session = Capybara::Session.new(:cuprite)
+    end
+
+    @session
   end
 
   def p2b(percent)
@@ -57,6 +77,7 @@ class ParserBase
 
   def run
     tries = 0
+    @need_login = true
 
     begin
       tries += 1
@@ -66,15 +87,26 @@ class ParserBase
         seconds = (1.8**tries).ceil
         logger.error "[#{Thread.current.object_id}] Retrying in #{seconds} seconds because #{$!.full_message}"
         sleep(seconds)
+        if use_ferrum_directly
+          instance.reset
+        else
+          session.driver.browser.reset
+        end
+        @need_login = true
         retry
       end
     ensure
-      instance.quit
+      if use_ferrum_directly
+        instance.quit
+      else
+        session.driver.browser.quit
+      end
     end
   end
 
-  def retry_timeout(seconds, waiting_for_if:, when_timeout_do: proc {}, message: '')
-    raise 'waiting_for_if must be a Proc object' unless waiting_for_if.is_a? Proc
+  def retry_until_timeout(seconds, keep_waiting_if: proc { true }, keep_waiting_until: proc { false }, when_timeout_do: proc {}, message: '', interval: 2)
+    raise 'keep_waiting_if must be a Proc object' unless keep_waiting_if.is_a? Proc
+    raise 'keep_waiting_until must be a Proc object' unless keep_waiting_until.is_a? Proc
     raise 'when_timeout_do must be a Proc object' unless when_timeout_do.is_a? Proc
 
     tries = 0
@@ -82,13 +114,14 @@ class ParserBase
       tries += 1
       Timeout.timeout(seconds) do
         loop do
-          sleep 0.5
-          break unless waiting_for_if.call
+          sleep interval
+          break unless keep_waiting_if.call
+          break if keep_waiting_until.call
         end
       end
     rescue TimeoutError
-      logger.info message if message.present?
-      logger.info "Timeout after waiting #{seconds} seconds, Retried #{tries} times."
+      logger.warn message if message.present?
+      logger.warn "Timeout after waiting #{seconds} seconds, Retried #{tries} times."
       when_timeout_do.call
       retry
     end
@@ -102,6 +135,17 @@ class ParserBase
       end
     end
   rescue Timeout::Error
-    logger.info "Timeout: #{message}!"
+    logger.warn "Timeout: #{message}!"
+  end
+
+  def wait_for_valid(&block)
+    loop do
+      ele=block.call
+      if (ele.moving? rescue nil)
+        break ele
+      end
+
+      sleep 0.5
+    end
   end
 end
