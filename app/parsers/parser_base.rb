@@ -16,8 +16,7 @@ class ParserBase
   attr_writer :instance, :session
 
   def initialize
-    self.logger = Logger.new($stdout)
-    logger.level = :warn if ENV['RACK_ENV'] == 'production'
+    self.logger = LOGGER
 
     # self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
     options = {

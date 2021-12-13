@@ -20,15 +20,4 @@ DB = Sequel.connect(DB_URL, timeout: 10000)
 warn "\033[0;34mRACK_ENV=#{ENV['RACK_ENV']}\033[0m"
 warn "\033[0;34mDB connected: #{DB_URL}\033[0m"
 
-require 'logger'
-
-case ENV['RACK_ENV']
-when 'development', 'production'
-  LOGGER = Logger.new($stdout)
-  LOGGER.level = Logger::WARN if ENV['RACK_ENV'] == 'production'
-when 'test'
-  LOGGER = Logger.new('log/test.log')
-  LOGGER.level = Logger::INFO
-end
-
 DB.loggers << LOGGER
