@@ -81,12 +81,22 @@ class App < Roda
         r.redirect r.referer
       end
 
-      r.is 'sync-ts-keyword' do
+      ts_tables = Regexp.union([
+        'investing-latest-news',
+        'jin10-messages'
+      ])
+
+      r.on /sync-(#{ts_tables})-keyword/ do |table_name|
         db = PG.connect(URI(DB_URL))
         db.exec("SELECT sync_zhprs_custom_word();")
         # UPDATE 语句必须在一个新的线程中运行，来反射到上面的 sync 函数的改变。
         # 因为 DB.run 使用线程池，无法确保使用新的线程，因此，这里必须使用 ruby-pg 直接运行。
-        db.exec("UPDATE investing_latest_news SET title = title, preview = preview;")
+        case table_name.tr('-', '_')
+        when 'investing_latest_news'
+          db.exec("UPDATE investing_latest_news SET title = title, preview = preview;")
+        when 'jin10_messages'
+          db.exec("UPDATE jin10_messages SET title = title;")
+        end
 
         r.redirect r.referer
       end

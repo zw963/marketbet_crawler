@@ -21,12 +21,13 @@
     ) %>
     <%== create_form(
       'sync-ts-keyword',
-      placeholder: '更新自定义关键字',
-      action: '/sync-ts-keyword',
+      placeholder: '刷新索引（耗时操作）',
+      action: '/sync-investing-latest-news-keyword',
       method: 'post',
       icon: 'refresh',
       grid_offset: 'offset-s1',
-      use_input: false
+      use_input: false,
+      size: 3
     ) %>
   </div>
 </div>
