@@ -32,7 +32,7 @@ class Jin10MessagesParser < ParserBase
           5,
           message: 'click "更多" again',
           keep_waiting_until: proc { popup = session.first('.classify-popup .scroll-view-container', minimum: 0) },
-          when_timeout_do: proc { session.first(:xpath, './/span[contains(text(), "更多")]').click }
+          when_timeout_do: proc { session.first(:xpath, './/span[contains(text(), "更多")]').click(wait: 5) }
         )
 
         all_link = popup.all(:xpath, './/span[text()=" 全部 "]')[i]

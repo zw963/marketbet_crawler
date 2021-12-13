@@ -3,7 +3,6 @@ source "https://rubygems.org"
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 gem 'hot_reloader'
-gem "ferrum"
 gem 'terminal-table'
 gem 'sequel_pg', require: 'sequel'
 gem 'sequel-annotate'
@@ -50,8 +49,9 @@ group :test do
 end
 
 # group :development, :test do
-gem 'capybara'
+gem "ferrum"
 gem 'cuprite'
+gem 'capybara'
 # end
 
 group :production do
