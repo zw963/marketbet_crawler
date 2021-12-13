@@ -1,9 +1,9 @@
 namespace :db do
-  task :load_env do |_t, _args|
-    require_relative '../../config/load_env'
+  task :early_init do |_t, _args|
+    require_relative '../../config/early_init'
   end
 
-  task :init_db => [:load_env] do |_t, _args|
+  task :init_db => [:early_init] do |_t, _args|
     require_relative '../../config/db'
     require_relative '../migration_helper'
   end
@@ -14,7 +14,7 @@ namespace :db do
   end
 
   desc "Create database"
-  task :create => [:load_env] do |_t, _args|
+  task :create => [:early_init] do |_t, _args|
     database, db_url = get_db_url
 
     if db_url.start_with? 'sqlite'
@@ -27,7 +27,7 @@ namespace :db do
   end
 
   desc "Drop database"
-  task :drop => [:load_env] do |_t, _args|
+  task :drop => [:early_init] do |_t, _args|
     database, db_url = get_db_url
 
     if db_url.start_with? 'sqlite'
