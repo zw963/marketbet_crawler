@@ -5,7 +5,7 @@ class InsiderHistoryParser < ParserBase
     log = Log.create(type: 'insider_parser')
     symbols.uniq.each_slice(2).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
-        Thread.new(instance) do |browser|
+        Thread.new(browser) do |browser|
           context = browser.contexts.create
           page = context.create_page
           sleep rand(3)

@@ -13,12 +13,12 @@ end
 class ParserBase
   include Singleton
   attr_accessor :symbols, :page, :logger, :options, :use_ferrum_directly
-  attr_writer :instance, :session
+  attr_writer :browser, :session
 
   def initialize
     self.logger = LOGGER
 
-    # self.instance = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
+    # self.browser = Ferrum::Browser.new(headless: true, window_size: [1800, 1080], browser_options: {"proxy-server": "socks5://127.0.0.1:22336"})
     options = {
       # logger: ChromeHeadlessLogger.new(Logger.new('log/chrome_headless.log', 10, 1024000)),
       pending_connection_errors: false,
@@ -39,17 +39,13 @@ class ParserBase
     self.options = options
   end
 
-  def instance
-    if @instance.nil?
+  def browser
+    if @browser.nil?
       self.use_ferrum_directly = true
-      @instance = Ferrum::Browser.new(self.options)
+      @browser = Ferrum::Browser.new(self.options)
     end
 
-    @instance
-  end
-
-  def browser
-    instance
+    @browser
   end
 
   def session
@@ -91,7 +87,7 @@ class ParserBase
         logger.error "[#{Thread.current.object_id}] Retrying in #{seconds} seconds because #{$!.full_message}"
         sleep(seconds)
         if use_ferrum_directly
-          instance.quit
+          browser.quit
         else
           session.driver.browser.quit
         end
@@ -100,7 +96,7 @@ class ParserBase
       end
     ensure
       if use_ferrum_directly
-        instance.quit
+        browser.quit
       else
         session.driver.browser.quit
       end

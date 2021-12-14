@@ -8,7 +8,7 @@ class Jin10MessagesParserNew < ParserBase
 
     logger.warn "visiting #{url}"
 
-    instance.goto url
+    browser.goto url
 
     log = Log.create(type: 'jin10_latest_messages_parser')
 

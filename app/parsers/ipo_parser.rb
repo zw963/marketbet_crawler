@@ -7,7 +7,7 @@ class IpoParser < ParserBase
     log = Log.create(type: 'ipo_parser')
     symbols.uniq.each_slice(1).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
-        Thread.new(instance) do |browser|
+        Thread.new(browser) do |browser|
           context = browser.contexts.create
           page = context.create_page
           sleep rand(3)

@@ -4,9 +4,9 @@ class InvestingLatestNewsParser < ParserBase
 
     url = "https://cn.investing.com/news/latest-news"
     puts url
-    instance.goto url
+    browser.goto url
 
-    news_urls = instance.css('.largeTitle article.articleItem .textDiv').map do |e|
+    news_urls = browser.css('.largeTitle article.articleItem .textDiv').map do |e|
       [
         e.text,
         "https://cn.investing.com#{e.at_css('a').attribute('href')}"

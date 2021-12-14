@@ -5,9 +5,9 @@ class Jin10MessagesParserOld < ParserBase
   def parse
     # url = 'https://ucenter.jin10.com'
     # logger.info "Visiting #{url}"
-    # instance.goto url
+    # browser.goto url
 
-    # until (form=instance.at_css('#J_loginForm')) &&
+    # until (form=browser.at_css('#J_loginForm')) &&
     #     (login=form.at_css('#J_loginPhone')) &&
     #     login.focusable?
 
@@ -18,13 +18,13 @@ class Jin10MessagesParserOld < ParserBase
 
     # login.focus.type(ENV['JIN10_USER'])
     # form.at_css('#J_loginPassword').focus.type(ENV['JIN10_PASS'])
-    # instance.network.wait_for_idle
+    # browser.network.wait_for_idle
     # logger.info 'try clicking'
     # form.at_css('button[type="submit"]').click
     # logger.info 'click done'
 
     # logger.info 'waiting enter user center'
-    # until instance.at_css('div.ucenter-menu span.ucenter-menu_title')
+    # until browser.at_css('div.ucenter-menu span.ucenter-menu_title')
     #   sleep 3
     #   puts 'sleep for div.ucenter-menu span.ucenter-menu_title'
     # end
@@ -35,17 +35,17 @@ class Jin10MessagesParserOld < ParserBase
     message_parser_proc = proc do
       url = 'https://www.jin10.com'
       logger.info "visiting #{url}"
-      instance.goto url
+      browser.goto url
 
       log = Log.create(type: 'jin10_latest_messages_parser')
 
-      while (group_count = instance.css('ul.classify-list li').count) < 2
+      while (group_count = browser.css('ul.classify-list li').count) < 2
         sleep 2
         puts 'waiting for ul.classify-list li size must > 2'
       end
       logger.info "visit #{url} done"
 
-      instance.execute("if ('scrollRestoration' in history) {
+      browser.execute("if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
       }")
 
@@ -63,31 +63,31 @@ class Jin10MessagesParserOld < ParserBase
 
         (0...5).cycle do |e|
           # 先置顶
-          # instance.execute("window.scrollTo({ top: 0, behavior: 'smooth' })")
+          # browser.execute("window.scrollTo({ top: 0, behavior: 'smooth' })")
 
-          # instance.wait_for_stop_moving
+          # browser.wait_for_stop_moving
 
-          if not instance.at_css('.classify-popup .scroll-view-container')
-            more_link = wait_for_valid { instance.at_xpath('.//span[contains(text(), "更多")]') }
-            # instance.network.wait_for_idle
+          if not browser.at_css('.classify-popup .scroll-view-container')
+            more_link = wait_for_valid { browser.at_xpath('.//span[contains(text(), "更多")]') }
+            # browser.network.wait_for_idle
             more_link.click
-            # instance.network.wait_for_idle
+            # browser.network.wait_for_idle
           end
 
           # retry_timeout(
           #   5,
-          #   waiting_for_if: proc { not instance.at_css('.classify-popup .scroll-view-container') },
-          #   # when_timeout_do: proc { instance.keyboard.type(:pageup); more_link.click },
+          #   waiting_for_if: proc { not browser.at_css('.classify-popup .scroll-view-container') },
+          #   # when_timeout_do: proc { browser.keyboard.type(:pageup); more_link.click },
           #   message: 'Try clicking "更多" scroll-view again.'
           # )
 
-          until (popup = instance.at_css('.classify-popup .scroll-view-container'))
+          until (popup = browser.at_css('.classify-popup .scroll-view-container'))
             sleep 2
             puts 'waiting for popup appear'
           end
 
           click_node = popup.xpath('.//span[text()=" 全部 "]')[i]
-          # instance.network.wait_for_idle
+          # browser.network.wait_for_idle
           category_ele = click_node.at_xpath('../preceding-sibling::dt')
           new_category = category_ele.text
 
@@ -101,11 +101,11 @@ class Jin10MessagesParserOld < ParserBase
             # 表示找不到下一个 全部 link, 尝试往下翻页再尝试点击 link
             sleep 0.8
             logger.info 'keyboard move pagedown!'
-            instance.keyboard.type(:pagedown)
+            browser.keyboard.type(:pagedown)
           end
 
           # click_node.wait_for_stop_moving
-          # instance.network.wait_for_idle #
+          # browser.network.wait_for_idle #
 
           logger.info "Will clicking #{new_category}/全部"
 
@@ -114,22 +114,22 @@ class Jin10MessagesParserOld < ParserBase
 
           logger.info "Clicking category #{new_category}/全部"
 
-          while instance.at_css('.classify-popup .scroll-view-container')
+          while browser.at_css('.classify-popup .scroll-view-container')
             sleep 2
             puts 'waiting for popup disappear'
           end
 
           if need_login
-            until (login_phone = instance.at_css('input#login_phone')) &&
+            until (login_phone = browser.at_css('input#login_phone')) &&
                 login_phone.focusable?
             end
             login_phone.focus.type(ENV['JIN10_USER'])
-            instance.at_css('input#login_pwd').focus.type(ENV['JIN10_PASS'])
+            browser.at_css('input#login_pwd').focus.type(ENV['JIN10_PASS'])
 
             login_phone.at_xpath('../../following-sibling::button[@data-type="login"]').click
           end
 
-          until (active_tab = instance.at_css('li.classify-item.active'))
+          until (active_tab = browser.at_css('li.classify-item.active'))
             sleep 2
             puts 'waiting for active tab appear'
           end
@@ -151,12 +151,12 @@ class Jin10MessagesParserOld < ParserBase
           end
         end
 
-        until (message = instance.at_css('#jin_flash_list .jin-flash-item-container'))
+        until (message = browser.at_css('#jin_flash_list .jin-flash-item-container'))
           sleep 2
           puts 'waiting for flash message appear'
         end
 
-        old_id = instance.at_css('li.classify-item.active').attribute('data-id')
+        old_id = browser.at_css('li.classify-item.active').attribute('data-id')
         old_category = new_category
 
         if (title = message.at_css('.right-content'))
