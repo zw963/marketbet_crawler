@@ -48,7 +48,7 @@ describe 'retrieve investing latest news' do
 
     sleep 1
 
-    post '/sync-ts-keyword'
+    post '/sync-investing-latest-news-keyword'
 
     assert last_response.redirect?
 
