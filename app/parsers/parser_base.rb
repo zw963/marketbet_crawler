@@ -48,6 +48,10 @@ class ParserBase
     @instance
   end
 
+  def browser
+    instance
+  end
+
   def session
     if @session.nil?
       self.use_ferrum_directly = false
@@ -87,9 +91,9 @@ class ParserBase
         logger.error "[#{Thread.current.object_id}] Retrying in #{seconds} seconds because #{$!.full_message}"
         sleep(seconds)
         if use_ferrum_directly
-          instance.reset
+          instance.quit
         else
-          session.driver.browser.reset
+          session.driver.browser.quit
         end
         @need_login = true
         retry

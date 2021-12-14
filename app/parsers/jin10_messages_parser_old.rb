@@ -204,15 +204,4 @@ class Jin10MessagesParserOld < ParserBase
     # end
     # retry_timeout sleep_time, message: 'Try https://www.jin10.com again', waiting_for_if: message_parser_proc
   end
-
-  def wait_for_valid(&block)
-    loop do
-      ele=block.call
-      if (ele.moving? rescue nil)
-        break ele
-      end
-
-      sleep 0.5
-    end
-  end
 end
