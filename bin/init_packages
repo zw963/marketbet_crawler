@@ -57,12 +57,19 @@ function init_nodejs () {
 }
 
 if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+    # 使用下面的命令查看 Ubuntu 发布版的编号
+    code_name=$(cat /etc/lsb-release |grep DISTRIB_CODENAME |cut -d'=' -f2)
+
+    sudo wget https://nginx.org/keys/nginx_signing.key
+    sudo apt-key add nginx_signing.key
+
     if ! package_exists nginx; then
         ## Replace focal with your corresponding Ubuntu release.
-        cat <<'HEREDOC' > /etc/apt/sources.list.d/nginx.list
-deb https://nginx.org/packages/ubuntu/ focal nginx
-deb-src https://nginx.org/packages/ubuntu/ focal nginx
+        cat <<HEREDOC > /etc/apt/sources.list.d/nginx.list
+deb https://nginx.org/packages/ubuntu/ ${code_name} nginx
+deb-src https://nginx.org/packages/ubuntu/ ${code_name} nginx
 HEREDOC
+
         sudo apt update
         sudo apt install nginx
         systemctl enable nginx
