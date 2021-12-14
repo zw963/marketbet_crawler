@@ -93,8 +93,10 @@ class App < Roda
         # 因为 DB.run 使用线程池，无法确保使用新的线程，因此，这里必须使用 ruby-pg 直接运行。
         case table_name.tr('-', '_')
         when 'investing_latest_news'
+          LOGGER.warn 'update index on investing_latest_news'
           db.exec("UPDATE investing_latest_news SET title = title, preview = preview;")
         when 'jin10_messages'
+          LOGGER.warn 'update index on jin10_messages'
           db.exec("UPDATE jin10_messages SET title = title;")
         end
 
