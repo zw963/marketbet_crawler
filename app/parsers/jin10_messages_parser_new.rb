@@ -12,7 +12,7 @@ class Jin10MessagesParserNew < ParserBase
 
     log = Log.create(type: 'jin10_latest_messages_parser')
 
-    sleep 2 while (group_count = browser.css('ul.classify-list li').count) < 2
+    sleep 2 while browser.css('ul.classify-list li').count < 2
 
     logger.warn "visit #{url} done"
 
@@ -30,7 +30,7 @@ class Jin10MessagesParserNew < ParserBase
         if (content = item.at_css('.right-content'))
           text = content.text.gsub(/\s/, '')
 
-          if (link = content.at_xpath('./following-sibling::div[@class="flash-remark"]/a'))
+          if (link = item.at_css('.flash-remark a'))
             url = link.attribute('href')
           end
 
@@ -42,6 +42,8 @@ class Jin10MessagesParserNew < ParserBase
           ].include? url
             url = ''
           end
+
+          logger.warn "Get url: #{url}" if url.present?
 
           if text.start_with?('【')
             keyword = text[/【(.*)】.*/, 1]
@@ -79,7 +81,7 @@ class Jin10MessagesParserNew < ParserBase
         retry
       end
 
-      sleep 30
+      sleep 45
     end
 
   ensure
