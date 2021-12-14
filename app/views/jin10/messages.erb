@@ -15,9 +15,20 @@
       <div class="input-field col s2 tooltipped" data-position="bottom" data-tooltip="选择查看几天的消息">
         <select name="days">
           <option value="1" selected>当天</option>
-          <% (2..9).each do |day| %>
+          <% mapping = {
+            1 => '今天',
+            3 => '最近三天',
+            7 => '最近一周',
+            15 => '最近半个月',
+            30 => '最近一个月',
+            90 => '最近三个月',
+            180 => '最近半年',
+            360 => '最近一年',
+            -1 => '所有',
+          } %>
+          <% mapping.each do |day, text| %>
             <%= selected = day == request.params['days'].to_i ? 'selected' : '' %>
-            <option <%= selected %> value="<%= day %>">最近<%= day %>天</option>
+            <option <%= selected %> value="<%= day %>"><%= text %></option>
           <% end %>
         </select>
       </div>
