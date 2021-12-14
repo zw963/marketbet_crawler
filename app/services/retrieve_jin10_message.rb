@@ -23,7 +23,12 @@ class RetrieveJin10Message < Actor
       # 默认只显示当天的
       messages = Jin10Message.where(publish_date: Sequel.lit('current_date'))
     elsif days.to_i == -1
-      messages = Jin10Message.dataset
+      if q.blank?
+        messages = Jin10Message.dataset.nullify
+        fail_message = "搜索全部结果，必须指定搜索关键字！"
+      else
+        messages = Jin10Message.dataset
+      end
     else
       messages = Jin10Message.where {|r| r.publish_date > Sequel.lit("current_date - interval ?", "#{days} days")}
     end
@@ -37,6 +42,8 @@ class RetrieveJin10Message < Actor
     end
 
     result.messages = messages.order(sort).paginate(page.to_i, per.to_i)
-    result.fail!(message: "没有结果！") if messages.empty?
+    fail_message ||= "没有结果！" if messages.empty?
+
+    result.fail!(message: fail_message) if fail_message.present?
   end
 end

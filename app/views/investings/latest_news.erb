@@ -3,7 +3,7 @@
     <%== create_form('news-complete', placeholder: '输入关键字') %>
     <%== create_form(
       'add-ts-keyword',
-      placeholder: '新增自定义关键字',
+      placeholder: '新增关键字',
       action: '/add-ts-keyword',
       param: 'new_keyword',
       method: 'post',
@@ -12,22 +12,21 @@
     ) %>
     <%== create_form(
       'remove-ts-keyword',
-      placeholder: '删除自定义关键字',
+      placeholder: '删除关键字',
       action: '/remove-ts-keyword',
       param: 'keyword',
       method: 'post',
-      icon: 'send',
-      grid_offset: 'offset-s1'
+      icon: 'send'
     ) %>
     <%== create_form(
       'sync-ts-keyword',
-      placeholder: '刷新索引（耗时操作）',
+      placeholder: '刷新关键字索引（耗时操作）',
       action: '/sync-investing-latest-news-keyword',
       method: 'post',
       icon: 'refresh',
-      grid_offset: 'offset-s1',
       use_input: false,
-      size: 3
+      grid_offset: 'offset-s1',
+      size: 4
     ) %>
   </div>
 </div>
