@@ -36,9 +36,6 @@
         <i class="material-icons prefix submit-icon" onclick="this.closest('form').submit(); return false;">search</i>
       </div>
       <div class="input-field col s2 offset-s1">
-        <p>返回数量: <%= @messages.pagination_record_count %>条</p>
-      </div>
-      <div class="input-field col s2">
         <i class="material-icons prefix submit-icon" onClick="window.location.reload();">refresh</i>
         <label>刷新页面</label>
       </div>
@@ -83,6 +80,8 @@
 <% if @error_message.present? %>
   <p><%== @error_message %></p>
 <% end %>
+
+<%== paginate @messages %>
 
 <table class="highlight centered responsive-table">
   <thead>
