@@ -72,7 +72,6 @@ Sequel.migration do
       String :title, :text=>true
       Date :publish_date
       String :publish_time_string, :text=>true
-      String :url, :text=>true
       TrueClass :important, :default=>false
       DateTime :created_at
       DateTime :updated_at
@@ -80,6 +79,7 @@ Sequel.migration do
       Integer :jin10_message_tag_id
       foreign_key :jin10_message_category_id, :jin10_message_categories, :key=>[:id]
       String :textsearchable_index_col
+      String :properties
       
       index [:important]
       index [:jin10_message_tag_id]

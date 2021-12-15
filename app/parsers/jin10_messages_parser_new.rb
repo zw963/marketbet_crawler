@@ -34,14 +34,9 @@ class Jin10MessagesParserNew < ParserBase
             message_url = link.attribute('href')
           end
 
-          # if [
-          #   'https://www.jin10.com',
-          #   'https://v.jin10.com/live/index.html#/vip',
-          #   'https://rili.jin10.com/',
-          #   'https://tv.jin10.com/#/tradeCollege'
-          # ].include? url
-          #   url = ''
-          # end
+          if (image_link = item.at_css('.right-top .right-pic img'))
+            image_url = image_link.attribute('src')
+          end
 
           logger.warn "Get message url: #{message_url}" if message_url.present?
 
@@ -69,7 +64,8 @@ class Jin10MessagesParserNew < ParserBase
             publish_date: date,
             publish_time_string: time,
             important: is_important,
-            url: message_url.to_s
+            url: message_url.to_s,
+            image_url: image_url.to_s
           }
 
           Jin10Message.create(new_record)

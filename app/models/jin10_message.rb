@@ -1,6 +1,8 @@
 class Jin10Message < Sequel::Model
   many_to_one :category, key: :jin10_message_category_id, class: 'Jin10MessageCategory'
   many_to_one :tag, key: :jin10_message_tag_id, class: 'Jin10MessageTag'
+
+  store_accessor :properties, :url, :image_url
 end
 
 # Table: jin10_messages

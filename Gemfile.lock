@@ -154,6 +154,8 @@ GEM
     sequel (5.51.0)
     sequel-annotate (1.7.0)
       sequel (>= 4)
+    sequel-store (0.1.0)
+      sequel
     sequel_pg (1.14.0)
       pg (>= 0.18.0, != 1.2.0)
       sequel (>= 4.38.0)
@@ -219,6 +221,7 @@ DEPENDENCIES
   roda-sprockets
   sassc
   sequel-annotate
+  sequel-store
   sequel_pg
   sequel_postgresql_triggers
   service_actor

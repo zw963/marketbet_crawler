@@ -8,7 +8,9 @@ DB.extension :pagination
 DB.extension :null_dataset
 
 if DB.adapter_scheme == :postgres
+  Sequel.extension :store_accessor
   DB.extension :pg_triggers
+  DB.extension :pg_json
   DB.extension :pg_streaming
   # DB.stream_all_queries = true
 end
