@@ -25,13 +25,13 @@ class Jin10MessagesParserNew < ParserBase
         first_flash_message = jin_flash_date.at_xpath('./following-sibling::div')
         is_important = first_flash_message.attribute('class').include?('is-important')
         time = first_flash_message.at_css('.item-time').text
-        item = first_flash_message.at_css('.item-right .right-top')
+        item = first_flash_message.at_css('.item-right')
 
         if (content = item.at_css('.right-content'))
           text = content.text.gsub(/\s/, '')
 
-          if (link = item.at_css('.flash-remark a'))
-            url = link.attribute('href')
+          if (link = item.at_css('.right-top .flash-remark a'))
+            message_url = link.attribute('href')
           end
 
           # if [
@@ -43,7 +43,7 @@ class Jin10MessagesParserNew < ParserBase
           #   url = ''
           # end
 
-          logger.warn "Get url: #{url}" if url.present?
+          logger.warn "Get message url: #{message_url}" if message_url.present?
 
           if text.start_with?('【')
             keyword = text[/【(.*)】.*/, 1]
@@ -69,7 +69,7 @@ class Jin10MessagesParserNew < ParserBase
             publish_date: date,
             publish_time_string: time,
             important: is_important,
-            url: url.to_s
+            url: message_url.to_s
           }
 
           Jin10Message.create(new_record)
