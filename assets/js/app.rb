@@ -23,6 +23,8 @@ $document.ready do
   when '/latest-institution-histories'
     institution_history_dropdown()
     change_institution_display_name_modal_dialog()
+  when '/jin10-messages'
+    `setInterval('window.location.reload()', 30000)`
   end
 end
 
