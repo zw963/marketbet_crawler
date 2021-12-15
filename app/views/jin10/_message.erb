@@ -4,6 +4,11 @@
   title = highlight_keyword(request.params['q'], message[:title])
   title = "<a target=\"_blank\" href=\"#{message[:url]}\">#{title}</a>" if message[:url].present?
   %>
-  <td><%== title %></td>
+  <td>
+    <%== title %>
+    <% if message[:image_url].present? %>
+      <img src="#{message[:image_url]}">
+    <% end %>
+  </td>
   <td><%= message[:publish_time_string] %></td>
 </tr>
