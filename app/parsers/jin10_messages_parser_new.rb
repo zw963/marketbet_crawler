@@ -25,7 +25,7 @@ class Jin10MessagesParserNew < ParserBase
         first_flash_message = jin_flash_date.at_xpath('./following-sibling::div')
         is_important = first_flash_message.attribute('class').include?('is-important')
         time = first_flash_message.at_css('.item-time').text
-        item = first_flash_message.at_css('.item-right')
+        item = first_flash_message.at_css('.item-right .right-top')
 
         if (content = item.at_css('.right-content'))
           text = content.text.gsub(/\s/, '')
@@ -34,14 +34,14 @@ class Jin10MessagesParserNew < ParserBase
             url = link.attribute('href')
           end
 
-          if [
-            'https://www.jin10.com',
-            'https://v.jin10.com/live/index.html#/vip',
-            'https://rili.jin10.com/',
-            'https://tv.jin10.com/#/tradeCollege'
-          ].include? url
-            url = ''
-          end
+          # if [
+          #   'https://www.jin10.com',
+          #   'https://v.jin10.com/live/index.html#/vip',
+          #   'https://rili.jin10.com/',
+          #   'https://tv.jin10.com/#/tradeCollege'
+          # ].include? url
+          #   url = ''
+          # end
 
           logger.warn "Get url: #{url}" if url.present?
 

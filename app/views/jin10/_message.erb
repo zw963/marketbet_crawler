@@ -2,7 +2,7 @@
   <td><%= message[:id] %></td>
   <%
   title = highlight_keyword(request.params['q'], message[:title])
-  title = "<a href=\"#{message[:url]}\">#{title}</a>" if message[:url].present?
+  title = "<a target=\"_blank\" href=\"#{message[:url]}\">#{title}</a>" if message[:url].present?
   %>
   <td><%== title %></td>
   <td><%= message[:publish_time_string] %></td>
