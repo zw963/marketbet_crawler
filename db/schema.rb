@@ -1,85 +1,85 @@
 Sequel.migration do
   change do
-    create_table(:exchanges, :ignore_index_errors=>true) do
+    create_table(:exchanges) do
       primary_key :id
-      String :name, :text=>true, :null=>false
+      column :name, "text", :null=>false
       
       index [:name], :name=>:exchanges_name_key, :unique=>true
     end
     
     create_table(:insiders) do
       primary_key :id
-      String :name, :text=>true
-      Date :last_trade_date
-      Integer :number_of_trade_times
-      String :last_trade_stock, :text=>true
-      Integer :trade_on_stock_amount
+      column :name, "text"
+      column :last_trade_date, "date"
+      column :number_of_trade_times, "integer"
+      column :last_trade_stock, "text"
+      column :trade_on_stock_amount, "integer"
     end
     
     create_table(:institutions) do
       primary_key :id
-      String :name, :text=>true, :null=>false
-      String :display_name, :text=>true
+      column :name, "text", :null=>false
+      column :display_name, "text"
     end
     
-    create_table(:investing_latest_news, :ignore_index_errors=>true) do
+    create_table(:investing_latest_news) do
       primary_key :id
-      String :url, :text=>true, :null=>false
-      String :title, :text=>true, :null=>false
-      String :preview, :text=>true, :null=>false
-      String :source, :text=>true, :null=>false
-      String :publish_time_string, :text=>true, :null=>false
-      DateTime :publish_time, :null=>false
-      DateTime :created_at, :null=>false
-      DateTime :updated_at
-      String :textsearchable_index_col
-      TrueClass :is_read, :default=>false
+      column :url, "text", :null=>false
+      column :title, "text", :null=>false
+      column :preview, "text", :null=>false
+      column :source, "text", :null=>false
+      column :publish_time_string, "text", :null=>false
+      column :publish_time, "timestamp without time zone", :null=>false
+      column :created_at, "timestamp without time zone", :null=>false
+      column :updated_at, "timestamp without time zone"
+      column :textsearchable_index_col, "tsvector", :generated_always_as=>Sequel::LiteralString.new("to_tsvector('zhparser'::regconfig, ((COALESCE(title, ''::text) || ' '::text) || COALESCE(preview, ''::text)))")
+      column :is_read, "boolean", :default=>false
       
       index [:publish_time]
       index [:textsearchable_index_col], :name=>:investing_latest_news_textsearch_idx_index
       index [:url]
     end
     
-    create_table(:jin10_message_categories, :ignore_index_errors=>true) do
+    create_table(:jin10_message_categories) do
       primary_key :id
-      String :name, :text=>true
+      column :name, "text"
       
       index [:name], :name=>:jin10_message_categories_name_key, :unique=>true
     end
     
-    create_table(:jin10_message_tags, :ignore_index_errors=>true) do
+    create_table(:jin10_message_tags) do
       primary_key :id
-      String :name, :text=>true
+      column :name, "text"
       
       index [:name], :name=>:jin10_message_tags_name_key, :unique=>true
     end
     
     create_table(:logs) do
       primary_key :id
-      String :type, :text=>true, :null=>false
-      DateTime :finished_at
-      DateTime :created_at, :null=>false
+      column :type, "text", :null=>false
+      column :finished_at, "timestamp without time zone"
+      column :created_at, "timestamp without time zone", :null=>false
     end
     
     create_table(:schema_migrations) do
-      String :filename, :text=>true, :null=>false
+      column :filename, "text", :null=>false
       
       primary_key [:filename]
     end
     
-    create_table(:jin10_messages, :ignore_index_errors=>true) do
+    create_table(:jin10_messages) do
       primary_key :id
-      String :title, :text=>true
-      Date :publish_date
-      String :publish_time_string, :text=>true
-      TrueClass :important, :default=>false
-      DateTime :created_at
-      DateTime :updated_at
-      String :keyword, :default=>"", :text=>true, :null=>false
-      Integer :jin10_message_tag_id
+      column :title, "text"
+      column :publish_date, "date"
+      column :publish_time_string, "text"
+      column :important, "boolean", :default=>false
+      column :created_at, "timestamp without time zone"
+      column :updated_at, "timestamp without time zone"
+      column :keyword, "text", :default=>"", :null=>false
+      column :jin10_message_tag_id, "integer"
       foreign_key :jin10_message_category_id, :jin10_message_categories, :key=>[:id]
-      String :textsearchable_index_col
-      String :properties
+      column :textsearchable_index_col, "tsvector", :generated_always_as=>Sequel::LiteralString.new("to_tsvector('zhparser'::regconfig, title)")
+      column :properties, "jsonb", :default=>Sequel::LiteralString.new("'{}'::jsonb")
       
       index [:important]
       index [:jin10_message_tag_id]
@@ -89,52 +89,52 @@ Sequel.migration do
     
     create_table(:new_stocks) do
       primary_key :id
-      String :name, :text=>true, :null=>false
+      column :name, "text", :null=>false
       foreign_key :exchange_id, :exchanges, :key=>[:id]
-      BigDecimal :percent_of_institutions
+      column :percent_of_institutions, "numeric"
     end
     
-    create_table(:stocks, :ignore_index_errors=>true) do
+    create_table(:stocks) do
       primary_key :id
-      String :name, :text=>true, :null=>false
+      column :name, "text", :null=>false
       foreign_key :exchange_id, :exchanges, :key=>[:id]
-      BigDecimal :percent_of_institutions
-      String :ipo_price, :text=>true
-      BigDecimal :ipo_amount
-      String :ipo_placement, :text=>true
-      Date :ipo_date
-      BigDecimal :ipo_average_price
-      BigDecimal :ipo_placement_number
-      Date :next_earnings_date
+      column :percent_of_institutions, "numeric"
+      column :ipo_price, "text"
+      column :ipo_amount, "numeric"
+      column :ipo_placement, "text"
+      column :ipo_date, "date"
+      column :ipo_average_price, "numeric"
+      column :ipo_placement_number, "numeric"
+      column :next_earnings_date, "date"
       
       index [:name], :name=>:stocks_name_key, :unique=>true
     end
     
     create_table(:insider_histories) do
       primary_key :id
-      Date :date, :null=>false
-      String :title, :text=>true, :null=>false
-      Integer :number_of_holding
-      Integer :number_of_shares, :null=>false
-      BigDecimal :average_price, :null=>false
-      BigDecimal :share_total_price, :null=>false
-      DateTime :created_at, :null=>false
+      column :date, "date", :null=>false
+      column :title, "text", :null=>false
+      column :number_of_holding, "integer"
+      column :number_of_shares, "integer", :null=>false
+      column :average_price, "numeric", :null=>false
+      column :share_total_price, "numeric", :null=>false
+      column :created_at, "timestamp without time zone", :null=>false
       foreign_key :stock_id, :stocks, :key=>[:id]
       foreign_key :insider_id, :insiders, :key=>[:id]
     end
     
     create_table(:institution_histories) do
       primary_key :id
-      Integer :number_of_holding, :null=>false
-      BigDecimal :market_value
-      BigDecimal :percent_of_shares_for_stock
-      BigDecimal :percent_of_shares_for_institution
-      BigDecimal :quarterly_changes_percent
-      Integer :quarterly_changes
-      String :market_value_dollar_string, :text=>true
-      BigDecimal :holding_cost
-      Date :date
-      DateTime :created_at
+      column :number_of_holding, "integer", :null=>false
+      column :market_value, "numeric"
+      column :percent_of_shares_for_stock, "numeric"
+      column :percent_of_shares_for_institution, "numeric"
+      column :quarterly_changes_percent, "numeric"
+      column :quarterly_changes, "integer"
+      column :market_value_dollar_string, "text"
+      column :holding_cost, "numeric"
+      column :date, "date"
+      column :created_at, "timestamp without time zone"
       foreign_key :stock_id, :stocks, :key=>[:id]
       foreign_key :institution_id, :institutions, :key=>[:id]
     end

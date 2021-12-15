@@ -67,7 +67,7 @@ namespace :db do
 
   desc "Dump database"
   task :dump => [:init_db] do |_t, _args|
-    sh "bundle exec sequel -d #{DB.url} > db/schema.rb"
+    sh "bundle exec sequel -D #{DB.url} > db/schema.rb"
   end
 
   desc "Reset database"
