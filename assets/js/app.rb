@@ -8,14 +8,22 @@ require 'browser/http'
 # requireg 'snabberb'
 # require_tree './components'
 
+# 这个用来支持 Opal.eval, 可以方便的在 browser console 调试 opal 代码。
+# 这个只在调试的时候开启
 # require 'opal-parser'
 
 $document.ready do
-  institution_history_dropdown()
   set_select_dropdown()
-  change_institution_display_name_modal_dialog()
   set_tooltips()
-  get_stocks_json()
+  request_path = '/' + `location.pathname.substring(1)`
+  puts request_path
+  case request_path
+  when '/stocks'
+    get_stocks_json()
+  when '/latest-institution-histories'
+    institution_history_dropdown()
+    change_institution_display_name_modal_dialog()
+  end
 end
 
 def get_json(path)
@@ -42,7 +50,7 @@ end
 
 def institution_history_dropdown
   # 点开 dropdown 的时候执行
-  callback = proc do |_trigger|
+  callback = proc do |trigger|
     dropdown = $document.at_css('#dropdown1')
     dropdown.clear
 
@@ -52,16 +60,16 @@ def institution_history_dropdown
 
     DOM do
       li do
-        a "link1", href: institution_href
+        a "查看机构信息", href: institution_href
       end
       li do
         a(
-          "link2",
+          "修改机构别名",
           "class" => 'modal-trigger',
           "href" => "#modal1",
           "data-institution-id" => institution_id,
           "data-institution-name" => institution_name
-        )
+         )
       end
     end.append_to(dropdown)
   end
@@ -74,7 +82,7 @@ end
 
 def change_institution_display_name_modal_dialog
   # 点击 “修改名称备注” 之后，创建 modal dialog 的时候执行.
-  callback = proc do |_, _trigger|
+  callback = proc do |_, trigger|
     form = $document.at_css('#modal1 form')
     form.action = "/institutions/#{`trigger.dataset.institutionId`}"
     form.at_css('input').value = `trigger.dataset.institutionName`
