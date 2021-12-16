@@ -78,7 +78,9 @@
 </div>
 
 <% if @error_message.present? %>
-  <p><%== @error_message %></p>
+  <div class="row">
+    <p><%== @error_message %></p>
+  </div>
 <% end %>
 
 <%== paginate @messages %>
