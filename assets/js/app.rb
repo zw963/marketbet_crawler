@@ -18,7 +18,7 @@ $document.ready do
   request_path = '/' + `location.pathname.substring(1)`
   puts request_path
   case request_path
-  when '/stocks'
+  when '/stocks', '/latest-institution-histories', '/latest-insider-histories'
     get_stocks_json()
   when '/latest-institution-histories'
     institution_history_dropdown()
