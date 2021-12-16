@@ -22,7 +22,9 @@ class Jin10MessagesParserNew < ParserBase
       begin
         jin_flash_date = jin_flash_list.at_css('.jin-flash-date-line.is-first')
         date = Date.strptime(jin_flash_date.text.strip, "%m月%d日")
-        first_flash_message = jin_flash_date.at_xpath('./following-sibling::div')
+
+        sleep 2 until (first_flash_message = jin_flash_date.at_xpath('./following-sibling::div'))
+
         is_important = first_flash_message.attribute('class').include?('is-important')
         time = first_flash_message.at_css('.item-time').text
         item = first_flash_message.at_css('.item-right')
