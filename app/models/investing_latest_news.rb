@@ -1,4 +1,6 @@
 class InvestingLatestNews < Sequel::Model
+  self.skip_saving_columns = [:textsearchable_index_col]
+
   def display_time
     if publish_time.is_today?
       self[:publish_time].strftime('%H:%M')
