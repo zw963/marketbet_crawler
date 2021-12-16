@@ -1,20 +1,31 @@
 <div class="row">
   <div class="col s12">
     <form action="<%= request.path %>" autocomplete="on" method="get">
-      <div class="input-field col s3 tooltipped" data-position="bottom" data-tooltip="选择消息类别">
-        <select multiple name="category_ids[]" class="tooltipped" data-position="bottom">
-          <option value="" disabled>显示所有</option>
-          <% @message_categories.each do |category| %>
+      <div class="input-field col s3 tooltipped" data-position="bottom" data-tooltip="选择消息标签">
+        <select multiple name="tag_ids[]" class="tooltipped" data-position="bottom">
+          <% request_tag_ids = request.params['tag_ids'] || [] %>
+
+          <% if request_tag_ids.include? '-1' or request_tag_ids.blank? %>
+            <option value="-1" selected>显示所有标签</option>
+          <% else %>
+            <option value="-1">显示所有标签</option>
+          <% end %>
+
+          <% @message_tags.each do |tag| %>
             <%=
-            selected = (request.params['category_ids'] || []).include?(category[:id].to_s) ? 'selected' : ''
+            if request_tag_ids.include? '-1'
+              selected = ''
+            else
+              selected = request_tag_ids.include?(tag[:id].to_s) ? 'selected' : ''
+            end
             %>
-            <option <%= selected %> value="<%= category[:id] %>"><%= category[:name] %></option>
+            <option <%= selected %> value="<%= tag[:id] %>"><%= tag[:name] %></option>
           <% end %>
         </select>
       </div>
       <div class="input-field col s2 tooltipped" data-position="bottom" data-tooltip="选择查看几天的消息">
         <select name="days">
-          <option value="2" selected>当天</option>
+          <option value="2" selected>最近一天</option>
           <% mapping = {
             3 => '最近三天',
             7 => '最近一周',

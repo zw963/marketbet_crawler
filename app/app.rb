@@ -86,7 +86,7 @@ class App < Roda
         'jin10-messages'
       ])
 
-      r.on /sync-(#{ts_tables})-keyword/ do |table_name|
+      r.on(/sync-(#{ts_tables})-keyword/) do |table_name|
         db = PG.connect(URI(DB_URL))
         db.exec("SELECT sync_zhprs_custom_word();")
         # UPDATE 语句必须在一个新的线程中运行，来反射到上面的 sync 函数的改变。
