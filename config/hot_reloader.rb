@@ -15,7 +15,7 @@ loader.inflector.inflect "ar" => "AR"
 
 listened_folders = ["#{APP_ROOT}/app/routes", "#{APP_ROOT}/app/helpers"]
 
-if ENV['RACK_ENV'] == 'development'
+if RACK_ENV == 'development'
   HotReloader.will_listen(loader, listened_folders)
 else
   puts 'Eager loading ...'

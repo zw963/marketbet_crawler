@@ -16,13 +16,13 @@ if DB.adapter_scheme == :postgres
   # DB.stream_all_queries = true
 end
 
-Sequel::Model.plugin :subclasses unless ENV['RACK_ENV'] == 'development'
+Sequel::Model.plugin :subclasses unless RACK_ENV == 'development'
 
-if ENV['RACK_ENV'] == 'development'
+if RACK_ENV == 'development'
   Sequel::Model.cache_associations = false
 end
 
-unless ENV['RACK_ENV'] == 'development'
+unless RACK_ENV == 'development'
   Sequel::Model.freeze_descendents
   DB.freeze
 end

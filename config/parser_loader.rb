@@ -10,7 +10,7 @@ require 'bundler'
 
 require_relative 'early_init'
 # 在生产环境, 添加export BUNDLE_WITHOUT=development:test, 来跳过所有不需要的 gem
-Bundler.require(:default, ENV.fetch('RACK_ENV', "development"))
+Bundler.require(:default, RACK_ENV)
 
 require_relative 'model'
 load "#{APP_ROOT}/app/parsers/parser_base.rb"
@@ -39,7 +39,7 @@ Capybara.register_driver(:cuprite) do |app|
     slowmo: 0.25
   }
 
-  if ENV['RACK_ENV'] == 'development'
+  if RACK_ENV == 'development'
     options.update(
       headless: false,
       slowmo: 0.5
@@ -69,7 +69,7 @@ Capybara.javascript_driver = :cuprite
 #     skip_image_loading: true
 #   }
 
-#   if ENV['RACK_ENV'] == 'development'
+#   if RACK_ENV == 'development'
 #     options.update(
 #       headless: false,
 #       slowmo: 0.5,

@@ -29,7 +29,7 @@ class ParserBase
       slowmo: 0.5
     }
 
-    if ENV['RACK_ENV'] == 'development'
+    if RACK_ENV == 'development'
       options.update(
         headless: false,
         slowmo: 0.5

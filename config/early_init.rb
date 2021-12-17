@@ -11,7 +11,7 @@ envs = {}.merge!(*envs).transform_values!(&:to_s)
 envs.reject! {|k, _v| ENV.key? k }
 ENV.merge!(envs)
 
-# 这行代码是必需的，因为在没有启动 rack 的情况下， RACK_ENV 可能为空
+# 这行代码是必需的，因为在没有启动 rack 的情况下， ENV['RACK_ENV'] 可能为空
 # 而此时，无法判断当前该使用那个环境的 DATABASE_URL.
 ENV['RACK_ENV'] = ENV['RACK_ENV'] || 'development'
 RACK_ENV = ENV['RACK_ENV'].freeze
@@ -24,7 +24,7 @@ DB_URL = (ENV.delete(env_database_url) || ENV.delete('DATABASE_URL')).freeze
 
 require 'logger'
 
-case ENV['RACK_ENV']
+case RACK_ENV
 when 'development'
   LOGGER = Logger.new($stdout)
 when 'production', 'staging'

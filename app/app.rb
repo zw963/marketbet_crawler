@@ -8,7 +8,7 @@ class App < Roda
   plugin :content_for
   plugin :partials
   plugin :path
-  case ENV['RACK_ENV']
+  case RACK_ENV
   when 'production', 'test'
     plugin :common_logger, LOGGER
   when 'development'
@@ -22,7 +22,7 @@ class App < Roda
   plugin :delete_empty_headers
   plugin :public, gzip: true, brotli: true
 
-  cache = case ENV['RACK_ENV']
+  cache = case RACK_ENV
           when 'development'
             Sprockets::Cache::MemoryStore.new(65536)
           when 'test'
@@ -45,7 +45,7 @@ class App < Roda
 
   route do |r|
     r.public
-    r.sprockets if ENV['RACK_ENV'] == 'development'
+    r.sprockets if RACK_ENV == 'development'
 
     r.root do
       view 'index'
