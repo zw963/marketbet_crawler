@@ -15,12 +15,10 @@ namespace :db do
 
   desc "Create database"
   task :create => [:early_init] do |_t, _args|
-    database, db_url = get_db_url
-
-    if db_url.start_with? 'sqlite'
+    if DB_URL.start_with? 'sqlite'
       warn 'Do nothing.'
-    elsif db_url.start_with? 'postgres'
-      command = "sudo -u postgres createdb #{database}"
+    elsif DB_URL.start_with? 'postgres'
+      command = "sudo -u postgres createdb #{db_name}"
       warn command
       Kernel.system(command)
     end
@@ -28,12 +26,10 @@ namespace :db do
 
   desc "Drop database"
   task :drop => [:early_init] do |_t, _args|
-    database, db_url = get_db_url
-
-    if db_url.start_with? 'sqlite'
-      FileUtils.rm_f(database, verbose: true)
-    elsif db_url.start_with? 'postgres'
-      command = "sudo -u postgres dropdb #{database}"
+    if DB_URL.start_with? 'sqlite'
+      FileUtils.rm_f(db_name, verbose: true)
+    elsif DB_URL.start_with? 'postgres'
+      command = "sudo -u postgres dropdb #{db_name}"
       warn command
       Kernel.system(command)
     end
@@ -88,10 +84,7 @@ namespace :db do
   end
 end
 
-def get_db_url
-  env_database_url="#{ENV.fetch('RACK_ENV', 'development')}_database_url".upcase # e.g DEVELOPMENT_DATABASE_URL
-  db_url = ENV.delete(env_database_url) || ENV.delete('DATABASE_URL')
-  database_pattern = db_url.split('//')[1]
-  database = database_pattern.sub(%r{[^:]+:[^:]+@[^:]+:\d+/}, '')
-  [database, db_url]
+def db_name
+  db_pattern = DB_URL.split('//')[1]
+  db_pattern.sub(%r{[^:]+:[^:]+@[^:]+:\d+/}, '')
 end

@@ -156,12 +156,6 @@ HEREDOC
     # load_module modules/ngx_http_brotli_static_module.so;
 }
 
-if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
-elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
-
-    if ! which -a pg_dump &>/dev/null; then
+if ! which -a pg_dump &>/dev/null; then
         init_pg
     fi
-else
-    echo "Don't support this linux release!"
-fi
