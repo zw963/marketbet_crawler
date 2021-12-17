@@ -24,7 +24,7 @@ function init_pg () {
         sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
         wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
         sudo apt-get update
-        sudo apt-get -y install postgresql libpq-dev
+        sudo apt-get -y install postgresql libpq-dev postgresql-server-dev-14
     elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
         # 导入 pg 源
         sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
@@ -43,6 +43,14 @@ function init_pg () {
         # For install sequel_pg succesful, we have to add pg_config into $PATH
         sed -i '1iPATH=/usr/pgsql-14/bin:$PATH'
     fi
+}
+
+function init_pg_zhparser () {
+    wget -q -O - http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 | tar xjf -
+    cd scws-1.2.3 ; ./configure && make && sudo env "PATH=$PATH" make install
+
+    wget -q -O - https://github.com/amutu/zhparser/archive/refs/tags/V2.2.tar.gz |tar xzf -
+    cd zhparser-2.2 ; make && sudo env "PATH=$PATH" make install
 }
 
 function init_nodejs () {
@@ -157,5 +165,5 @@ HEREDOC
 }
 
 if ! which -a pg_dump &>/dev/null; then
-        init_pg
-    fi
+    init_pg
+fi
