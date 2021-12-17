@@ -21,6 +21,9 @@ namespace :db do
       command = "sudo -u postgres createdb #{db_name}"
       warn command
       Kernel.system(command)
+      command = "sudo -u postgres psql -c \"ALTER USER postgres WITH PASSWORD '#{ENV['POSTGRES_PASSWORD']}';\""
+      warn command
+      Kernel.system(command)
     end
   end
 
