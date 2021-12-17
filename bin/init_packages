@@ -1,5 +1,14 @@
 #!/bin/bash
 
+function package_exists () {
+    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+        dpkg -l "$*"
+    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
+        rpm -q --quiet "$*"
+    fi
+}
+
+
 function init_chrome () {
     if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -7,14 +16,6 @@ function init_chrome () {
     elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
         sudo dnf localinstall google-chrome-stable_current_x86_64.rpm
-    fi
-}
-
-function package_exists () {
-    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
-        dpkg -l "$*"
-    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
-        rpm -q --quiet "$*"
     fi
 }
 
@@ -56,55 +57,58 @@ function init_nodejs () {
     fi
 }
 
-if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
-    # 使用下面的命令查看 Ubuntu 发布版的编号
-    code_name=$(cat /etc/lsb-release |grep DISTRIB_CODENAME |cut -d'=' -f2)
+function init_nginx () {
+    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+        # 使用下面的命令查看 Ubuntu 发布版的编号
+        code_name=$(cat /etc/lsb-release |grep DISTRIB_CODENAME |cut -d'=' -f2)
 
-    sudo wget https://nginx.org/keys/nginx_signing.key
-    sudo apt-key add nginx_signing.key
+        sudo wget https://nginx.org/keys/nginx_signing.key
+        sudo apt-key add nginx_signing.key
 
-    if ! package_exists nginx; then
-        ## Replace focal with your corresponding Ubuntu release.
-        cat <<HEREDOC > /etc/apt/sources.list.d/nginx.list
+        if ! package_exists nginx; then
+            cat <<HEREDOC > /etc/apt/sources.list.d/nginx.list
 deb https://nginx.org/packages/ubuntu/ ${code_name} nginx
 deb-src https://nginx.org/packages/ubuntu/ ${code_name} nginx
 HEREDOC
 
-        sudo apt update
-        sudo apt install nginx
-        systemctl enable nginx
-    fi
+            sudo apt update
+            sudo apt install nginx
+            systemctl enable nginx
+        fi
 
-    if ! package_exists python-certbot-nginx; then
-        add-apt-repository ppa:certbot/certbot
-        apt update
-        apt install python-certbot-nginx
-        # 1. Run `sudo certbot --nginx' to configure current domain.
-        # 2. Test if can renew certbot successful. `sudo certbot renew --dry-run'
-        # 3. Add following crontab, will date cert first day of month.
-        #    0 0 1 * * /usr/bin/certbot renew
-        # more detail, check https://certbot.eff.org/
-    fi
+        if ! package_exists python-certbot-nginx; then
 
-elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
-    if ! rpm -q --quiet python3-certbot-nginx; then
-        yum install -y certbot python3-certbot-nginx
-        # 1. Run `sudo certbot --nginx' to configure current domain.
-        # 2. Test if can renew certbot successful. `sudo certbot renew --dry-run'
-        # 3. Add following crontab, will date cert first day of month.
-        #    0 0 1 * * /usr/bin/certbot renew
-        # more detail, check https://certbot.eff.org/
-    fi
+            # sudo snap install core; sudo snap refresh core
+            # sudo snap install --classic certbot
+            # sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
-    if ! package_exists nginx; then
-        wget https://nginx.org/packages/centos/8/x86_64/RPMS/nginx-1.20.1-1.el8.ngx.x86_64.rpm
-        sudo rpm -ivh nginx-1.20.1-1.el8.ngx.x86_64.rpm
-        systemctl enable nginx
-    fi
+            add-apt-repository ppa:certbot/certbot
+            apt update
+            apt install python3-certbot-nginx
+            # 1. Run `sudo certbot --nginx' to configure current domain.
+            # 2. Test if can renew certbot successful. `sudo certbot renew --dry-run'
+            # 3. Add following crontab, will date cert first day of month.
+            #    0 0 1 * * /usr/bin/certbot renew
+            # more detail, check https://certbot.eff.org/
 
-    # for install newest version nginx
-    if ! package_exists nginx; then
-        cat <<'HEREDOC' > /etc/yum.repos.d/nginx.repo
+            sudo certbot certonly --nginx
+        fi
+    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
+        if ! package_exists python3-certbot-nginx; then
+            yum install -y certbot python3-certbot-nginx
+            # 1. Run `sudo certbot --nginx' to configure current domain.
+            # 2. Test if can renew certbot successful. `sudo certbot renew --dry-run'
+            # 3. Add following crontab, will date cert first day of month.
+            #    0 0 1 * * /usr/bin/certbot renew
+            # more detail, check https://certbot.eff.org/        fi
+        fi
+
+        if ! package_exists nginx; then
+            # wget https://nginx.org/packages/centos/8/x86_64/RPMS/nginx-1.20.1-1.el8.ngx.x86_64.rpm
+            # sudo rpm -ivh nginx-1.20.1-1.el8.ngx.x86_64.rpm
+            # systemctl enable nginx
+
+            cat <<'HEREDOC' > /etc/yum.repos.d/nginx.repo
     [nginx-stable]
     name=nginx stable repo
     baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
@@ -121,26 +125,39 @@ elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
     gpgkey=https://nginx.org/keys/nginx_signing.key
     module_hotfixes=true
 HEREDOC
-        sudo yum-config-manager --enable nginx-stable
-        sudo yum install -y nginx
 
-        # compile bri dynamic module support
-        nginx_version=$(nginx -v 2>&1 |cut -d'/' -f2)
-        wget https://nginx.org/download/nginx-${nginx_version}.tar.gz
-        tar xvf nginx-${nginx_version}.tar.gz
-        cd nginx-${nginx_version}
-        git clone https://github.com/google/ngx_brotli.git
-        cd ngx_brotli && git submodule update --init && cd -
-        # yum install -y pcre pcre-devel zlib zlib-devel openssl openssl-devel
-        ./configure --with-compat --add-dynamic-module=./ngx_brotli
-        make modules
-        sudo cp objs/*.so /etc/nginx/modules/
-
-        # Then, add following config into /etc/nginx/nginx.conf to load module.
-
-        # load_module modules/ngx_http_brotli_filter_module.so;
-        # load_module modules/ngx_http_brotli_static_module.so;
+            sudo yum-config-manager --enable nginx-stable
+            sudo yum install -y nginx
+        fi
     fi
+
+    # compile bri dynamic module support
+
+
+    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+        apt-get install libpcre3-dev zlib1g-dev libssl-dev
+    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
+        yum install pcre-devel zlib-devel openssl-devel
+    fi
+
+    nginx_version=$(nginx -v 2>&1 |cut -d'/' -f2)
+    wget https://nginx.org/download/nginx-${nginx_version}.tar.gz
+    tar xvf nginx-${nginx_version}.tar.gz
+    cd nginx-${nginx_version}
+    git clone https://github.com/google/ngx_brotli.git
+    cd ngx_brotli && git submodule update --init && cd -
+    ./configure --with-compat --add-dynamic-module=./ngx_brotli
+    make modules
+    sudo cp objs/*.so /etc/nginx/modules/
+
+    # Then, add following config into /etc/nginx/nginx.conf to load module.
+
+    # load_module modules/ngx_http_brotli_filter_module.so;
+    # load_module modules/ngx_http_brotli_static_module.so;
+}
+
+if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
 
     if ! which -a pg_dump &>/dev/null; then
         init_pg
