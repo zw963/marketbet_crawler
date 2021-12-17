@@ -1,0 +1,57 @@
+upstream <%= config_base_name %>_server {
+    server <%= server_target %>;
+}
+
+server {
+    # listen 80;
+    server_name <%= server_name %>;
+
+    location ~ \.(aspx|php|jsp|cgi)$ {
+        return 410;
+    }
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_set_header   X-Real-IP   $remote_addr;
+        proxy_pass https://<%= config_base_name %>_server;
+        proxy_ssl_session_reuse on;
+        proxy_buffering on;
+        proxy_buffers 32 16k;
+        proxy_set_header   Upgrade $http_upgrade;
+        proxy_set_header   Connection "Upgrade";
+        # gzip off;   # 当 https 时, 应该关闭?
+    }
+
+    location ~ ^/(assets|packs) {
+        root <%= server_public %>;
+        gzip_static on;
+        expires max;
+        add_header Cache-Control public;
+        add_header Access-Control-Allow-Origin *;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/<%= server_name %>/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/<%= server_name %>/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+    brotli on;
+    brotli_static on;
+    brotli_types text/plain text/css text/javascript application/javascript text/xml application/xml image/svg+xml application/json;
+}
+
+
+server {
+    if ($host = <%= server_name %>) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name <%= server_name %>;
+    return 404; # managed by Certbot
+
+
+}
