@@ -1,7 +1,7 @@
 class App
   hash_routes('stocks/index') do
     is true do |r|
-      result = RetrieveStocks.call(r.params)
+      result = RetrieveStocks.result(r.params)
 
       if result.success?
         @stocks = result.stocks
