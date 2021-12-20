@@ -1,7 +1,7 @@
 class App < Roda
   path :page do |page, title, page_size|
     params = request.params.dup
-    query_string = URI.encode_www_form(params.merge({'page' => page, 'per' => page_size}))
+    query_string = Rack::Utils.build_nested_query(params.merge({'page' => page, 'per' => page_size}))
     href = request.path
     href = "#{href}?#{query_string}" if query_string.present?
     anchor_class = "waves-effect waves-light btn-small"
