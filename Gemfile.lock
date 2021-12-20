@@ -48,7 +48,7 @@ GEM
       sequel
     erubi (1.10.0)
     execjs (2.8.1)
-    fabrication (2.23.0)
+    fabrication (2.23.1)
     falcon (0.39.2)
       async
       async-container (~> 0.16.0)
@@ -69,7 +69,7 @@ GEM
       websocket-driver (>= 0.6, < 0.8)
     ffi (1.15.4)
     fiber-local (1.0.0)
-    graphql (1.13.0)
+    graphql (1.13.2)
     gruff (0.14.0)
       histogram
       rmagick
@@ -97,7 +97,7 @@ GEM
       racc (~> 1.4)
     only_blank (1.2.1)
       fast_blank (>= 1.0)
-    opal (1.3.1)
+    opal (1.3.2)
       ast (>= 2.3.0)
       parser (~> 3.0)
     opal-browser (0.3.1)
@@ -108,7 +108,7 @@ GEM
       sprockets (~> 4.0)
       tilt (>= 1.4)
     paggio (0.3.0)
-    parser (3.0.3.1)
+    parser (3.0.3.2)
       ast (~> 2.4.1)
     pastel (0.8.0)
       tty-color (~> 0.5)
@@ -137,7 +137,7 @@ GEM
     refrigerator (1.3.0)
     regexp_parser (2.2.0)
     rmagick (4.2.3)
-    roda (3.50.0)
+    roda (3.51.0)
       rack
     roda-enhanced_logger (0.4.0)
       roda (>= 3.19.0)
@@ -208,7 +208,7 @@ DEPENDENCIES
   m
   minitest (= 5.14.2)
   only_blank
-  opal (= 1.3.1)
+  opal
   opal-browser
   opal-sprockets
   pg

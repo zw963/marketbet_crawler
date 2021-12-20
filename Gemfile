@@ -23,7 +23,7 @@ gem 'erubi', '>= 1.5'
 gem 'sassc'
 gem 'terser'
 gem 'brotli'
-gem 'opal', '1.3.1'
+gem 'opal'
 gem 'opal-browser'
 gem "opal-sprockets"
 gem "roda-sprockets"
