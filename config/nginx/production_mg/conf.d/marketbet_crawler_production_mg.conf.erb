@@ -3,7 +3,6 @@ upstream <%= config_base_name %>_server {
 }
 
 server {
-    # listen 80;
     server_name <%= server_name %>;
 
     location ~ \.(aspx|php|jsp|cgi)$ {
@@ -30,6 +29,9 @@ server {
         add_header Cache-Control public;
         add_header Access-Control-Allow-Origin *;
     }
+    brotli on;
+    brotli_static on;
+    brotli_types text/plain text/css text/javascript application/javascript text/xml application/xml image/svg+xml application/json;
 
     listen 443 ssl; # managed by Certbot
     ssl_certificate /etc/letsencrypt/live/<%= server_name %>/fullchain.pem; # managed by Certbot
@@ -37,11 +39,7 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
-    brotli on;
-    brotli_static on;
-    brotli_types text/plain text/css text/javascript application/javascript text/xml application/xml image/svg+xml application/json;
 }
-
 
 server {
     if ($host = <%= server_name %>) {
