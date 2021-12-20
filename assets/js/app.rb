@@ -18,13 +18,17 @@ $document.ready do
   request_path = '/' + `location.pathname.substring(1)`
   puts request_path
   case request_path
-  when '/stocks', '/latest-institution-histories', '/latest-insider-histories'
+  when '/stocks'
+    get_stocks_json()
+  when '/latest-insider-histories'
     get_stocks_json()
   when '/latest-institution-histories'
+    get_stocks_json()
     institution_history_dropdown()
     change_institution_display_name_modal_dialog()
   when '/jin10-messages'
-    `setInterval('window.location.reload()', 30000)`
+    label = $document.at_css("i#toggle_refresh_page_button").at_xpath("./following-sibling::label")
+    `setInterval('window.location.reload()', 30000)` if label.text == '点击关闭自动刷新'
   end
 end
 
