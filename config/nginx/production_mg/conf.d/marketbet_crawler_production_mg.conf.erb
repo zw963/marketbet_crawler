@@ -33,6 +33,7 @@ server {
     brotli_static on;
     brotli_types text/plain text/css text/javascript application/javascript text/xml application/xml image/svg+xml application/json;
 
+
     listen 443 ssl; # managed by Certbot
     ssl_certificate /etc/letsencrypt/live/<%= server_name %>/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/<%= server_name %>/privkey.pem; # managed by Certbot
@@ -41,14 +42,15 @@ server {
 
 }
 
+
 server {
     if ($host = <%= server_name %>) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 
 
-    listen 80;
     server_name <%= server_name %>;
+    listen 80;
     return 404; # managed by Certbot
 
 
