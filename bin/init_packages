@@ -164,6 +164,15 @@ HEREDOC
     # load_module modules/ngx_http_brotli_static_module.so;
 }
 
-if ! which -a pg_dump &>/dev/null; then
-    init_pg
-fi
+case "$*" in
+    pg)
+        if ! which -a pg_dump &>/dev/null; then
+            init_pg
+        fi
+        ;;
+    zhparser)
+        init_pg_zhparser
+        ;;
+    *)
+        echo 'Specify one arg for which package to install.'
+esac
