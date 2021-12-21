@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function package_exists () {
-    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
         dpkg -l "$*"
     elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
         rpm -q --quiet "$*"
@@ -10,7 +10,7 @@ function package_exists () {
 
 
 function init_chrome () {
-    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         sudo dpkg -i google-chrome-stable_current_amd64.deb
     elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
@@ -20,7 +20,7 @@ function init_chrome () {
 }
 
 function init_pg () {
-    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
         sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
         wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
         sudo apt-get update
@@ -54,7 +54,7 @@ function init_pg_zhparser () {
 }
 
 function init_nodejs () {
-    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
         curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
         sudo apt-get install -y nodejs
     elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
@@ -66,7 +66,7 @@ function init_nodejs () {
 }
 
 function init_nginx () {
-    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
         # 使用下面的命令查看 Ubuntu 发布版的编号
         code_name=$(cat /etc/lsb-release |grep DISTRIB_CODENAME |cut -d'=' -f2)
 
@@ -142,7 +142,7 @@ HEREDOC
     # compile bri dynamic module support
 
 
-    if [[ $(cat /etc/*-release) =~ Ubuntu ]]; then
+    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
         apt-get install libpcre3-dev zlib1g-dev libssl-dev
     elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
         yum install pcre-devel zlib-devel openssl-devel
