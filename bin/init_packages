@@ -1,194 +1,38 @@
 #!/bin/bash
 
-function package_exists () {
-    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
-        dpkg -l "$*"
-    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
-        rpm -q --quiet "$*"
-    fi
-}
+self="$(\curl -sS https://gitee.com/zw963/deployment_bash/raw/v0.7.4/deploy_start.sh)" && eval "$self"
 
+export target=$1
+export package=$2
+export domain_name=$3
 
-function init_chrome () {
-    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo dpkg -i google-chrome-stable_current_amd64.deb
-    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-        sudo dnf localinstall google-chrome-stable_current_x86_64.rpm
-    fi
-}
+if [ -z "$package" ]; then
+    echo 'Specify one arg for which package to install.'
+    exit
+fi
 
-function init_pg () {
-    if [ -z "$POSTGRES_PASSWORD" ]; then
-        echo 'You must set $POSTGRES_PASSWORD to initialize postgres password.'
-        exit
-    fi
+deploy_start
 
-    local version=$1
-
-    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
-        sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-        wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-        sudo apt-get update
-        sudo apt-get -y install postgresql-${version} libpq-dev postgresql-server-dev-${version}
-
-        # 初始化数据库, 这一步似乎做了？安装时没注意。
-        # sudo /usr/lib/postgresql/14/bin/initdb -D ???
-
-        sudo systemctl enable postgresql
-        sudo systemctl start postgresql
-    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
-        # 导入 pg 源
-        sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-        # 关闭 centos 内置的 pg 模块
-        sudo dnf -qy module disable postgresql
-        # 安装 pg
-        sudo dnf install -y postgresql${version}-devel
-        # 初始化数据库
-        sudo /usr/pgsql-${version}/bin/postgresql-${version}-setup initdb
-
-        sudo systemctl enable postgresql-${version}
-        sudo systemctl start postgresql-${version}
-
-        # For install sequel_pg succesful, we have to add pg_config into $PATH
-        sed -i '1iPATH=/usr/pgsql-${version}/bin:$PATH'
-    fi
-
-    # 这一步，在 rake db:create 里面做
-    # sudo -u postgres psql -p 5432 -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
-}
-
-function init_pg_zhparser () {
-    wget -q -O - http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 | tar xjf -
-    cd scws-1.2.3 ; ./configure && make && sudo env "PATH=$PATH" make install
-
-    wget -q -O - https://github.com/amutu/zhparser/archive/refs/tags/V2.2.tar.gz |tar xzf -
-    cd zhparser-2.2 ; make && sudo env "PATH=$PATH" make install
-}
-
-function init_nodejs () {
-    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
-        curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-        sudo apt-get install -y nodejs
-    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
-        if ! package_exists nodejs; then
-            curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
-            sudo dnf install -y nodejs
-        fi
-    fi
-}
-
-function init_nginx () {
-    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
-        # 使用下面的命令查看 Ubuntu 发布版的编号
-        code_name=$(cat /etc/lsb-release |grep DISTRIB_CODENAME |cut -d'=' -f2)
-
-        sudo wget https://nginx.org/keys/nginx_signing.key
-        sudo apt-key add nginx_signing.key
-
-        if ! package_exists nginx; then
-            cat <<HEREDOC > /etc/apt/sources.list.d/nginx.list
-deb https://nginx.org/packages/ubuntu/ ${code_name} nginx
-deb-src https://nginx.org/packages/ubuntu/ ${code_name} nginx
-HEREDOC
-
-            sudo apt update
-            sudo apt install nginx
-            systemctl enable nginx
-        fi
-
-        if ! package_exists python-certbot-nginx; then
-
-            # sudo snap install core; sudo snap refresh core
-            # sudo snap install --classic certbot
-            # sudo ln -s /snap/bin/certbot /usr/bin/certbot
-
-            add-apt-repository ppa:certbot/certbot
-            apt update
-            apt install python3-certbot-nginx
-            # 1. Run `sudo certbot --nginx' to configure current domain.
-            # 2. Test if can renew certbot successful. `sudo certbot renew --dry-run'
-            # 3. Add following crontab, will date cert first day of month.
-            #    0 0 1 * * /usr/bin/certbot renew
-            # more detail, check https://certbot.eff.org/
-
-            sudo certbot certonly --nginx
-        fi
-    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
-        if ! package_exists python3-certbot-nginx; then
-            yum install -y certbot python3-certbot-nginx
-            # 1. Run `sudo certbot --nginx' to configure current domain.
-            # 2. Test if can renew certbot successful. `sudo certbot renew --dry-run'
-            # 3. Add following crontab, will date cert first day of month.
-            #    0 0 1 * * /usr/bin/certbot renew
-            # more detail, check https://certbot.eff.org/        fi
-        fi
-
-        if ! package_exists nginx; then
-            # wget https://nginx.org/packages/centos/8/x86_64/RPMS/nginx-1.20.1-1.el8.ngx.x86_64.rpm
-            # sudo rpm -ivh nginx-1.20.1-1.el8.ngx.x86_64.rpm
-            # systemctl enable nginx
-
-            cat <<'HEREDOC' > /etc/yum.repos.d/nginx.repo
-    [nginx-stable]
-    name=nginx stable repo
-    baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
-    gpgcheck=1
-    enabled=1
-    gpgkey=https://nginx.org/keys/nginx_signing.key
-    module_hotfixes=true
-
-    [nginx-mainline]
-    name=nginx mainline repo
-    baseurl=http://nginx.org/packages/mainline/centos/$releasever/$basearch/
-    gpgcheck=1
-    enabled=0
-    gpgkey=https://nginx.org/keys/nginx_signing.key
-    module_hotfixes=true
-HEREDOC
-
-            sudo yum-config-manager --enable nginx-stable
-            sudo yum install -y nginx
-        fi
-    fi
-
-    # compile bri dynamic module support
-
-
-    if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
-        apt-get install libpcre3-dev zlib1g-dev libssl-dev
-    elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
-        yum install pcre-devel zlib-devel openssl-devel
-    fi
-
-    nginx_version=$(nginx -v 2>&1 |cut -d'/' -f2)
-    wget https://nginx.org/download/nginx-${nginx_version}.tar.gz
-    tar xvf nginx-${nginx_version}.tar.gz
-    cd nginx-${nginx_version}
-    git clone https://github.com/google/ngx_brotli.git
-    cd ngx_brotli && git submodule update --init && cd -
-    ./configure --with-compat --add-dynamic-module=./ngx_brotli
-    make modules
-    sudo cp objs/*.so /etc/nginx/modules/
-
-    # Then, add following config into /etc/nginx/nginx.conf to load module.
-
-    # load_module modules/ngx_http_brotli_filter_module.so;
-    # load_module modules/ngx_http_brotli_static_module.so;
-}
-
-case "$*" in
+case "$package" in
     pg)
-        if ! which -a pg_dump &>/dev/null; then
-            init_pg 14
-        fi
+        deploy_pg 14
         ;;
     zhparser)
-        init_pg_zhparser
+        deploy_pg_zhparser
         ;;
     nodejs)
-        init_nodejs
+        deploy_nodejs
+        ;;
+    nginx)
+        deploy_nginx
+        deploy_nginx_bri_support
+        deploy_certbot
+        ;;
+    tls)
+        deploy_tls "$domain_name"
+        ;;
+    chrome)
+        deploy_chrome
         ;;
     *)
         echo 'Specify one arg for which package to install.'
