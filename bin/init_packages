@@ -74,7 +74,7 @@ function init_nodejs () {
     elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
         if ! package_exists nodejs; then
             curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
-            sudo yum install -y nodejs
+            sudo dnf install -y nodejs
         fi
     fi
 }
@@ -186,6 +186,9 @@ case "$*" in
         ;;
     zhparser)
         init_pg_zhparser
+        ;;
+    nodejs)
+        init_nodejs
         ;;
     *)
         echo 'Specify one arg for which package to install.'
