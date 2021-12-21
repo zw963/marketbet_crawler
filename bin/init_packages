@@ -20,29 +20,43 @@ function init_chrome () {
 }
 
 function init_pg () {
+    if [ -z "$POSTGRES_PASSWORD" ]; then
+        echo 'You must set $POSTGRES_PASSWORD to initialize postgres password.'
+        exit
+    fi
+
+    local version=$1
+
     if [[ $(cat /etc/*-release) =~ Ubuntu|Debian ]]; then
         sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
         wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
         sudo apt-get update
-        sudo apt-get -y install postgresql libpq-dev postgresql-server-dev-14
+        sudo apt-get -y install postgresql-${version} libpq-dev postgresql-server-dev-${version}
+
+        # 初始化数据库, 这一步似乎做了？安装时没注意。
+        # sudo /usr/lib/postgresql/14/bin/initdb -D ???
+
+        sudo systemctl enable postgresql
+        sudo systemctl start postgresql
     elif [[ $(cat /etc/*-release) =~ CentOS ]]; then
         # 导入 pg 源
         sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
         # 关闭 centos 内置的 pg 模块
         sudo dnf -qy module disable postgresql
         # 安装 pg
-        sudo dnf install -y postgresql14-devel
+        sudo dnf install -y postgresql${version}-devel
         # 初始化数据库
-        sudo /usr/pgsql-14/bin/postgresql-14-setup initdb
+        sudo /usr/pgsql-${version}/bin/postgresql-${version}-setup initdb
 
-        sudo systemctl enable postgresql-14
-        sudo systemctl start postgresql-14
-
-        sudo -u postgres psql -p 5432 -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
+        sudo systemctl enable postgresql-${version}
+        sudo systemctl start postgresql-${version}
 
         # For install sequel_pg succesful, we have to add pg_config into $PATH
-        sed -i '1iPATH=/usr/pgsql-14/bin:$PATH'
+        sed -i '1iPATH=/usr/pgsql-${version}/bin:$PATH'
     fi
+
+    # 这一步，在 rake db:create 里面做
+    # sudo -u postgres psql -p 5432 -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
 }
 
 function init_pg_zhparser () {
@@ -167,7 +181,7 @@ HEREDOC
 case "$*" in
     pg)
         if ! which -a pg_dump &>/dev/null; then
-            init_pg
+            init_pg 14
         fi
         ;;
     zhparser)
