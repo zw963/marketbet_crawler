@@ -40,7 +40,7 @@ group :development do
 end
 
 group :test do
-  gem 'minitest', '5.14.2'
+  gem 'minitest'
   gem 'm'
   gem 'database_cleaner-sequel'
   gem 'timecop'
