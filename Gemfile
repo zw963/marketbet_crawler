@@ -43,6 +43,7 @@ group :test do
   gem 'minitest'
   gem 'm'
   gem 'database_cleaner-sequel'
+  gem 'minitest-hooks'
   gem 'timecop'
   gem 'fabrication'
   gem 'hashr'

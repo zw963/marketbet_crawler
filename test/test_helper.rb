@@ -1,8 +1,8 @@
 ENV['RACK_ENV'] = 'test'
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'minitest/hooks/default'
 require "rack/test"
-require 'database_cleaner-sequel'
 require_relative '../config/db'
 require 'warning'
 
@@ -20,10 +20,21 @@ if not Dir.empty?('db/migrations')
 end
 
 # transaction 和 fiber_concurrency 一起不工作, 因此采用 truncation
-DatabaseCleaner[:sequel].strategy = :truncation
+# DatabaseCleaner[:sequel].strategy = :truncation
 
 OUTER_APP = Rack::Builder.parse_file("config.ru").first.freeze.app
 
+class Minitest::HooksSpec
+  def around
+    DB.transaction(:rollback=>:always, :savepoint=>true, :auto_savepoint=>true){super}
+  end
+
+  def around_all
+    DB.transaction(:rollback=>:always){super}
+  end
+end
+
+# MiniTest::Spec.register_spec_type(/.*/, Minitest::HooksSpec)
 class Minitest::Test
   include Rack::Test::Methods
   Fabrication.manager.load_definitions
@@ -65,11 +76,9 @@ class Minitest::Test
     last_response.body
   end
 
-  def before_setup
-    DatabaseCleaner[:sequel].start
-  end
-
-  def after_teardown
-    DatabaseCleaner[:sequel].clean
-  end
+  # def before_all
+  #    DB.transaction(:rollback=>:always) do
+  #      super
+  #    end
+  #  end
 end
