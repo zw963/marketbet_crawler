@@ -5,6 +5,14 @@ class Jin10Message < Sequel::Model
   self.skip_saving_columns = [:textsearchable_index_col]
 
   store_accessor :properties, :url, :image_url
+
+  def display_time
+    if self[:publish_date] == Date.today
+      self[:publish_time_string]
+    else
+      self[:publish_date]
+    end
+  end
 end
 
 # Table: jin10_messages
