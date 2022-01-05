@@ -57,7 +57,13 @@ class InstitutionHistoryParser < ParserBase
         value = market_value
       end
 
-      number_of_holding = e[2].tr(',', '').to_i
+      # Fix AD
+      begin
+        number_of_holding = e[2].tr(',', '').to_i
+      rescue NoMethodError
+        next
+      end
+
       quarterly_changed_share_percent = p2b(e[5])
 
       if quarterly_changed_share_percent.nil?

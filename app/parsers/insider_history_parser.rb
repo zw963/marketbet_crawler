@@ -14,7 +14,7 @@ class InsiderHistoryParser < ParserBase
           puts url
           page.goto url
 
-          if (table_ele = page.at_css('.scroll-table-wrapper-wrapper') rescue nil)
+          if (table_ele = page.at_css('.scroll-table.sort-table') rescue nil)
             tables = table_ele.inner_text.split("\n").reject(&:empty?).map {|x| x.split("\t") }
             save_to_insider_histories(tables, symbol)
           end
@@ -43,7 +43,12 @@ class InsiderHistoryParser < ParserBase
         xx = 1
       end
 
-      date = Date.strptime(e[0], '%m/%d/%Y')
+      # skip AD
+      begin
+        date = Date.strptime(e[0], '%m/%d/%Y')
+      rescue Date::Error
+        next
+      end
 
       DB.transaction do
         InsiderHistory.find_or_create(
