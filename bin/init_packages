@@ -1,6 +1,6 @@
 #!/bin/bash
 
-self="$(\curl -sS https://gitee.com/zw963/deployment_bash/raw/v0.7.4/deploy_start.sh)" && eval "$self"
+self="$(\curl -sS https://gitee.com/zw963/deployment_bash/raw/v0.7.5/deploy_start.sh)" && eval "$self"
 
 export target=$1
 export package=$2
