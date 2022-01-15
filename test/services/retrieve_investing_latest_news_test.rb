@@ -23,7 +23,7 @@ describe 'retrieve investing latest news' do
     assert_equal [], result.news.map(&:title)
   end
 
-  it 'should find out "美元" ' do
+  it 'ts should find out "美元" ' do
     assert_equal 0, InvestingLatestNews.count
 
     news1 = create(:investing_latest_news,
@@ -39,7 +39,7 @@ describe 'retrieve investing latest news' do
     assert_equal 2, InvestingLatestNews.count
 
     result = RetrieveInvestingLatestNews.result(q: '美元')
-    assert_equal [], result.news.map(&:title)
+    assert_empty result.news.map(&:title)
 
     header 'REFERER', '/'
     post '/add-ts-keyword', {'new_keyword' => '美元'}
