@@ -41,7 +41,7 @@ class Jin10MessagesParserNew < ParserBase
               image_url = image_link.attribute('src')
             end
 
-            logger.warn "Get message url: #{message_url}" if message_url.present?
+            logger.info "Get message url: #{message_url}" if message_url.present?
 
             if text.start_with?('【')
               keyword = text[/【(.*)】.*/, 1]
@@ -57,8 +57,10 @@ class Jin10MessagesParserNew < ParserBase
               publish_date: date
             )
 
-            next sleep 30 if record.present?
-            logger.warn "title: #{text} is exists, skipped."
+            if record.present?
+              logger.info "title: #{text} is exists, skipped."
+              next sleep 30
+            end
 
             new_record = {
               title: text,
@@ -73,10 +75,10 @@ class Jin10MessagesParserNew < ParserBase
 
             Jin10Message.create(new_record)
 
-            logger.warn "created record: #{text}"
+            logger.info "created record: #{text}"
           end
         rescue Ferrum::NodeNotFoundError
-          logger.warn 'jin10 message updated when scraping, retrying.'
+          logger.warn 'jin10 message node get updated while scraping, retrying...'
           retry
         end
 
