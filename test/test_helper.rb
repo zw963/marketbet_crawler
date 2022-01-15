@@ -1,18 +1,18 @@
 ENV['RACK_ENV'] = 'test'
-require 'minitest/autorun'
-require 'minitest/pride'
-require "rack/test"
-require_relative '../config/db'
 require 'warning'
-
-# require 'minitest/hooks/default'
-require 'database_cleaner-sequel'
 
 Gem.path.each do |path|
   Warning.ignore(/warning: mismatched indentations at/, path)
   Warning.ignore(/warning: loading in progress, circular require considered harmful/, path)
   Warning.ignore(/warning: method redefined; discarding old absolute_path\?/, path)
 end
+
+require 'minitest/autorun'
+require 'minitest/pride'
+require "rack/test"
+require_relative '../config/db'
+# require 'helpers/database_cleaner'
+require 'helpers/transaction'
 
 if not Dir.empty?('db/migrations')
   Sequel.extension :migration
@@ -21,22 +21,8 @@ if not Dir.empty?('db/migrations')
   Sequel::Migrator.check_current(DB, 'db/migrations')
 end
 
-# transaction 和 fiber_concurrency 一起不工作, 因此采用 truncation
-DatabaseCleaner[:sequel].strategy = :truncation
-
 OUTER_APP = Rack::Builder.parse_file("config.ru").first.freeze.app
 
-# class Minitest::HooksSpec
-#   def around
-#     DB.transaction(:rollback=>:always, :savepoint=>true, :auto_savepoint=>true){super}
-#   end
-
-#   def around_all
-#     DB.transaction(:rollback=>:always){super}
-#   end
-# end
-
-# MiniTest::Spec.register_spec_type(/.*/, Minitest::HooksSpec)
 class Minitest::Test
   include Rack::Test::Methods
   Fabrication.manager.load_definitions
@@ -77,15 +63,6 @@ class Minitest::Test
   rescue JSON::ParserError
     last_response.body
   end
-
-  def before_setup
-    DatabaseCleaner[:sequel].start
-  end
-
-  def after_teardown
-    DatabaseCleaner[:sequel].clean
-  end
-
 
   # def before_all
   #    DB.transaction(:rollback=>:always) do
