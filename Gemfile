@@ -40,7 +40,7 @@ group :development do
 end
 
 group :test do
-  gem 'minitest'
+  gem 'minitest', '5.15.0'
   gem 'm'
   gem 'database_cleaner-sequel'
   gem 'minitest-hooks'
@@ -52,8 +52,8 @@ end
 
 # group :development, :test do
 gem "ferrum"
-gem 'cuprite'
-gem 'capybara'
+# gem 'cuprite'
+# gem 'capybara'
 # end
 
 group :production do
@@ -61,3 +61,8 @@ group :production do
 end
 
 gem 'puma'
+
+# use exact debug version which ruby 3.1 builtin.
+gem 'debug', '1.4.0'
+gem 'reline', '0.3.0'
+gem 'io-console', '0.5.10'
