@@ -27,31 +27,31 @@ class ChromeHeadlessLogger
   end
 end
 
-require "capybara/cuprite"
-Capybara.register_driver(:cuprite) do |app|
-  options = {
-    # logger: ChromeHeadlessLogger.new(Logger.new('log/chrome_headless.log', 10, 1024000)),
-    pending_connection_errors: false,
-    window_size: [1600, 900],
-    process_timeout: 15,
-    browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false', 'start-maximized': true},
-    headless: true,
-    slowmo: 0.25
-  }
+# require "capybara/cuprite"
+# Capybara.register_driver(:cuprite) do |app|
+#   options = {
+#     # logger: ChromeHeadlessLogger.new(Logger.new('log/chrome_headless.log', 10, 1024000)),
+#     pending_connection_errors: false,
+#     window_size: [1600, 900],
+#     process_timeout: 15,
+#     browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false', 'start-maximized': true},
+#     headless: true,
+#     slowmo: 0.25
+#   }
 
-  if RACK_ENV == 'development'
-    options.update(
-      headless: false,
-      slowmo: 0.5
-    )
-  end
+#   if RACK_ENV == 'development'
+#     options.update(
+#       headless: false,
+#       slowmo: 0.5
+#     )
+#   end
 
-  Capybara::Cuprite::Driver.new(
-    app,
-    **options
-  )
-end
-Capybara.javascript_driver = :cuprite
+#   Capybara::Cuprite::Driver.new(
+#     app,
+#     **options
+#   )
+# end
+# Capybara.javascript_driver = :cuprite
 
 # require 'capybara/apparition'
 # Capybara.register_driver :apparition do |app|
