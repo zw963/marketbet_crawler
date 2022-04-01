@@ -27,7 +27,7 @@ $document.ready do
     institution_history_dropdown()
     change_institution_display_name_modal_dialog()
   when '/jin10-messages'
-    label = $document.at_css("i#toggle_refresh_page_button").at_xpath("./following-sibling::label")
+    label = $document.at_css('i#toggle_refresh_page_button').at_xpath('./following-sibling::label')
     `setInterval('window.location.reload()', 30000)` if label.text == '点击关闭自动刷新'
   end
 end
@@ -56,7 +56,7 @@ end
 
 def institution_history_dropdown
   # 点开 dropdown 的时候执行
-  callback = proc do |trigger|
+  callback = proc do |_trigger|
     dropdown = $document.at_css('#dropdown1')
     dropdown.clear
 
@@ -66,16 +66,16 @@ def institution_history_dropdown
 
     DOM do
       li do
-        a "查看机构信息", href: institution_href
+        a '查看机构信息', href: institution_href
       end
       li do
         a(
-          "修改机构别名",
-          "class" => 'modal-trigger',
-          "href" => "#modal1",
-          "data-institution-id" => institution_id,
-          "data-institution-name" => institution_name
-         )
+          '修改机构别名',
+          'class' => 'modal-trigger',
+          'href' => '#modal1',
+          'data-institution-id' => institution_id,
+          'data-institution-name' => institution_name
+        )
       end
     end.append_to(dropdown)
   end
@@ -88,7 +88,7 @@ end
 
 def change_institution_display_name_modal_dialog
   # 点击 “修改名称备注” 之后，创建 modal dialog 的时候执行.
-  callback = proc do |_, trigger|
+  callback = proc do |_, _trigger|
     form = $document.at_css('#modal1 form')
     form.action = "/institutions/#{`trigger.dataset.institutionId`}"
     form.at_css('input').value = `trigger.dataset.institutionName`

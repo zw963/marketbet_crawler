@@ -18,9 +18,7 @@ end
 
 Sequel::Model.plugin :subclasses unless RACK_ENV == 'development'
 
-if RACK_ENV == 'development'
-  Sequel::Model.cache_associations = false
-end
+Sequel::Model.cache_associations = false if RACK_ENV == 'development'
 
 unless RACK_ENV == 'development'
   Sequel::Model.freeze_descendents

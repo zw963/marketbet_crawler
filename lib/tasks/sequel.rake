@@ -3,18 +3,18 @@ namespace :db do
     require_relative '../../config/early_init'
   end
 
-  task :init_db => [:early_init] do |_t, _args|
+  task init_db: [:early_init] do |_t, _args|
     require_relative '../../config/db'
     require_relative '../migration_helper'
   end
 
-  task :init_models => [:init_db] do |_t, _args|
+  task init_models: [:init_db] do |_t, _args|
     require_relative '../../config/model'
     Dir['app/models/**/*.rb'].each {|m| load m }
   end
 
-  desc "Create database"
-  task :create => [:early_init] do |_t, _args|
+  desc 'Create database'
+  task create: [:early_init] do |_t, _args|
     if DB_URL.start_with? 'sqlite'
       warn 'Do nothing.'
     elsif DB_URL.start_with? 'postgres'
@@ -27,8 +27,8 @@ namespace :db do
     end
   end
 
-  desc "Drop database"
-  task :drop => [:early_init] do |_t, _args|
+  desc 'Drop database'
+  task drop: [:early_init] do |_t, _args|
     if DB_URL.start_with? 'sqlite'
       FileUtils.rm_f(db_name, verbose: true)
     elsif DB_URL.start_with? 'postgres'
@@ -38,7 +38,7 @@ namespace :db do
     end
   end
 
-  desc "Run migrations"
+  desc 'Run migrations'
   task :migrate, [:version] => [:init_db] do |_t, args|
     Sequel.extension :migration
     DB.extension :pg_triggers
@@ -48,40 +48,40 @@ namespace :db do
 
     next if Sequel::Migrator.is_current?(DB, 'db/migrations') and version.nil?
 
-    Sequel::Migrator.run(DB, "db/migrations", target: version)
+    Sequel::Migrator.run(DB, 'db/migrations', target: version)
     task('db:dump').invoke
   end
 
-  desc "Rollback the last migrate"
+  desc 'Rollback the last migrate'
   task :rollback, [:number] => [:init_db] do |_t, args|
     if args[:number].nil?
       number = 2
     else
       number = args[:number].to_i + 1
     end
-    version=`ls -1v db/migrations/*.rb |tail -n#{number} |head -n1|rev|cut -d'/' -f1|rev|cut -d'_' -f1`.chomp
+    version = `ls -1v db/migrations/*.rb |tail -n#{number} |head -n1|rev|cut -d'/' -f1|rev|cut -d'_' -f1`.chomp
     puts version
     task('db:migrate').invoke(version)
   end
 
-  desc "Dump database"
-  task :dump => [:init_db] do |_t, _args|
+  desc 'Dump database'
+  task dump: [:init_db] do |_t, _args|
     sh "bundle exec sequel -D #{DB.url} > db/schema.rb"
   end
 
-  desc "Reset database"
-  task :reset => [:init_db] do |_t, _args|
-    Rake::Task["db:drop"].invoke
+  desc 'Reset database'
+  task reset: [:init_db] do |_t, _args|
+    Rake::Task['db:drop'].invoke
     sleep 3
-    Rake::Task["db:migrate"].reenable
-    Rake::Task["db:migrate"].invoke
+    Rake::Task['db:migrate'].reenable
+    Rake::Task['db:migrate'].invoke
     # task('db:drop').invoke
     # sleep 3
     # task('db:migrate').invoke
   end
 
-  desc "Update model annotations"
-  task :annotate => [:init_models] do
+  desc 'Update model annotations'
+  task annotate: [:init_models] do
     require 'sequel/annotate'
     Sequel::Annotate.annotate(Dir['app/models/**/*.rb'], border: true)
   end

@@ -45,7 +45,7 @@ class IpoParser < ParserBase
                 stock.ipo_placement_number = ipo_placement_number
                 stock.ipo_date = captures[1]
                 stock.ipo_price = captures[3]
-                stock.ipo_average_price = ipo_price_range.sum/ipo_price_range.size
+                stock.ipo_average_price = ipo_price_range.sum / ipo_price_range.size
                 stock.ipo_amount = captures[2].delete(',')
                 stock.save
               end

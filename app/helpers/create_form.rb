@@ -4,11 +4,11 @@ class App < Roda
     placeholder:,
     action: request.path,
     method: 'get',
-    icon: "search",
+    icon: 'search',
     param: 'q',
     grid_offset: nil,
     onclick: "this.closest('form').submit(); return false;",
-    autocomplete: "on",
+    autocomplete: 'on',
     size: 2,
     use_input: true
   )
@@ -27,7 +27,7 @@ class App < Roda
 
     input = <<-HEREDOC if use_input
     <input type="text" name="#{param}" id="autocomplete-input" class="#{class_name}" value="#{request.params[param]}" aria-label="Search">
-HEREDOC
+    HEREDOC
 
     str1 + input.to_s + str2
   end

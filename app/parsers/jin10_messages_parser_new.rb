@@ -22,7 +22,7 @@ class Jin10MessagesParserNew < ParserBase
       loop do
         begin
           jin_flash_date = jin_flash_list.at_css('.jin-flash-date-line.is-first')
-          date = Date.strptime(jin_flash_date.text.strip, "%m月%d日")
+          date = Date.strptime(jin_flash_date.text.strip, '%m月%d日')
 
           sleep 2 until (first_flash_message = jin_flash_date.at_xpath('./following-sibling::div'))
 
@@ -45,15 +45,13 @@ class Jin10MessagesParserNew < ParserBase
 
             if text.start_with?('【')
               keyword = text[/【(.*)】.*/, 1]
-              if not keyword.match? CHINESE_PUNCTUATION_MARKS_REGEX and keyword.size < 8
-                tag = Jin10MessageTag.find_or_create(name: keyword)
-              end
+              tag = Jin10MessageTag.find_or_create(name: keyword) if not keyword.match? CHINESE_PUNCTUATION_MARKS_REGEX and keyword.size < 8
             end
 
             next sleep 30 if text.blank?
 
             record = Jin10Message.find(
-              title: text,
+              title:        text,
               publish_date: date
             )
 
@@ -63,14 +61,14 @@ class Jin10MessagesParserNew < ParserBase
             end
 
             new_record = {
-              title: text,
-              keyword: keyword || '',
-              tag: tag,
-              publish_date: date,
+              title:               text,
+              keyword:             keyword || '',
+              tag:                 tag,
+              publish_date:        date,
               publish_time_string: time,
-              important: is_important,
-              url: message_url.to_s,
-              image_url: image_url.to_s
+              important:           is_important,
+              url:                 message_url.to_s,
+              image_url:           image_url.to_s
             }
 
             Jin10Message.create(new_record)
@@ -87,7 +85,6 @@ class Jin10MessagesParserNew < ParserBase
     end => message_parser_proc
 
     retry_until_timeout 3600, message: 'Refresh again', keep_waiting_if: message_parser_proc
-
   ensure
     log.update(finished_at: Time.now)
   end

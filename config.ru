@@ -6,5 +6,5 @@ if RACK_ENV == 'development'
   run ->(env) { App.call(env) }
 else
   run App.freeze.app
-  Refrigerator.freeze_core(:except=>['Gem', 'Object']) if RACK_ENV == 'production'
+  Refrigerator.freeze_core(except: ['Gem', 'Object']) if RACK_ENV == 'production'
 end

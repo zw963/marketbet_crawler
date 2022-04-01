@@ -26,15 +26,15 @@ namespace :db do
       insider_histories = InsiderHistory.where(insider_id: e.id)
       last = insider_histories.order(:date).last
       e.update(
-        last_trade_date: last.date,
-        last_trade_stock: last.stock.name,
+        last_trade_date:       last.date,
+        last_trade_stock:      last.stock.name,
         number_of_trade_times: insider_histories.count,
         trade_on_stock_amount: insider_histories.group_and_count(:stock_id).all.size
       )
     end
   end
 
-  task :update_stock_1 => :db_rollback do
+  task update_stock_1: :db_rollback do
     # 因为使用了 stream, 所以这里必须用 all 方法才工作。
     # all 会预加载所有数据，然后，再执行 block 中的 query.
     Stock.all do |e|

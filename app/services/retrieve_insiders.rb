@@ -28,6 +28,6 @@ class RetrieveInsiders < Actor
 
     result.insiders = insiders.order(sort).paginate(page.to_i, per.to_i)
 
-    result.fail!(message: "没有最新的结果！") if insiders.empty?
+    result.fail!(message: '没有最新的结果！') if insiders.empty?
   end
 end

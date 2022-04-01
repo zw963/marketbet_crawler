@@ -21,7 +21,7 @@ class Jin10MessagesParser < ParserBase
     proc do
       start_time = Time.now
 
-      (group_count-1).times do |i|
+      (group_count - 1).times do |i|
         logger.debug 'Clicking 更多'
 
         session.first(:xpath, './/span[contains(text(), "更多")]').click
@@ -30,9 +30,9 @@ class Jin10MessagesParser < ParserBase
 
         retry_until_timeout(
           5,
-          message: 'click "更多" again',
+          message:            'click "更多" again',
           keep_waiting_until: proc { popup = session.first('.classify-popup .scroll-view-container', minimum: 0) },
-          when_timeout_do: proc { session.first(:xpath, './/span[contains(text(), "更多")]').click(wait: 5) }
+          when_timeout_do:    proc { session.first(:xpath, './/span[contains(text(), "更多")]').click(wait: 5) }
         )
 
         all_link = popup.all(:xpath, './/span[text()=" 全部 "]')[i]
@@ -54,7 +54,7 @@ class Jin10MessagesParser < ParserBase
           logger.debug 'Need login when first time visit.'
           sleep 0.5 until session.has_css?('input#login_phone')
 
-          session.within "#modal_login .modal-form" do
+          session.within '#modal_login .modal-form' do
             session.fill_in id: 'login_phone', with: ENV['JIN10_USER']
             session.fill_in id: 'login_pwd', with: ENV['JIN10_PASS']
             session.click_button '登录'
@@ -83,7 +83,7 @@ class Jin10MessagesParser < ParserBase
           text = title.text.gsub(/\s/, '')
 
           record = Jin10Message.find(
-            title: text,
+            title:        text,
             publish_date: Date.today
           )
 
@@ -91,24 +91,20 @@ class Jin10MessagesParser < ParserBase
 
           if text.start_with?('【')
             keyword = text[/【(.*)】.*/, 1]
-            if not keyword.match? CHINESE_PUNCTUATION_MARKS_REGEX and keyword.size < 8
-              tag = Jin10MessageTag.find_or_create(name: keyword)
-            end
+            tag = Jin10MessageTag.find_or_create(name: keyword) if not keyword.match? CHINESE_PUNCTUATION_MARKS_REGEX and keyword.size < 8
           end
 
           new_record = {
-            title: text,
-            keyword: keyword || '',
-            tag: tag,
-            publish_date: Date.today,
+            title:               text,
+            keyword:             keyword || '',
+            tag:                 tag,
+            publish_date:        Date.today,
             publish_time_string: message.first('.item-time').text,
-            category: category,
-            url: ''
+            category:            category,
+            url:                 ''
           }
 
-          if message.first('.jin-flash-item.flash')['class'].include?('is-important')
-            new_record.update(important: true)
-          end
+          new_record.update(important: true) if message.first('.jin-flash-item.flash')['class'].include?('is-important')
 
           Jin10Message.create(new_record)
         end

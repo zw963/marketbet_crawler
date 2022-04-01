@@ -9,19 +9,19 @@ result = RetrieveInsiderHistory.call(days: days)
 
 if result.success?
   table = Terminal::Table.new do |t|
-    t.style = { :border => :unicode_round }
+    t.style = { border: :unicode_round }
     t.headings = [
-      "ID",
-      "股票",
-      "日期",
-      "名称",
-      "职位",
-      "股票变动数量",
-      "平均价格",
-      "交易价格"
+      'ID',
+      '股票',
+      '日期',
+      '名称',
+      '职位',
+      '股票变动数量',
+      '平均价格',
+      '交易价格'
     ]
     result.insider_histories.each {|e| t.add_row(e.values) }
-    t.style = {:all_separators => true}
+    t.style = {all_separators: true}
   end
 
   puts table

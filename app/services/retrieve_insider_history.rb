@@ -17,9 +17,7 @@ class RetrieveInsiderHistory < Actor
              :insiders[:name]
            end
 
-    if sort_direction.to_s == 'desc'
-      sort = sort.desc
-    end
+    sort = sort.desc if sort_direction.to_s == 'desc'
 
     # Two separate implementations are provided. eager should be used most of the time,
     # as it loads associated records using one query per association. However,
@@ -39,7 +37,7 @@ class RetrieveInsiderHistory < Actor
     else
       insider_histories = insider_histories.where(
         Sequel.or(
-          date: today-days.to_i..today,
+          date:       today - days.to_i..today,
           created_at: now...(today + 1).to_datetime
         )
       )
@@ -48,33 +46,31 @@ class RetrieveInsiderHistory < Actor
     insider_histories = insider_histories.order(sort).all
 
     mapping = {
-      'major shareholder' => "大股东",
-      "insider" => "内部人士",
-      "ceo" => "CEO",
-      "director" => "董事",
-      "cto" => "CTO",
-      "cfo" => "CFO",
-      "coo" => "首席运营官",
-      "general counsel" => "顾问",
-      "svp" => "高级副总裁",
-      "vp" => "副总裁",
-      "evp" => "执行副总裁",
-      "cao" => "首席行政官",
-      "vice chairman" => "副董事長",
-      "chairman" => "董事長",
-      "cmo" => "首席市场官",
+      'major shareholder' => '大股东',
+      'insider' => '内部人士',
+      'ceo' => 'CEO',
+      'director' => '董事',
+      'cto' => 'CTO',
+      'cfo' => 'CFO',
+      'coo' => '首席运营官',
+      'general counsel' => '顾问',
+      'svp' => '高级副总裁',
+      'vp' => '副总裁',
+      'evp' => '执行副总裁',
+      'cao' => '首席行政官',
+      'vice chairman' => '副董事長',
+      'chairman' => '董事長',
+      'cmo' => '首席市场官',
       'president' => '总裁'
     }
 
-    result.fail!(message: "没有最新的结果！") if insider_histories.empty?
+    result.fail!(message: '没有最新的结果！') if insider_histories.empty?
 
     result.insider_histories = insider_histories.map do |ih|
       title = ih.title
       stock = ih.stock
 
-      unless mapping[title.downcase].to_s.downcase == title.downcase
-        title = "#{title}(#{mapping[title.downcase]})"
-      end
+      title = "#{title}(#{mapping[title.downcase]})" unless mapping[title.downcase].to_s.downcase == title.downcase
 
       {
         'ID' => ih.id,
@@ -87,7 +83,7 @@ class RetrieveInsiderHistory < Actor
         '股票变动数量' => ih.number_of_shares,
         '平均价格' => ih.average_price.to_f,
         '交易价格' => ih.share_total_price.to_f,
-        '创建时间' => ih.created_at.strftime("%m-%d %H:%M"),
+        '创建时间' => ih.created_at.strftime('%m-%d %H:%M'),
         '颜色' => ih.number_of_shares.to_i > 0 ? 'green' : 'red'
       }
     end

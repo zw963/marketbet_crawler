@@ -1,3 +1,3 @@
 class AR::Stock < AR::ApplicationRecord
-  self.table_name = "stocks"
+  self.table_name = 'stocks'
 end

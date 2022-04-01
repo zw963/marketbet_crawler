@@ -26,7 +26,7 @@ class EarningsParser < ParserBase
 
           upcoming_earnings_dates = page
             .css("tr[name='instrumentEarningsHistory'] td.bold.left")
-            .map { Date.strptime(_1.text, "%Y年%m月%d日") }
+            .map { Date.strptime(_1.text, '%Y年%m月%d日') }
             .select! {_1 > Date.today}
 
           if upcoming_earnings_dates.present?

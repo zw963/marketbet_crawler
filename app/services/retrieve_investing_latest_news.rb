@@ -11,17 +11,13 @@ class RetrieveInvestingLatestNews < Actor
              :investing_latest_news[sort_column.to_sym]
            end
 
-    if sort_direction.to_s == 'desc'
-      sort = sort.desc
-    end
+    sort = sort.desc if sort_direction.to_s == 'desc'
 
     news = InvestingLatestNews.dataset
 
-    if q.present?
-      news = news.where(Sequel.lit('textsearchable_index_col @@ to_tsquery(?)', q))
-    end
+    news = news.where(Sequel.lit('textsearchable_index_col @@ to_tsquery(?)', q)) if q.present?
 
     result.news = news.order(sort).paginate(page.to_i, per.to_i)
-    result.fail!(message: "没有结果！") if news.empty?
+    result.fail!(message: '没有结果！') if news.empty?
   end
 end

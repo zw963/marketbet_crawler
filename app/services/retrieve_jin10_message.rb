@@ -5,7 +5,7 @@ class RetrieveJin10Message < Actor
   input :per, default: 100, type: [Integer, String]
   input :q, default: nil, type: String
   input :days, default: 2, type: [Integer, String]
-  input :tag_ids, default:[], type: [Array]
+  input :tag_ids, default: [], type: [Array]
 
   def call
     sort = case sort_column.to_s
@@ -13,9 +13,7 @@ class RetrieveJin10Message < Actor
              :jin10_messages[sort_column.to_sym]
            end
 
-    if sort_direction.to_s == 'desc'
-      sort = sort.desc
-    end
+    sort = sort.desc if sort_direction.to_s == 'desc'
 
     messages = Jin10Message.dataset
 
@@ -25,24 +23,20 @@ class RetrieveJin10Message < Actor
     elsif days.to_i == -1
       if q.blank? and tag_ids.include? '-1'
         messages = Jin10Message.dataset.nullify
-        fail_message = "搜索全部结果，必须指定标签或搜索关键字！"
+        fail_message = '搜索全部结果，必须指定标签或搜索关键字！'
       else
         messages = Jin10Message.dataset
       end
     else
-      messages = Jin10Message.where {|r| r.publish_date > Sequel.lit("current_date - interval ?", "#{days} days")}
+      messages = Jin10Message.where {|r| r.publish_date > Sequel.lit('current_date - interval ?', "#{days} days")}
     end
 
-    if not (tag_ids.include? '-1' or tag_ids.blank?)
-      messages = messages.where(jin10_message_tag_id: tag_ids)
-    end
+    messages = messages.where(jin10_message_tag_id: tag_ids) if not (tag_ids.include? '-1' or tag_ids.blank?)
 
-    if q.present?
-      messages = messages.where(Sequel.lit('textsearchable_index_col @@ to_tsquery(?)', q))
-    end
+    messages = messages.where(Sequel.lit('textsearchable_index_col @@ to_tsquery(?)', q)) if q.present?
 
     result.messages = messages.order(sort).paginate(page.to_i, per.to_i)
-    fail_message ||= "没有结果！" if messages.empty?
+    fail_message ||= '没有结果！' if messages.empty?
 
     result.fail!(message: fail_message) if fail_message.present?
   end

@@ -58,7 +58,7 @@ class Jin10MessagesParserOld < ParserBase
       # skipped_category = ['贵金属', '石油', '外汇', '期货', '数字货币', '科技', '地缘局势'].freeze
       skipped_category = [].freeze
 
-      (group_count-1).times do |i|
+      (group_count - 1).times do |i|
         message = nil
 
         (0...5).cycle do |e|
@@ -93,7 +93,7 @@ class Jin10MessagesParserOld < ParserBase
 
           raise Jin10SkipCategoryException if skipped_category.include? new_category
 
-          popup.at_css(".classify-panel-bd-item dl dt span").click
+          popup.at_css('.classify-panel-bd-item dl dt span').click
 
           logger.info "Will move to #{e}'th page" if e > 0
 
@@ -163,23 +163,21 @@ class Jin10MessagesParserOld < ParserBase
           category = Jin10MessageCategory.find_or_create(name: old_category)
 
           record = Jin10Message.find(
-            title: title.text,
+            title:        title.text,
             publish_date: Date.today
           )
 
           next if record.present?
 
           new_record = {
-            title: title.text,
-            publish_date: Date.today,
+            title:               title.text,
+            publish_date:        Date.today,
             publish_time_string: message.at_css('.item-time').text,
-            category: category,
-            url: ''
+            category:            category,
+            url:                 ''
           }
 
-          if message.at_css('.jin-flash-item.flash').attribute('class').include?('is-important')
-            new_record.update(important: true)
-          end
+          new_record.update(important: true) if message.at_css('.jin-flash-item.flash').attribute('class').include?('is-important')
 
           Jin10Message.create(new_record)
         end

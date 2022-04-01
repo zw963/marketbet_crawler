@@ -27,7 +27,7 @@ class InstitutionHistoryParser < ParserBase
 
             unless percent_ele.nil?
               percent = percent_ele.inner_text[/([\d.]+)%/, 1]
-              stock.update(percent_of_institutions: BigDecimal(percent)/100)
+              stock.update(percent_of_institutions: BigDecimal(percent) / 100)
             end
 
             save_to_institution_history(latest_data, stock)
@@ -47,11 +47,11 @@ class InstitutionHistoryParser < ParserBase
       e[3] =~ /\$([\d.,]+)(.?)/
       market_value = BigDecimal($1)
       case $2
-      when "K"
+      when 'K'
         value = market_value * 1000
-      when "M"
+      when 'M'
         value = market_value * 1000000
-      when "B"
+      when 'B'
         value = market_value * 1000000000
       else
         value = market_value
@@ -69,7 +69,7 @@ class InstitutionHistoryParser < ParserBase
       if quarterly_changed_share_percent.nil?
         quarterly_changes = nil
       else
-        percent = (number_of_holding/(1+quarterly_changed_share_percent))
+        percent = (number_of_holding / (1 + quarterly_changed_share_percent))
         if percent.nan?
           quarterly_changes = nil
         else
@@ -83,17 +83,17 @@ class InstitutionHistoryParser < ParserBase
 
       InstitutionHistory.find_or_create(
         {
-          institution_id: institution.id,
-          date: Date.strptime(e[0], '%m/%d/%Y'),
-          stock: stock,
-          number_of_holding: number_of_holding,
-          market_value: value,
-          market_value_dollar_string: e[3],
-          percent_of_shares_for_stock: p2b(e[6]),
+          institution_id:                    institution.id,
+          date:                              Date.strptime(e[0], '%m/%d/%Y'),
+          stock:                             stock,
+          number_of_holding:                 number_of_holding,
+          market_value:                      value,
+          market_value_dollar_string:        e[3],
+          percent_of_shares_for_stock:       p2b(e[6]),
           percent_of_shares_for_institution: p2b(e[4]),
-          quarterly_changes_percent: quarterly_changed_share_percent,
-          quarterly_changes: quarterly_changes,
-          holding_cost: format("%.2f", value.to_f/number_of_holding)
+          quarterly_changes_percent:         quarterly_changed_share_percent,
+          quarterly_changes:                 quarterly_changes,
+          holding_cost:                      format('%.2f', value.to_f / number_of_holding)
         }
       )
     end

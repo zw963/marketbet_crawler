@@ -7,7 +7,7 @@ Fabricate.sequence(:date) {|_n| Date.today + rand(-100..100) }
 Fabricator(:institution_history) do
   holding_cost 7.27
   market_value 940000
-  market_value_dollar_string "$0.94M"
+  market_value_dollar_string '$0.94M'
   number_of_holding 182902
   percent_of_shares_for_institution 0.02.to_d
   percent_of_shares_for_stock 0.024.to_d
@@ -65,9 +65,9 @@ Fabricator(:jin10_message) do
   important false
   category { Fabricate(:jin10_message_category) }
   tag { Fabricate(:jin10_message_tag) }
-  keyword { "行情" }
+  keyword { '行情' }
   publish_date { Date.parse('2021-12-06') }
-  publish_time_string { "21:33:06" }
-  title {"【行情】特斯拉(TSLA.O)盘前短线走低，现跌3.34%。"}
+  publish_time_string { '21:33:06' }
+  title {'【行情】特斯拉(TSLA.O)盘前短线走低，现跌3.34%。'}
   url { '' }
 end

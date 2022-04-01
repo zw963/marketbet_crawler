@@ -9,7 +9,7 @@ end
 
 require 'minitest/autorun'
 require 'minitest/pride'
-require "rack/test"
+require 'rack/test'
 require_relative '../config/db'
 # require 'helpers/database_cleaner'
 require 'helpers/transaction'
@@ -21,7 +21,7 @@ if not Dir.empty?('db/migrations')
   Sequel::Migrator.check_current(DB, 'db/migrations')
 end
 
-OUTER_APP = Rack::Builder.parse_file("config.ru").first.freeze.app
+OUTER_APP = Rack::Builder.parse_file('config.ru').first.freeze.app
 
 class Minitest::Test
   include Rack::Test::Methods
@@ -51,7 +51,7 @@ class Minitest::Test
   end
 
   def content
-    assert_equal last_response.status, 200
+    assert_equal(200, last_response.status)
 
     res = JSON.parse(last_response.body)
 

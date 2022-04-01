@@ -4,7 +4,7 @@ class App < Roda
     query_string = Rack::Utils.build_nested_query(params.merge({'page' => page, 'per' => page_size}))
     href = request.path
     href = "#{href}?#{query_string}" if query_string.present?
-    anchor_class = "waves-effect waves-light btn-small"
+    anchor_class = 'waves-effect waves-light btn-small'
     anchor_class = "#{anchor_class} disabled" if page.nil?
     "<a class=\"#{anchor_class}\" href=\"#{href}\">#{title}</a>"
   end

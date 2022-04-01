@@ -1,7 +1,7 @@
 require 'test_helper'
 
-describe "retrieve latest institution histories" do
-  it "get the expected institution history list" do
+describe 'retrieve latest institution histories' do
+  it 'get the expected institution history list' do
     Timecop.freeze('2021-08-06')
     assert_equal 0, InstitutionHistory.all.count
 
@@ -19,38 +19,38 @@ describe "retrieve latest institution histories" do
     create(:institution_history, date: '2021-08-02', institution: institution5, stock: stock)
     assert_equal 5, InstitutionHistory.all.count
     result = RetrieveInstitutionHistory.call(days: 3, sort_column: 'institution_id', sort_direction: 'desc')
-    assert_equal true, result.success?
+    assert_predicate result, :success?
     institution_histories = result.institution_histories
     assert_equal [
-      "Name5", "黑石_4", "Name3", "黑石_2"
+      'Name5', '黑石_4', 'Name3', '黑石_2'
     ], (institution_histories.map {|x| x['机构名称'] })
     assert_equal({
-      "股票"=>"nyse/ge",
-      "stock_id" => 1,
-      "日期"=>"2021-08-03",
-      "机构名称"=>"黑石_2",
-      "institution_id" => 2,
-      "机构持有数量"=>182902,
-      "市场价值"=>"94.0万($0.94M)",
-      "占股票百分比"=>"2.4%",
-      "占机构百分比"=>"2.0%",
-      "机构季度变动百分比"=>"1473.2%",
-      "机构季度变动数量"=>171276,
-      "机构平均成本"=>7.27,
-      "创建时间"=>"08-04 00:00",
-      "颜色" => 'green'
-    },
-      institution_histories.last.except("ID"))
+                   '股票' => 'nyse/ge',
+                   'stock_id' => 1,
+                   '日期' => '2021-08-03',
+                   '机构名称' => '黑石_2',
+                   'institution_id' => 2,
+                   '机构持有数量' => 182902,
+                   '市场价值' => '94.0万($0.94M)',
+                   '占股票百分比' => '2.4%',
+                   '占机构百分比' => '2.0%',
+                   '机构季度变动百分比' => '1473.2%',
+                   '机构季度变动数量' => 171276,
+                   '机构平均成本' => 7.27,
+                   '创建时间' => '08-04 00:00',
+                   '颜色' => 'green'
+                 },
+                 institution_histories.last.except('ID'))
   end
 
-  it "get the expected institution list" do
+  it 'get the expected institution list' do
     Timecop.freeze('2021-08-06')
     assert_equal 0, InstitutionHistory.all.count
     create(:institution_history, date: '2021-08-02', created_at: '2021-08-04')
 
     assert_equal 1, InstitutionHistory.all.count
     result = RetrieveInstitutionHistory.result(days: 3)
-    assert_equal false, result.success?
+    refute_predicate result, :success?
     assert_nil result.institution_histories
     assert_equal '没有最新的结果！', result.message
   end

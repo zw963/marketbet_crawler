@@ -33,7 +33,7 @@ class InsiderHistoryParser < ParserBase
     stock = Stock.find_or_create(name: symbol, exchange: exchange)
 
     table_ary[1..].each do |e|
-      number_of_holding = e[7] == "" ? nil : e[7].to_i
+      number_of_holding = e[7] == '' ? nil : e[7].to_i
       insider = Insider.find_or_create(name: e[1])
 
       case e[3]
@@ -53,19 +53,19 @@ class InsiderHistoryParser < ParserBase
       DB.transaction do
         InsiderHistory.find_or_create(
           {
-            date: date,
-            title: e[2],
+            date:              date,
+            title:             e[2],
             number_of_holding: number_of_holding,
-            number_of_shares: e[4].tr(',', '').to_i*xx,
-            average_price: d2b(e[5]),
+            number_of_shares:  e[4].tr(',', '').to_i * xx,
+            average_price:     d2b(e[5]),
             share_total_price: d2b(e[6]),
-            stock: stock,
-            insider: insider
+            stock:             stock,
+            insider:           insider
           }
         )
         insider.update(
-          last_trade_date: date,
-          last_trade_stock: stock.name,
+          last_trade_date:       date,
+          last_trade_stock:      stock.name,
           number_of_trade_times: insider.number_of_trade_times.to_i + 1
         )
       end

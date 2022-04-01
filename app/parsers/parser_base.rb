@@ -22,17 +22,17 @@ class ParserBase
     options = {
       # logger: ChromeHeadlessLogger.new(Logger.new('log/chrome_headless.log', 10, 1024000)),
       pending_connection_errors: false,
-      window_size: [1600, 900],
-      timeout: 30,
-      browser_options: { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false', 'start-maximized': true},
-      headless: true,
-      slowmo: 0.5
+      window_size:               [1600, 900],
+      timeout:                   30,
+      browser_options:           { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false', 'start-maximized': true},
+      headless:                  true,
+      slowmo:                    0.5
     }
 
     if RACK_ENV == 'development'
       options.update(
         headless: false,
-        slowmo: 0.5
+        slowmo:   0.5
       )
     end
 
@@ -61,12 +61,12 @@ class ParserBase
     f = percent.tr('%', '').delete(',').delete('$')
 
     case f
-    when "N/A"
+    when 'N/A'
       nil
-    when "No Change"
+    when 'No Change'
       BigDecimal('0.0')
     else
-      BigDecimal(f)/100
+      BigDecimal(f) / 100
     end
   end
 
@@ -139,10 +139,8 @@ class ParserBase
 
   def wait_for_valid(&block)
     loop do
-      ele=block.call
-      if (ele.moving? rescue nil)
-        break ele
-      end
+      ele = block.call
+      break ele if (ele.moving? rescue nil)
 
       sleep 0.5
     end

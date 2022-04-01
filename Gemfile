@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
@@ -25,8 +25,8 @@ gem 'terser'
 gem 'brotli'
 gem 'opal'
 gem 'opal-browser'
-gem "opal-sprockets"
-gem "roda-sprockets"
+gem 'opal-sprockets'
+gem 'roda-sprockets'
 gem 'snabberb'
 # gem 'paggio', github: 'hmdne/paggio'
 gem 'refrigerator'
@@ -51,7 +51,7 @@ group :test do
 end
 
 # group :development, :test do
-gem "ferrum"
+gem 'ferrum'
 # gem 'cuprite'
 # gem 'capybara'
 # end

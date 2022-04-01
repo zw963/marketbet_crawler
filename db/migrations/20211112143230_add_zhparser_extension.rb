@@ -2,12 +2,12 @@ Sequel.migration do
   up do
     if DB.adapter_scheme == :postgres
       run 'CREATE EXTENSION zhparser;'
-      run "DROP TEXT SEARCH CONFIGURATION IF EXISTS zhparser;"
-      run "CREATE TEXT SEARCH CONFIGURATION zhparser (PARSER = zhparser);"
+      run 'DROP TEXT SEARCH CONFIGURATION IF EXISTS zhparser;'
+      run 'CREATE TEXT SEARCH CONFIGURATION zhparser (PARSER = zhparser);'
       # 这里必须添加 x 才能让自定义词库动态更新生效
-      run "ALTER TEXT SEARCH CONFIGURATION zhparser ADD MAPPING FOR n,v,a,i,e,l,j,x WITH simple;"
-      run "ALTER role all SET zhparser.multi_short=on;" # 1 短词复合
-      run "ALTER role all SET zhparser.multi_duality=on;" # 2 二元复合
+      run 'ALTER TEXT SEARCH CONFIGURATION zhparser ADD MAPPING FOR n,v,a,i,e,l,j,x WITH simple;'
+      run 'ALTER role all SET zhparser.multi_short=on;' # 1 短词复合
+      run 'ALTER role all SET zhparser.multi_duality=on;' # 2 二元复合
       # run "ALTER role all SET zhparser.multi_zmain=on;" # 主要单字复合
       # run "ALTER role all SET zhparser.multi_zall=on;" # 所有单字复合
     end
@@ -15,9 +15,9 @@ Sequel.migration do
 
   down do
     if DB.adapter_scheme == :postgres
-      run "ALTER ROLE all RESET ALL"
-      run "DROP TEXT SEARCH CONFIGURATION IF EXISTS zhparser;"
-      run "DROP EXTENSION IF EXISTS zhparser RESTRICT;"
+      run 'ALTER ROLE all RESET ALL'
+      run 'DROP TEXT SEARCH CONFIGURATION IF EXISTS zhparser;'
+      run 'DROP EXTENSION IF EXISTS zhparser RESTRICT;'
     end
   end
 

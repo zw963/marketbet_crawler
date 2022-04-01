@@ -17,7 +17,7 @@ ENV['RACK_ENV'] = ENV['RACK_ENV'] || 'development'
 RACK_ENV = ENV['RACK_ENV'].freeze
 
 # set db url
-env_database_url="#{RACK_ENV}_database_url".upcase # e.g DEVELOPMENT_DATABASE_URL
+env_database_url = "#{RACK_ENV}_database_url".upcase # e.g DEVELOPMENT_DATABASE_URL
 DB_URL = (ENV.delete(env_database_url) || ENV.delete('DATABASE_URL')).freeze
 
 # set logger constant

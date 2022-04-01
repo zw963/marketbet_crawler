@@ -7,8 +7,8 @@ module MigrationHelper
           pgt_updated_at(
             table_name.to_sym,
             :updated_at,
-            :function_name => function_name,
-            :trigger_name => :set_updated_at
+            function_name: function_name,
+            trigger_name:  :set_updated_at
           )
         end
       end

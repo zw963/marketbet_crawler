@@ -2,7 +2,7 @@ class InvestingLatestNewsParser < ParserBase
   def parse
     log = Log.create(type: 'investing_latest_news_parser')
 
-    url = "https://cn.investing.com/news/latest-news"
+    url = 'https://cn.investing.com/news/latest-news'
     puts url
     browser.goto url
 
@@ -19,12 +19,12 @@ class InvestingLatestNewsParser < ParserBase
       title, source, publish_time, preview = text.scan(/(.*)提供者(.*) - (.*?(?:以前|\d+年\d+月\d+日))(.*)/m).flatten
       publish_time.strip!
       InvestingLatestNews.create(
-        title: title.strip,
-        preview: preview.strip,
-        url: url,
-        source: source.strip,
+        title:               title.strip,
+        preview:             preview.strip,
+        url:                 url,
+        source:              source.strip,
         publish_time_string: publish_time,
-        publish_time: time2time(publish_time)
+        publish_time:        time2time(publish_time)
       )
     end
 
@@ -40,7 +40,7 @@ class InvestingLatestNewsParser < ParserBase
         Time.now - (time_number.to_i * 60)
       end
     else
-      Date.strptime(chinese_time_string, "%Y年%m月%d日")
+      Date.strptime(chinese_time_string, '%Y年%m月%d日')
     end
   end
 end

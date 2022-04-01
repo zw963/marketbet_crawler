@@ -13,7 +13,5 @@ symbols.each do |e|
   exchange, stock = e.split('/')
   exchange = Exchange.find_or_create(name: exchange)
 
-  if not Stock.find(name: stock, exchange: exchange)
-    Stock.create(name: stock, exchange: exchange)
-  end
+  Stock.create(name: stock, exchange: exchange) if not Stock.find(name: stock, exchange: exchange)
 end

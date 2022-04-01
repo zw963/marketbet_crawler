@@ -23,14 +23,12 @@ class RetrieveStocks < Actor
       .qualify
       .select_append(:exchange[:name].as(:exchange_name))
 
-    if stock_name.present?
-      stocks = stocks.where(:stocks[:name] => stock_name)
-    end
+    stocks = stocks.where(:stocks[:name] => stock_name) if stock_name.present?
 
     stocks = stocks.order(sort).paginate(page.to_i, per.to_i)
 
     result.stocks = stocks
 
-    fail!(message: "没有匹配的股票！") if stocks.empty?
+    fail!(message: '没有匹配的股票！') if stocks.empty?
   end
 end
