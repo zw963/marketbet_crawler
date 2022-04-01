@@ -15,7 +15,7 @@ require 'browser/http'
 $document.ready do
   set_select_dropdown()
   set_tooltips()
-  request_path = '/' + `location.pathname.substring(1)`
+  request_path = "/#{`location.pathname.substring(1)`}"
   puts request_path
   case request_path
   when '/stocks'

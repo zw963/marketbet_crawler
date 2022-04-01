@@ -17,10 +17,11 @@ class RetrieveJin10Message < Actor
 
     messages = Jin10Message.dataset
 
-    if days.to_i == 2
+    case days.to_i
+    when 2
       # 默认只显示当天和前一天的
       messages = Jin10Message.where(publish_date: [Sequel.lit('current_date'), Sequel.lit('current_date - 1')])
-    elsif days.to_i == -1
+    when -1
       if q.blank? and tag_ids.include? '-1'
         messages = Jin10Message.dataset.nullify
         fail_message = '搜索全部结果，必须指定标签或搜索关键字！'

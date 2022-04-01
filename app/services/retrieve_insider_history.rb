@@ -70,7 +70,7 @@ class RetrieveInsiderHistory < Actor
       title = ih.title
       stock = ih.stock
 
-      title = "#{title}(#{mapping[title.downcase]})" unless mapping[title.downcase].to_s.downcase == title.downcase
+      title = "#{title}(#{mapping[title.downcase]})" unless mapping[title.downcase].to_s.casecmp(title).zero?
 
       {
         'ID' => ih.id,
