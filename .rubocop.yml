@@ -4,6 +4,7 @@ require:
   - rubocop-rake
   - rubocop-performance
   - rubocop/rubycw
+  - rubocop-sequel
   # - rubocop-rails
 
 AllCops:

@@ -4,7 +4,7 @@ class App
       institution = Institution[@id]
       institution.display_name = r.params.fetch_values('display_name')
 
-      if institution.modified? and institution.valid? and institution.save
+      if institution.modified? and institution.valid? and institution.save_changes
         r.redirect request.referer
       else
         r.halt

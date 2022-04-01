@@ -31,7 +31,7 @@ class EarningsParser < ParserBase
 
           if upcoming_earnings_dates.present?
             stock.next_earnings_date = upcoming_earnings_dates.min
-            stock.save
+            stock.save_changes
           end
         ensure
           context&.dispose
