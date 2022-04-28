@@ -1,10 +1,10 @@
 #!/bin/bash
 
-self="$(\curl -sS https://gitee.com/zw963/deployment_bash/raw/v0.7.5/deploy_start.sh)" && eval "$self"
+self="$(\curl -sS https://gitee.com/zw963/deployment_bash/raw/0.7.8/deploy_start.sh)" && eval "$self"
 
-export target=$1
-export package=$2
-export domain_name=$3
+export_variable target=$1
+export_variable package=$2
+export_variable domain_name=$3
 
 if [ -z "$package" ]; then
     echo 'Specify one arg for which package to install.'
