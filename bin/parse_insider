@@ -5,12 +5,12 @@ require_relative '../config/parser_loader'
 ins = InsiderHistoryParser.instance
 
 symbols = %w(
-  nasdaq/arry nasdaq/fldm nasdaq/momo
+  nasdaq/arry nasdaq/lab nasdaq/momo
   nyse/stm nyse/nclh nasdaq/cron nyse/pltr nasdaq/ttcf
-  nasdaq/kopn nasdaq/afrm nasdaq/cree nasdaq/ino nyse/ai
+  nasdaq/kopn nasdaq/afrm nasdaq/wolf nasdaq/ino nyse/ai
   otcmkts/wcagy nyse/cnk lon/rr nyse/ge nasdaq/bmbl
   nyse/fsly nasdaq/wish nyse/dash nyse/qs nyseamerican/eman
-  nyse/fubo nasdaq/nkla nyse/erj nasdaq/lab nyse/ccl
+  nyse/fubo nasdaq/nkla nyse/erj nyse/ccl
   nasdaq/dwac
 )
 
