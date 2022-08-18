@@ -61,6 +61,14 @@ class RetrieveInstitutionHistory < Actor
           value2 = ins.quarterly_changes
         end
 
+        if value1 == 'N/A'
+          color = 'grey'
+        elsif value1.to_i > 0
+          color = 'green'
+        else
+          color = 'red'
+        end
+
         {
           'ID' => ins.id,
           '股票' => stock.name,
@@ -76,7 +84,7 @@ class RetrieveInstitutionHistory < Actor
           '机构季度变动数量' => value2,
           '机构平均成本' => ins.holding_cost.to_f,
           '创建时间' => ins.created_at.strftime('%m-%d %H:%M'),
-          '颜色' => value1.to_i > 0 ? 'green' : 'red'
+          '颜色' => color
         }
       end
     end
