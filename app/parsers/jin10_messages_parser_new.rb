@@ -80,11 +80,11 @@ class Jin10MessagesParserNew < ParserBase
           retry
         end
 
-        sleep 45
+        sleep 90
       end
     end => message_parser_proc
 
-    retry_until_timeout 3600, message: 'Refresh again', keep_waiting_if: message_parser_proc
+    retry_until_timeout 7200, message: 'Refresh again', keep_waiting_if: message_parser_proc
   ensure
     log.update(finished_at: Time.now)
   end
