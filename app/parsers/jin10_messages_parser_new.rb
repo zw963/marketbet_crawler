@@ -4,14 +4,14 @@ class Jin10MessagesParserNew < ParserBase
   CHINESE_PUNCTUATION_MARKS_REGEX = %r{\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5|\s+|/}
 
   def parse
+    log = Log.create(type: 'jin10_latest_messages_parser')
+
     proc do
       url = 'https://www.jin10.com'
 
       logger.warn "visiting #{url}"
 
       browser.goto url
-
-      log = Log.create(type: 'jin10_latest_messages_parser')
 
       sleep 2 while browser.css('ul.classify-list li').count < 2
 
