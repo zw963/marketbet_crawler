@@ -1,5 +1,5 @@
 class RetrieveInsiderHistory < Actor
-  input :days, default: 7, type: [Integer, String]
+  input :days, default: 15, type: [Integer, String]
   input :sort_column, default: 'date', type: String
   input :sort_direction, default: 'desc', type: String
   input :stock_name, default: nil, type: String
