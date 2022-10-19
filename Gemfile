@@ -62,7 +62,7 @@ end
 
 gem 'puma'
 
-# use exact debug version which ruby 3.1 builtin.
-gem 'debug', '1.4.0'
-gem 'reline', '0.3.0'
-gem 'io-console', '0.5.10'
+# # use exact debug version which ruby 3.1 builtin.
+# gem 'debug', '1.4.0'
+# gem 'reline', '0.3.0'
+# gem 'io-console', '0.5.10'
