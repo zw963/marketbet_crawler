@@ -18,6 +18,9 @@ $document.ready do
   request_path = '/' + `location.pathname.substring(1)`
   puts request_path
   case request_path
+  when %r{/stocks/\d+}, %r{/institutions/\d+}
+    institution_history_dropdown()
+    change_institution_display_name_modal_dialog()
   when '/stocks'
     get_stocks_json()
   when '/latest-insider-histories'
