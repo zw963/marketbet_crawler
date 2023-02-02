@@ -1,13 +1,13 @@
 #!/bin/bash
 
-self="$(\curl -sS https://gitee.com/zw963/deployment_bash/raw/0.7.8/deploy_start.sh)" && eval "$self"
+self="$(\curl -sS https://gitlab.com/zw963/deployment_bash/-/raw/v0.8.4/deploy_start.sh)" && eval "$self"
 
 export_variable target=$1
 export_variable package=$2
 export_variable domain_name=$3
 
 if [ -z "$package" ]; then
-    echo 'Specify one arg for which package to install.'
+    echo 'Run with bin/init_package username@hostname package_name'
     exit
 fi
 
@@ -29,11 +29,16 @@ case "$package" in
         deploy_certbot
         ;;
     tls)
+        if [ -z "$package" ]; then
+            echo 'Run with bin/init_package username@hostname tls domain_name'
+            exit
+        fi
         deploy_tls "$domain_name"
         ;;
     chrome)
         deploy_chrome
         ;;
     *)
-        echo 'Specify one arg for which package to install.'
+        echo 'Specify a arg for which package to install.'
+        echo "pg|zhparser|nodejs|nginx|tls|chrome"
 esac
