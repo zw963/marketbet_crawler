@@ -80,9 +80,9 @@ class RetrieveInsiderHistory < Actor
         '日期' => ih.date.to_s,
         '名称' => ih.insider.name,
         '职位' => title,
-        '股票变动数量' => ih.number_of_shares,
-        '平均价格' => ih.average_price.to_f,
-        '交易价格' => ih.share_total_price.to_f,
+        '股票变动数量' => Helpers.number_with_comma(ih.number_of_shares, space: 4),
+        '平均价格' => Helpers.number_with_comma(ih.average_price.to_f, space: 4),
+        '交易价格' => Helpers.number_with_comma(ih.share_total_price.to_f, space: 4),
         '创建时间' => ih.created_at.strftime('%m-%d %H:%M'),
         '颜色' => ih.number_of_shares.to_i > 0 ? 'green' : 'red'
       }
