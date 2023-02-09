@@ -62,6 +62,13 @@ end
 
 gem 'puma'
 
+# group :development, :production do
+  gem 'capistrano'
+  gem 'capistrano-bundler'
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
+# end
+
 # # use exact debug version which ruby 3.1 builtin.
 # gem 'debug', '1.4.0'
 # gem 'reline', '0.3.0'
