@@ -1,5 +1,6 @@
 ENV['RACK_ENV'] = 'test'
 require 'warning'
+require 'rack/builder'
 
 Gem.path.each do |path|
   Warning.ignore(/warning: mismatched indentations at/, path)
@@ -21,7 +22,7 @@ if not Dir.empty?('db/migrations')
   Sequel::Migrator.check_current(DB, 'db/migrations')
 end
 
-OUTER_APP = Rack::Builder.parse_file('config.ru').first.freeze.app
+OUTER_APP = Rack::Builder.parse_file('config.ru').freeze.app
 
 class Minitest::Test
   include Rack::Test::Methods

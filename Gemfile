@@ -11,7 +11,7 @@ gem 'sequel-store'
 gem 'pg'
 gem 'sqlite3'
 gem 'only_blank'
-gem 'service_actor'
+gem 'service_actor', '3.1.3'
 # gem 'dry-monads', require: 'dry/monads/all'
 gem 'roda'
 gem 'tilt'
@@ -40,7 +40,7 @@ group :development do
 end
 
 group :test do
-  gem 'minitest', '5.15.0'
+  gem 'minitest'
   gem 'm'
   gem 'database_cleaner-sequel'
   gem 'minitest-hooks'
