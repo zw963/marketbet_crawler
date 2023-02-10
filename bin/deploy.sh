@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 function set_backup_policy () {
     set -eu
@@ -62,5 +62,5 @@ cd $home/current &&
     ln -sf ../shards/log . &&
     ln -sf ../shards/tmp . &&
     ln -sf ../shards/pids . &&
-    ln -sf ../shards/public/assets . &&
-    ln -sf ../shards/db/files .
+    ln -sf ../shards/public/assets public/assets &&
+    ln -sf ../shards/db/files db/files
