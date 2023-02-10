@@ -59,4 +59,8 @@ cd $home/current &&
     ln -sf ../shards/.rvmrc . &&
     ln -sf ../shards/Procfile . &&
     ln -sf ../shards/Procfile.local . &&
-    ln -sf ../shards/{log,tmp,pids,public/assets,db/files} .
+    ln -sf ../shards/log . &&
+    ln -sf ../shards/tmp . &&
+    ln -sf ../shards/pids . &&
+    ln -sf ../shards/public/assets . &&
+    ln -sf ../shards/db/files .
