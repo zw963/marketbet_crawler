@@ -48,7 +48,7 @@ class RetrieveInstitutionHistory < Actor
         stock = ins.stock
 
         _x = ins.market_value.divmod(10000)
-        value = _x[0].to_f + _x[1] / 10000.to_f
+        value = Helpers.number_with_comma(_x[0].to_f + _x[1] / 10000.to_f)
 
         if ins.quarterly_changes_percent.nil?
           value1 = 'N/A'
@@ -76,12 +76,12 @@ class RetrieveInstitutionHistory < Actor
           '日期' => ins.date.to_s,
           '机构名称' => ins.institution.display_name,
           'institution_id' => ins.institution.id,
-          '机构持有数量' => ins.number_of_holding,
+          '机构持有数量' => Helpers.number_with_comma(ins.number_of_holding),
           '市场价值' => "#{value.to_f}万(#{ins.market_value_dollar_string})",
           '占股票百分比' => "#{(ins.percent_of_shares_for_stock * 100).to_f}%",
           '占机构百分比' => "#{(ins.percent_of_shares_for_institution * 100).to_f}%",
           '机构季度变动百分比' => value1,
-          '机构季度变动数量' => value2,
+          '机构季度变动数量' => Helpers.number_with_comma(value2),
           '机构平均成本' => ins.holding_cost.to_f,
           '创建时间' => ins.created_at.strftime('%m-%d %H:%M'),
           '颜色' => color
