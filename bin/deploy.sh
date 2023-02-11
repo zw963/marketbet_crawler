@@ -41,7 +41,7 @@ function set_backup_policy () {
 }
 
 
-home="/home/procodile/apps/marketbet_crawler/marketbet_crawler_production"
+home="/home/procodile/apps/marketbet_crawler_production"
 current=$home/releases/current
 
 echo "-----> Fetching new git commits"
@@ -60,4 +60,5 @@ echo "-----> Fetching new git commits"
     ln -sf ../../shared/tmp . &&
     ln -sf ../../shared/pids . &&
     ln -sf ../../shared/public/assets public/assets &&
-    ln -sf ../../shared/db/files db/files
+    ln -sf ../../shared/db/files db/files &&
+    procodile restart
