@@ -40,25 +40,28 @@ function set_backup_policy () {
     return 0
 }
 
-
-home="/home/procodile/apps/marketbet_crawler_production"
-current=$home/releases/current
+current=$(cd "$(dirname "$BASH_SOURCE")/.." && pwd)
+root=$(cd $current/../.. && pwd)
 
 echo "-----> Fetching new git commits"
-
-(cd $home/scm && git fetch git@github.com:zw963/marketbet_crawler master:master --force) &&
+(cd $root/scm && git fetch git@github.com:zw963/marketbet_crawler master:master --force) &&
     echo "-----> Using git branch master" &&
-    cd $home &&
+    cd $root &&
     set_backup_policy $current 7 &&
     git clone scm $current --recursive --branch master &&
-    cd $current && git rev-parse HEAD > .git_revision &&
+    cd $current &&
+    git rev-parse HEAD > .git_revision &&
     git --no-pager log --format="%aN (%h):%n> %s" -n 1 &&
-    ln -sf ../../shared/.rvmrc . &&
-    ln -sf ../../shared/Procfile . &&
-    ln -sf ../../shared/Procfile.local . &&
-    ln -sf ../../shared/log . &&
-    ln -sf ../../shared/tmp . &&
-    ln -sf ../../shared/pids . &&
-    ln -sf ../../shared/public/assets public/assets &&
-    ln -sf ../../shared/db/files db/files &&
-    procodile restart
+    ln -sfv ../../shared/.rvmrc . &&
+    ln -sfv ../../shared/Procfile . &&
+    ln -sfv ../../shared/Procfile.local . &&
+    ln -sfv ../../shared/log . &&
+    ln -sfv ../../shared/tmp . &&
+    ln -sfv ../../shared/pids . &&
+    ln -sfv ../../shared/public/assets public/assets &&
+    ln -sfv ../../shared/db/files db/files &&
+    cd . &&
+    bundle config set deployment true &&
+    bundle config set path $root/shared/bundle &&
+    bundle config set without 'development test' &&
+    procodile restart && procodile status
