@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 function set_backup_policy () {
-    set -eux
+    set -eu
 
     backup_path=$1
+
+    # 处理用户输入 7 或 07(有个 0 前缀) 的问题。
     max_backup_count=$((${2}-0))
 
     oldest_backup_dir="${backup_path}".$max_backup_count
@@ -16,13 +18,9 @@ function set_backup_policy () {
         return 0
     fi
 
-    # if check_directory_is_empty "$newest_backup_dir"; then
-    #     return 0
-    # fi
-
     # 如果已经达到最大备份, 删除最老的备份.
     if [ -d "$oldest_backup_dir" ]; then
-        echo "Deleting oldest backup dir $oldest_backup_dir, it may need several minutes ..."
+        echo "Deleting oldest backup dir $oldest_backup_dir ..."
         rm -rf "$oldest_backup_dir"
         echo "Done."
     fi
