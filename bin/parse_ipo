@@ -12,7 +12,7 @@ symbols = %w(
   nyse/dao nasdaq/ino nasdaq/tour nyse/tme nyse/ai
   nasdaq/eh otcmkts/wcagy nyse/fubo nyse/yala nyse/cnk nyse/jks
   nyse/ge nasdaq/bmbl nyse/yq nyse/gotu nyse/fsly nasdaq/wish
-  nyse/dash nyse/qs nyse/nok nyseamerican/eman nyse/coe
+  nyse/dash nyse/qs nyse/nok nyseamerican/eman nyse/coe nyse/ddl
 )
 
 if ARGV[0]
