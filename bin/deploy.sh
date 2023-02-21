@@ -52,14 +52,14 @@ echo "-----> Fetching new git commits"
     cd $current &&
     git rev-parse HEAD > .git_revision &&
     git --no-pager log --format="%aN (%h):%n> %s" -n 1 &&
-    ln -sfv ../../shared/.rvmrc . &&
-    ln -sfv ../../shared/Procfile . &&
-    ln -sfv ../../shared/Procfile.local . &&
-    ln -sfv ../../shared/log . &&
-    ln -sfv ../../shared/tmp . &&
-    ln -sfv ../../shared/pids . &&
-    ln -sfv ../../shared/public/assets public/assets &&
-    ln -sfv ../../shared/db/files db/files &&
+    ln -sfv $root/shared/.rvmrc . &&
+    ln -sfv $root/shared/Procfile . &&
+    ln -sfv $root/shared/Procfile.local . &&
+    ln -sfv $root/shared/log . &&
+    ln -sfv $root/shared/tmp . &&
+    ln -sfv $root/shared/pids . &&
+    ln -sfv $root/shared/public/assets public/assets &&
+    ln -sfv $root/shared/db/files db/files &&
     cd . &&
     bundle config set deployment true &&
     bundle config set path $root/shared/bundle &&
