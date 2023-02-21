@@ -64,4 +64,5 @@ echo "-----> Fetching new git commits"
     bundle config set deployment true &&
     bundle config set path $root/shared/bundle &&
     bundle config set without 'development test' &&
-    procodile restart && procodile status
+    bundle exec rake assets:precompile &&
+    bundle exec rake assets:deflate
