@@ -11,7 +11,7 @@ symbols = %w(
   otcmkts/wcagy nyse/cnk lon/rr nyse/ge nasdaq/bmbl
   nyse/fsly nasdaq/wish nyse/dash nyse/qs nyseamerican/eman
   nyse/fubo nasdaq/nkla nyse/erj nyse/ccl
-  nasdaq/dwac
+  nasdaq/dwac nasdaq/sivb nyse/si
 )
 
 if ARGV[0]
