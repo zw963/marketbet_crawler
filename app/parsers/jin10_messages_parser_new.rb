@@ -75,14 +75,15 @@ class Jin10MessagesParserNew < ParserBase
 
             logger.info "created record: #{text}"
           end
-        # rescue Ferrum::NodeNotFoundError
-        #   logger.warn 'jin10 message node get updated while scraping, retrying...'
-        #   sleep 1
-        #   retry
         end
 
         sleep 90
       end
+    rescue Ferrum::NodeNotFoundError => e
+      logger.warn 'jin10 message node get updated while scraping, retrying...'
+      puts e.full_message if ENV['debug'] == true
+      sleep 2
+      retry
     end => message_parser_proc
 
     retry_until_timeout 7200, message: 'Refresh again', keep_waiting_if: message_parser_proc
