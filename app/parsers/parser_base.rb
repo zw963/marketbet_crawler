@@ -27,13 +27,13 @@ class ParserBase
       timeout:                   30,
       browser_options:           { 'no-sandbox': nil, 'blink-settings' => 'imagesEnabled=false', 'start-maximized': true},
       headless:                  true,
-      slowmo:                    0.5
+      slowmo:                    1
     }
 
     if RACK_ENV == 'development'
       options.update(
         headless: false,
-        slowmo:   0.5
+        slowmo:   1
       )
     end
 
