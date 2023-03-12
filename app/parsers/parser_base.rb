@@ -1,4 +1,5 @@
 require 'singleton'
+require 'timeout'
 
 class ChromeHeadlessLogger
   def initialize(logger)
@@ -118,7 +119,7 @@ class ParserBase
           break if keep_waiting_until.call
         end
       end
-    rescue TimeoutError
+    rescue Timeout::Error
       logger.warn message if message.present?
       logger.warn "Timeout after waiting #{seconds} seconds, Retried #{tries} times."
       when_timeout_do.call
