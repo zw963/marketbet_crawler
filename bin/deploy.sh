@@ -42,6 +42,7 @@ function set_backup_policy () {
 
 current=$(cd "$(dirname "$BASH_SOURCE")/.." && pwd)
 root=$(cd $current/../.. && pwd)
+asset=${1:no_asset}
 
 echo "-----> Fetching new git commits"
 (cd $root/scm && git fetch git@github.com:zw963/marketbet_crawler master:master --force) &&
@@ -63,6 +64,9 @@ echo "-----> Fetching new git commits"
     cd . &&
     bundle config set deployment true &&
     bundle config set path $root/shared/bundle &&
-    bundle config set without 'development test' &&
+    bundle config set without 'development test'
+
+if [[ "$asset" == "asset" ]]; then
     bundle exec rake assets:precompile &&
-    bundle exec rake assets:deflate
+        bundle exec rake assets:deflate
+fi
