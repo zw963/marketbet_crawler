@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8; mode: ruby; -*-
+require "pathname"
+require "erb"
+require "yaml"
+
+service_name=ARGV[0] # e.g. nginx
+system_config_dir = Pathname(ARGV[1]) # e.g. /etc/nginx
+stage=ARGV[2] # e.g. production_mg
+root="#{__dir__}/.."
+check_config_command=ARGV[3]
+
+project_config_dir = File.expand_path("#{root}/config/#{service_name}/#{stage}")
+project_config_files = `find #{project_config_dir} -name "*.erb"`.split("\n").map {|e| Pathname(e) }
+
+STDERR.puts "Skip deploy #{service_name}." if project_config_files.empty?
+
+project_config_files.each do |project_config_file|
+  old_project_config_file = project_config_file
+  project_config_file = old_project_config_file.sub_ext('') # remove .erb suffix
+
+  STDERR.puts "generating #{project_config_file}"
+  erb = ERB.new(File.read("#{old_project_config_file}"))
+  config = YAML.load_file("#{root}/Procfile.local").dig("#{service_name}", "#{stage}")
+  raise "ERB config not set in Procofile.local" if config.nil?
+  File.write(
+    "#{project_config_file}",
+    erb.result_with_hash(config.merge("config_base_name"=>"#{project_config_file.basename(".conf")}"))
+  )
+
+  system_config_file = system_config_dir.join(project_config_file.relative_path_from(project_config_dir))
+  system_sub_conf_dir = system_config_file.dirname
+
+  # if system config exist, and two one no diff.
+  if system "[ -e #{system_config_file} ] && diff #{system_config_file} #{project_config_file} -q"
+    STDERR.puts "#{system_config_file} with #{project_config_file} no difference, skipping ..."
+    next
+  end
+
+  system "test -d #{system_sub_conf_dir} || sudo mkdir -pv #{system_sub_conf_dir}"
+
+  # 这里无法检测文件谁的比较新，因为从 git clone 出来的总是最新的，因此只要不同，就创建备份。
+  STDERR.puts "Backuping #{system_config_file} to #{system_config_file}-#{Time.now.strftime('%Y-%m-%d_%H:%M:%S')} ..."
+  system "sudo mv #{system_config_file} #{system_config_file}-#{Time.now.strftime('%Y-%m-%d_%H:%M:%S')}"
+
+  STDERR.puts "Copying generated config to #{system_config_dir} ..."
+  system "sudo cp -av #{project_config_file} #{system_config_file}"
+
+  unless check_config_command.nil?
+    STDERR.puts 'Checking configurations'
+    system "sudo #{check_config_command}"
+  end
+end

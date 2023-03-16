@@ -74,9 +74,9 @@ echo "-----> Fetching new git commits"
     cd . &&
     bundle config set deployment true &&
     bundle config set path $shared/bundle &&
-    bundle config set without 'development test'
-
-if [[ "$asset" == "asset" ]]; then
-    bundle exec rake assets:precompile &&
-        bundle exec rake assets:deflate
-fi
+    bundle config set without 'development test' &&
+    if [[ "$asset" == "asset" ]]; then
+        bundle exec rake assets:precompile &&
+            bundle exec rake assets:deflate
+    fi &&
+    bin/update_config nginx /etc/nginx production_mg 'nginx -t'
