@@ -5,6 +5,13 @@ function set_backup_policy () {
 
     backup_path=$1
 
+    # 运行完脚本后，没有 cd . 来更新当前目录，会造成备份目录的 base 为 project_name.01，
+    # 并最终生成的备份目录为 project_name.01.01 project_name.01.01.01 ...
+    if [[ "$backup_path" =~ \.[0-9]+$ ]]; then
+        echo 'Run `cd .` before run this script!'
+        return 1
+    fi
+
     # 处理用户输入 7 或 07(有个 0 前缀) 的问题。
     max_backup_count=$((${2}-0))
 
