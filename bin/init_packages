@@ -30,7 +30,7 @@ case "$package" in
         ;;
     tls)
         if [ -z "$package" ]; then
-            echo 'Run with bin/init_package username@hostname tls domain_name'
+            echo 'Run with bin/init_packages username@hostname tls domain_name'
             exit
         fi
         deploy_tls "$domain_name"
