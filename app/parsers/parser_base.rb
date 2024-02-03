@@ -72,7 +72,12 @@ class ParserBase
   end
 
   def d2b(dollar)
-    BigDecimal(dollar.gsub(/GBX|\$|£|,/, ''))
+    return BigDecimal(0) if dollar.nil?
+
+    num = dollar.gsub(/GBX|\$|£|,/, '')
+    num = num.split(/ - /)[1] if num.match?(/-/)
+
+    BigDecimal(num)
   end
 
   def run
