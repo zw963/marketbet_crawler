@@ -89,5 +89,5 @@ end
 
 def db_name
   db_pattern = DB_URL.split('//')[1]
-  db_pattern.sub(%r{[^:]+:[^:]+@[^:]+:\d+/}, '')
+  db_pattern.sub(%r{[^:]+:[^:]+@[^:]+:\d+/}, '').split('?')[0]
 end
