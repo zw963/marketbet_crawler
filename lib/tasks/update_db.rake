@@ -34,14 +34,18 @@ namespace :db do
     end
   end
 
+  # InsiderHistory.count 3039
+  # Insider.count 422
+
   task :update_insider_2 do
     require_relative '../../config/environment'
 
     Insider.grep(:name, '%.%').all do |e|
       new_name = e.name.delete('.')
-      if (exists = Insider.find(name: new_name))
-        puts "exists #{exists}, deleting it"
-        e.insider_histories_dataset.destroy
+
+      if (old_record = Insider.find(name: new_name))
+        puts "exists #{old_record.name}, deleting #{e.name}"
+        e.insider_histories_dataset.update(insider_id: old_record.id)
         e.destroy
       else
         puts 'not exists, update it'
@@ -49,6 +53,21 @@ namespace :db do
       end
     end
   end
+
+  task :update_insider_3 do
+    require_relative '../../config/environment'
+
+    Insider.all do |e|
+      count = e.insider_histories_dataset.count
+      last = e.insider_histories_dataset.order(:date).last
+      e.update(
+        last_trade_date: last.date,
+        last_trade_stock: last.stock.name,
+        number_of_trade_times: count
+      )
+    end
+  end
+
 
   task update_stock_1: :db_rollback do
     # 因为使用了 stream, 所以这里必须用 all 方法才工作。
