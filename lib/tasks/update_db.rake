@@ -34,6 +34,22 @@ namespace :db do
     end
   end
 
+  task :update_insider_2 do
+    require_relative '../../config/environment'
+
+    Insider.grep(:name, '%.%').all do |e|
+      new_name = e.name.delete('.')
+      if (exists = Insider.find(name: new_name))
+        puts "exists #{exists}, deleting it"
+        e.insider_histories_dataset.destroy
+        e.destroy
+      else
+        puts 'not exists, update it'
+        e.update(name: new_name)
+      end
+    end
+  end
+
   task update_stock_1: :db_rollback do
     # 因为使用了 stream, 所以这里必须用 all 方法才工作。
     # all 会预加载所有数据，然后，再执行 block 中的 query.
