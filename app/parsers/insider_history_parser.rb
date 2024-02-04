@@ -34,7 +34,7 @@ class InsiderHistoryParser < ParserBase
 
     table_ary[1..].each do |e|
       number_of_holding = e[7] == '' ? nil : e[7].to_i
-      insider = Insider.find_or_create(name: e[1])
+      insider = Insider.find_or_create(name: e[1].delete('.'))
 
       case e[3]
       when 'Sell', 'Issued'
