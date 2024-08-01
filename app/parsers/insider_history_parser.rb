@@ -42,9 +42,11 @@ class InsiderHistoryParser < ParserBase
       insider = Insider.find_or_create(name: name.delete('.').squeeze(' '))
 
       case e[3]
-      when 'Sell', 'Issued'
+      when 'Sell', 'Issued', 'Proposed Sale'
         xx = -1
       when 'Buy'
+        xx = 1
+      else
         xx = 1
       end
 
