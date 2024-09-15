@@ -32,11 +32,9 @@ Sequel.migration do
       column :publish_time, "timestamp without time zone", :null=>false
       column :created_at, "timestamp without time zone", :null=>false
       column :updated_at, "timestamp without time zone"
-      column :textsearchable_index_col, "tsvector", :generated_always_as=>Sequel::LiteralString.new("to_tsvector('zhparser'::regconfig, ((COALESCE(title, ''::text) || ' '::text) || COALESCE(preview, ''::text)))")
       column :is_read, "boolean", :default=>false
       
       index [:publish_time]
-      index [:textsearchable_index_col], :name=>:investing_latest_news_textsearch_idx_index
       index [:url]
     end
     
@@ -78,12 +76,10 @@ Sequel.migration do
       column :keyword, "text", :default=>"", :null=>false
       column :jin10_message_tag_id, "integer"
       foreign_key :jin10_message_category_id, :jin10_message_categories, :key=>[:id]
-      column :textsearchable_index_col, "tsvector", :generated_always_as=>Sequel::LiteralString.new("to_tsvector('zhparser'::regconfig, title)")
       column :properties, "jsonb", :default=>Sequel::LiteralString.new("'{}'::jsonb")
       
       index [:important]
       index [:jin10_message_tag_id]
-      index [:textsearchable_index_col], :name=>:jin10_messages_textsearch_idx_index
       index [:title, :publish_date], :unique=>true
     end
     
