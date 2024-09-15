@@ -62,17 +62,17 @@ class App < Roda
       end
 
       r.is 'add-ts-keyword' do
-        new_keyword = r.params['new_keyword']
+        # new_keyword = r.params['new_keyword']
 
-        DB.run(Sequel.lit('INSERT INTO zhparser.zhprs_custom_word values(?) ON CONFLICT DO NOTHING;', new_keyword)) if new_keyword.present?
+        # DB.run(Sequel.lit('INSERT INTO zhparser.zhprs_custom_word values(?) ON CONFLICT DO NOTHING;', new_keyword)) if new_keyword.present?
 
         r.redirect r.referer
       end
 
       r.is 'remove-ts-keyword' do
-        keyword = r.params['keyword']
+        # keyword = r.params['keyword']
 
-        DB.run(Sequel.lit('DELETE FROM zhparser.zhprs_custom_word WHERE word=?;', keyword)) if keyword.present?
+        # DB.run(Sequel.lit('DELETE FROM zhparser.zhprs_custom_word WHERE word=?;', keyword)) if keyword.present?
 
         r.redirect r.referer
       end
@@ -83,18 +83,18 @@ class App < Roda
                                ])
 
       r.on(/sync-(#{ts_tables})-keyword/) do |table_name|
-        db = PG.connect(URI(DB_URL))
-        db.exec('SELECT sync_zhprs_custom_word();')
-        # UPDATE 语句必须在一个新的线程中运行，来反射到上面的 sync 函数的改变。
-        # 因为 DB.run 使用线程池，无法确保使用新的线程，因此，这里必须使用 ruby-pg 直接运行。
-        case table_name.tr('-', '_')
-        when 'investing_latest_news'
-          LOGGER.warn 'update index on investing_latest_news'
-          db.exec('UPDATE investing_latest_news SET title = title, preview = preview;')
-        when 'jin10_messages'
-          LOGGER.warn 'update index on jin10_messages'
-          db.exec('UPDATE jin10_messages SET title = title;')
-        end
+        # db = PG.connect(URI(DB_URL))
+        # db.exec('SELECT sync_zhprs_custom_word();')
+        # # UPDATE 语句必须在一个新的线程中运行，来反射到上面的 sync 函数的改变。
+        # # 因为 DB.run 使用线程池，无法确保使用新的线程，因此，这里必须使用 ruby-pg 直接运行。
+        # case table_name.tr('-', '_')
+        # when 'investing_latest_news'
+        #   LOGGER.warn 'update index on investing_latest_news'
+        #   db.exec('UPDATE investing_latest_news SET title = title, preview = preview;')
+        # when 'jin10_messages'
+        #   LOGGER.warn 'update index on jin10_messages'
+        #   db.exec('UPDATE jin10_messages SET title = title;')
+        # end
 
         r.redirect r.referer
       end
