@@ -5,18 +5,18 @@ require_relative '../config/parser_loader'
 ins = InstitutionHistoryParser.instance
 
 symbols = %w(
-  nasdaq/arry nasdaq/lab nyse/beke nasdaq/sogp nasdaq/momo
-  nyse/stm otcmkts/dlaky otcmkts/rycey nasdaq/niu nyse/lu
+  nasdaq/arry nasdaq/lab nyse/beke nasdaq/sogp
+  nyse/stm otcmkts/dlaky nasdaq/niu nyse/lu
   nyse/umc nyse/nclh nasdaq/cron nyse/pltr nyse/jmia nyse/ubs
-  nasdaq/kopn nasdaq/afrm nasdaq/wolf nasdaq/dada nasdaq/fami
-  nyse/dao nasdaq/ino nasdaq/tour nyse/tme nyse/ai
-  nasdaq/eh otcmkts/wcagy nyse/fubo nyse/yala nyse/cnk nyse/jks
+  nasdaq/kopn nasdaq/afrm nasdaq/wolf nasdaq/dada
+  nyse/dao nasdaq/tour nyse/tme nyse/ai
+  nasdaq/eh nyse/fubo nyse/yala nyse/cnk nyse/jks
   nyse/ge nasdaq/bmbl nyse/yq nyse/gotu nyse/fsly nasdaq/wish
-  nyse/dash nyse/qs nyse/nok nyse/coe nasdaq/vrar nasdaq/vuzi
+  nyse/qs nyse/nok nyse/coe nasdaq/vrar nasdaq/vuzi
   nasdaq/nkla nasdaq/futu nyse/tuya nyse/rlx nasdaq/iq nyse/ccl
-  nasdaq/lkco nyse/mnso nasdaq/kc nasdaq/dwac nyse/ddl nasdaq/sivb
+  nasdaq/lkco nyse/mnso nasdaq/kc nasdaq/dwac nyse/ddl
   nyse/si nyse/u nasdaq/bidu nyse/didiy nyse/zh nasdaq/amd nasdaq/coin
-  nyse/sq
+  nyse/sq nasdaq/intc
 )
 
 if ARGV[0]
