@@ -44,8 +44,18 @@ class InstitutionHistoryParser < ParserBase
 
   def save_to_institution_history(latest_data, stock)
     latest_data.each do |e|
+      # Fix AD
+      begin
+        number_of_holding = e[2].tr(',', '').to_i
+      rescue NoMethodError
+        next
+      end
+
       e[3] =~ /\$([\d.,]+)(.?)/
-      market_value = BigDecimal($1)
+      market_value = BigDecimal($1) rescue nil
+
+      next if market_value.nil?
+
       case $2
       when 'K'
         value = market_value * 1000
@@ -55,13 +65,6 @@ class InstitutionHistoryParser < ParserBase
         value = market_value * 1000000000
       else
         value = market_value
-      end
-
-      # Fix AD
-      begin
-        number_of_holding = e[2].tr(',', '').to_i
-      rescue NoMethodError
-        next
       end
 
       quarterly_changed_share_percent = p2b(e[5])
