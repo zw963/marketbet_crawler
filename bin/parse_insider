@@ -7,7 +7,7 @@ ins = InsiderHistoryParser.instance
 symbols = %w(
   nasdaq/arry nasdaq/lab
   nyse/stm nyse/nclh nasdaq/cron nyse/pltr nyse/jmia
-  nasdaq/kopn nasdaq/afrm nasdaq/wolf nasdaq/ino nyse/ai
+  nasdaq/kopn nasdaq/afrm nyse/wolf nasdaq/ino nyse/ai
   otcmkts/wcagy nyse/cnk lon/rr nyse/ge nasdaq/bmbl
   nyse/fsly nasdaq/wish nyse/dash nyse/qs nyse/ubs nasdaq/vuzi
   nyse/fubo nasdaq/nkla nyse/erj nyse/ccl nasdaq/amd nasdaq/vrar

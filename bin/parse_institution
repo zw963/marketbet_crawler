@@ -8,7 +8,7 @@ symbols = %w(
   nasdaq/arry nasdaq/lab nyse/beke nasdaq/sogp
   nyse/stm otcmkts/dlaky nasdaq/niu nyse/lu
   nyse/umc nyse/nclh nasdaq/cron nyse/pltr nyse/jmia nyse/ubs
-  nasdaq/kopn nasdaq/afrm nasdaq/wolf nasdaq/dada
+  nasdaq/kopn nasdaq/afrm nyse/wolf nasdaq/dada
   nyse/dao nasdaq/tour nyse/tme nyse/ai
   nasdaq/eh nyse/fubo nyse/yala nyse/cnk nyse/jks
   nyse/ge nasdaq/bmbl nyse/yq nyse/gotu nyse/fsly nasdaq/wish
