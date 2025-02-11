@@ -57,11 +57,14 @@ class InsiderHistoryParser < ParserBase
         next
       end
 
+      number_of_shards = e[4].tr(',', '').to_i * xx
+      number_of_shards = xx if number_of_shards == 0
+
       data = {
         date:              date,
         title:             e[2],
         number_of_holding: number_of_holding,
-        number_of_shares:  e[4].tr(',', '').to_i * xx,
+        number_of_shares:  number_of_shards,
         average_price:     d2b(e[5]),
         share_total_price: d2b(e[6]),
         stock:             stock,
