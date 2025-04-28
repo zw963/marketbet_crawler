@@ -61,9 +61,10 @@ namespace :db do
       count = e.insider_histories_dataset.count
       last = e.insider_histories_dataset.order(:date).last
       e.update(
-        last_trade_date: last.date,
-        last_trade_stock: last.stock.name,
-        number_of_trade_times: count
+        last_trade_date: last&.date,
+        last_trade_stock: last&.stock&.name,
+        number_of_trade_times: count,
+        trade_on_stock_amount: e.insider_histories_dataset.group_and_count(:stock_id).all.size
       )
     end
   end
