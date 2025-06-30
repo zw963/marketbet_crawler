@@ -16,7 +16,7 @@ symbols = %w(
   nasdaq/nkla nasdaq/futu nyse/tuya nyse/rlx nasdaq/iq nyse/ccl
   nasdaq/lkco nyse/mnso nasdaq/kc nasdaq/dwac nyse/ddl
   nyse/si nyse/u nasdaq/bidu nyse/didiy nyse/zh nasdaq/amd nasdaq/coin
-  nyse/sq nasdaq/intc nasdaq/mvis myse/ba nasdaq/djt nyse/mgm
+  nyse/sq nasdaq/intc nasdaq/mvis myse/ba nasdaq/djt nyse/mgm nasdaq/open
 )
 
 if ARGV[0]
