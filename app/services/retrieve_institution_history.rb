@@ -15,6 +15,8 @@ class RetrieveInstitutionHistory < Actor
              :institution_histories[sort_column.to_sym]
            when 'stock_name'
              :stock[:name]
+           else
+             :stock[:name]
            end
 
     sort = sort.desc if sort_direction.to_s == 'desc'

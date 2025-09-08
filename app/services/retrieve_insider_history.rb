@@ -15,6 +15,8 @@ class RetrieveInsiderHistory < Actor
              :insider_histories[sort_column.to_sym]
            when 'insider_name'
              :insiders[:name]
+           else
+             :insiders[:name]
            end
 
     sort = sort.desc if sort_direction.to_s == 'desc'
