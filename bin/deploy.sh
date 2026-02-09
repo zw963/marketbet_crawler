@@ -54,6 +54,8 @@ shared=$root/shared
 
 mkdir -p $shared/log $shared/tmp $shared/pids $shared/bundle $shared/db/files $shared/public/assets
 
+[[ -d $root/scm ]] || git clone --bare git@github.com:zw963/marketbet_crawler $root/scm
+
 echo "-----> Fetching new git commits"
 (cd $root/scm && git fetch git@github.com:zw963/marketbet_crawler master:master --force) &&
     echo "-----> Using git branch master" &&
