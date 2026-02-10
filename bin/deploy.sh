@@ -80,5 +80,6 @@ echo "-----> Fetching new git commits"
     if [[ "$asset" == "asset" ]]; then
         bundle exec rake assets:precompile &&
             bundle exec rake assets:deflate
-    fi &&
-    bin/update_config nginx /etc/nginx production_mg 'nginx -t'
+    fi
+    # &&
+    # bin/update_config nginx /etc/nginx production_mg 'nginx -t'
