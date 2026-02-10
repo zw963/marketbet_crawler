@@ -18,10 +18,10 @@ namespace :db do
     if DB_URL.start_with? 'sqlite'
       warn 'Do nothing.'
     elsif DB_URL.start_with? 'postgres'
-      command = "createdb -U postgres #{db_name}"
+      command = "createdb -U postgres -h 127.0.0.1 -p 5432  #{db_name}"
       warn command
       Kernel.system(command)
-      command = "psql -U postgres -c \"ALTER USER postgres WITH PASSWORD '#{ENV['POSTGRES_PASSWORD']}';\""
+      command = "psql -U postgres -h 127.0.0.1 -p 5432 -c \"ALTER USER postgres WITH PASSWORD '#{ENV['POSTGRES_PASSWORD']}';\""
       warn command
       Kernel.system(command)
     end
