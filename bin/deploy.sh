@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# 第一次部署时，这个脚本如何使用的帮助：
+# 1. 首先使用 create_deployer_user 创建一个新的用户，因为我不想全局安装 rvm
+# 2. 配置 RVM，以及安装 ruby，仅仅对本用户有效。
+# 3. 创建 ~/apps/marketbet_cralwer_production/bin 文件夹，拷贝本文件到这里。
+# 4. 创建 ~/shared, 将所有每次部署时不需要更新的文件，拷贝到这里，并做必要的编辑。
+# 5.
+
 function set_backup_policy () {
     set -eu
 

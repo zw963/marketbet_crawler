@@ -56,9 +56,9 @@ gem 'ferrum'
 # gem 'capybara'
 # end
 
-group :production do
-  gem 'falcon'
-end
+# group :production do
+#   gem 'falcon'
+# end
 
 gem 'puma'
 
