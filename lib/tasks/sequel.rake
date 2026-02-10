@@ -18,10 +18,10 @@ namespace :db do
     if DB_URL.start_with? 'sqlite'
       warn 'Do nothing.'
     elsif DB_URL.start_with? 'postgres'
-      command = "sudo -u postgres createdb #{db_name}"
+      command = "createdb -U postgres #{db_name}"
       warn command
       Kernel.system(command)
-      command = "sudo -u postgres psql -c \"ALTER USER postgres WITH PASSWORD '#{ENV['POSTGRES_PASSWORD']}';\""
+      command = "psql -U postgres -c \"ALTER USER postgres WITH PASSWORD '#{ENV['POSTGRES_PASSWORD']}';\""
       warn command
       Kernel.system(command)
     end
@@ -32,7 +32,7 @@ namespace :db do
     if DB_URL.start_with? 'sqlite'
       FileUtils.rm_f(db_name, verbose: true)
     elsif DB_URL.start_with? 'postgres'
-      command = "sudo -u postgres dropdb #{db_name}"
+      command = "dropdb -U postgres #{db_name}"
       warn command
       Kernel.system(command)
     end
