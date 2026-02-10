@@ -4,12 +4,24 @@ log_root: log
 
 env:
   RACK_ENV: 'development'
+  RACK_LOG_TO_STDOUT: true
+  WEB_CONCURRENCY: 2
+  POSTGRES_PASSWORD: postgres
   DEVELOPMENT_DATABASE_URL: "postgres://postgres:postgres@127.0.0.1:5432/marketbet_crawler_development"
   TEST_DATABASE_URL: "postgres://postgres:postgres@127.0.0.1:5432/marketbet_crawler_test"
   DATABASE_URL: "postgres://postgres:postgres@127.0.0.1:5432/marketbet_crawler_production"
   APP_SESSION_SECRET: "a692909f017cc94c96f8a1aff843d95920485376f4c997143cc3c39ca945c883ec88e310a2177a69b8b714d22af1b5fd7864833568b6bf93fc3bc811bcf6e112"
   FERRUM_INTERMITTENT_SLEEP: 0.5
+  SECRET_KEY_BASE: "9b681e82c15a26163ee747d1b92cc3e56371ed70939b5d9ab01f12bb27ade71a"
+  # SIDEKIQ_REDIS_URL: "redis://127.0.0.1:6379/0"
 
 processes:
   jin10_message_crawler:
      max_respawns: 1000
+
+# used by nginx ERB config.
+nginx:
+  production_mg:
+    server_name: "stocks.zw963.top"
+    server_target: "127.0.0.1:3000"
+    server_public: "/home/procodile/apps/marketbet_crawler_production_mg/shared/public"

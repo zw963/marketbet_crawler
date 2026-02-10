@@ -5,6 +5,7 @@
 # 2. 配置 RVM，以及安装 ruby，仅仅对本用户有效。
 # 3. 创建 ~/apps/marketbet_cralwer_production/bin 文件夹，拷贝本文件到这里。
 # 4. 创建 ~/shared, 将所有每次部署时不需要更新的文件，拷贝到这里，并做必要的编辑。
+#    这里记得，本地的 Procfile.options 加入了 git, 拷贝到服务器上, 记得新建一个 Procfile.local 来覆盖它。
 # 5.
 
 function set_backup_policy () {
