@@ -64,7 +64,7 @@ GEM
       sprockets (~> 4.0)
       tilt (>= 1.4)
     paggio (0.3.0)
-    parser (3.3.10.1)
+    parser (3.3.10.2)
       ast (~> 2.4.1)
       racc
     pastel (0.8.0)
@@ -76,7 +76,7 @@ GEM
     puma (7.2.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (3.2.4)
+    rack (3.2.5)
     rack-test (2.2.0)
       rack (>= 1.3)
     rake (13.0.6)
@@ -87,7 +87,7 @@ GEM
     rmagick (6.1.5)
       observer (~> 0.1)
       pkg-config (~> 1.4)
-    roda (3.100.0)
+    roda (3.101.0)
       rack
     roda-enhanced_logger (0.5.0)
       roda (>= 3.19.0)
@@ -184,4 +184,4 @@ DEPENDENCIES
   warning
 
 BUNDLED WITH
-   2.4.6
+  4.0.3
