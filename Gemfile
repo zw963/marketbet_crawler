@@ -31,6 +31,7 @@ gem 'snabberb'
 # gem 'paggio', github: 'hmdne/paggio'
 gem 'refrigerator'
 gem 'graphql'
+gem 'finnhub_ruby', '~> 2.0.0'
 
 group :development do
   gem 'gruff', group: :development
@@ -51,7 +52,6 @@ group :test do
 end
 
 # group :development, :test do
-gem 'ferrum'
 # gem 'cuprite'
 # gem 'capybara'
 # end
