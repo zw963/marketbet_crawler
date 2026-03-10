@@ -65,7 +65,7 @@ mkdir -p $shared/log $shared/tmp $shared/pids $shared/bundle $shared/db/files $s
 [[ -d $root/scm ]] || git clone --bare git@github.com:zw963/marketbet_crawler $root/scm
 
 echo "-----> Fetching new git commits"
-(cd $root/scm && git fetch git@github.com:zw963/marketbet_crawler master:master --force) &&
+(cd $root/scm && git fetch https://github.com/zw963/marketbet_crawler master:master --force) &&
     echo "-----> Using git branch master" &&
     cd $root &&
     set_backup_policy $current 7 &&
@@ -88,6 +88,5 @@ echo "-----> Fetching new git commits"
     if [[ "$asset" == "asset" ]]; then
         bundle exec rake assets:precompile &&
             bundle exec rake assets:deflate
-    fi
-    # &&
-    # bin/update_config nginx /etc/nginx production_mg 'nginx -t'
+    fi &&
+    bin/update_config nginx /etc/nginx production_pi 'nginx -t'
