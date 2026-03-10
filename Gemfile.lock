@@ -58,6 +58,7 @@ GEM
       opal (>= 1.0, < 2.0)
       sprockets (~> 4.0)
       tilt (>= 1.4)
+    ostruct (0.6.3)
     paggio (0.3.0)
     parser (3.3.10.2)
       ast (~> 2.4.1)
@@ -150,6 +151,7 @@ DEPENDENCIES
   opal
   opal-browser
   opal-sprockets
+  ostruct
   pg
   puma
   rack-test

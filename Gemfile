@@ -59,7 +59,7 @@ end
 # group :production do
 #   gem 'falcon'
 # end
-
+gem 'ostruct'
 gem 'puma'
 
 # group :development, :production do
