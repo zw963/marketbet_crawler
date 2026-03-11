@@ -16,7 +16,7 @@ class InsiderHistoryParser < ParserBase
           data = client.stock_insider_transactions(stock_symbol, from: from.to_s, to: to.to_s)["data"]
 
           if data.empty?
-            warn "No data from #{from} to #{to}"
+            warn "No data from #{from} to #{to} for #{symbol}"
             next 0
           end
 
