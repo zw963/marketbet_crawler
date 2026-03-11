@@ -22,6 +22,8 @@ else
   ins.symbols = symbols
 end
 
+ins.from_date_size = 7 # 查七天前到现在的所有记录。
+
 file = File.open('tmp/parse_insider_done',  'a')
 file.puts '*'*100
 file.puts "Start #{Time.now.strftime('%Y-%m-%d %H:%M:%S %A')}"

@@ -8,9 +8,18 @@ class InsiderHistoryParser < ParserBase
     symbols.uniq.each_slice(2).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
         stock_symbol = symbol.split("/").last
+        from = Date.today - from_date_size
+        to = Date.today
 
         Thread.new(client) do |client|
           # 处理 "nasdaq/amd" 或 "amd" 两种形式
+          data = client.stock_insider_transactions(stock_symbol, from: from.to_s, to: to.to_s)["data"]
+
+          if data.empty?
+            warn "No data from #{from} to #{to}"
+            return 0
+          end
+
           result = client.stock_insider_transactions(stock_symbol)["data"]
           exchange = Exchange.find_or_create(name: symbol.split("/").first)
           stock = Stock.find_or_create(name: symbol, exchange: exchange)
@@ -21,7 +30,7 @@ class InsiderHistoryParser < ParserBase
             average_price = BigDecimal(record["transactionPrice"].to_s)
             date = Date.strptime(record["transactionDate"], '%Y-%m-%d')
 
-            data = {
+            data1 = {
               date: date,
               sec_id: record["id"],
               number_of_holding: record["share"], # 整数，可能为 0
@@ -32,9 +41,9 @@ class InsiderHistoryParser < ParserBase
               insider: insider
             }
 
-            if InsiderHistory.find(data).nil?
+            if InsiderHistory.find(data1).nil?
               DB.transaction do
-                InsiderHistory.create(data.merge("title": "Insider"))
+                InsiderHistory.create(data1.merge("title": "Insider"))
                 insider.update(
                   last_trade_date:       date,
                   last_trade_stock:      stock.name,

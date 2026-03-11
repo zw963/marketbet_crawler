@@ -3,7 +3,7 @@ require 'timeout'
 
 class ParserBase
   include Singleton
-  attr_accessor :symbols, :logger
+  attr_accessor :symbols, :logger, :from_date_size
 
   def initialize
     self.logger = LOGGER
@@ -11,7 +11,6 @@ class ParserBase
 
   def run
     tries = 0
-    @need_login = true
 
     begin
       tries += 1
