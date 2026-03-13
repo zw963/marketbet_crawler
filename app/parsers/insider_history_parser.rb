@@ -7,23 +7,21 @@ class InsiderHistoryParser < ParserBase
 
     symbols.uniq.each_slice(2).to_a.shuffle.each do |symbol_group|
       symbol_group.map do |symbol|
+        # 处理 "nasdaq/amd" 或 "amd" 两种形式
         stock_symbol = symbol.split("/").last
         from = Date.today - from_date_size
         to = Date.today
 
+        exchange = Exchange.find_or_create(name: symbol.split("/").first)
+        stock = Stock.find_or_create(name: symbol, exchange: exchange)
+
         Thread.new(client) do |client|
-          # 处理 "nasdaq/amd" 或 "amd" 两种形式
-          data = client.stock_insider_transactions(stock_symbol, from: from.to_s, to: to.to_s)["data"]
+          # 这个 API 调用接受支持一个空字符串作为参数，返回最新的。
+          result = client.stock_insider_transactions(stock_symbol, from: from.to_s, to: to.to_s)["data"]
 
-          if data.empty?
-            next 0
-          else
-            warn "New data from #{from} to #{to} for #{symbol}"
-          end
+          next 0 if result.empty?
 
-          result = client.stock_insider_transactions(stock_symbol)["data"]
-          exchange = Exchange.find_or_create(name: symbol.split("/").first)
-          stock = Stock.find_or_create(name: symbol, exchange: exchange)
+          warn "New data from #{from} to #{to} for #{symbol}"
 
           result.each do |record|
             insider = Insider.find_or_create(name: record["name"])
