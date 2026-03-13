@@ -61,6 +61,7 @@ end
 # end
 gem 'ostruct'
 gem 'puma'
+gem 'pry', require: false
 
 # group :development, :production do
   # gem 'capistrano'
