@@ -59,34 +59,45 @@ current=$(cd "$(dirname "$BASH_SOURCE")/.." && pwd)
 root=$(cd $current/../.. && pwd)
 asset=${1:no_asset}
 shared=$root/shared
+git_repo=https://github.com/zw963/marketbet_crawler
 
 mkdir -p $shared/log $shared/tmp $shared/pids $shared/bundle $shared/db/files $shared/public/assets
 
-[[ -d $root/scm ]] || git clone --bare git@github.com:zw963/marketbet_crawler $root/scm
+[[ -d $root/scm ]] || git clone --bare $git_repo $root/scm
 
+cd $root/scm
+old=$(git rev-parse -q --verify refs/heads/master 2>/dev/null || echo "")
 echo "-----> Fetching new git commits"
-(cd $root/scm && git fetch https://github.com/zw963/marketbet_crawler master:master --force) &&
+git fetch "$git_repo" master:master --force
+new=$(git rev-parse -q --verify refs/heads/master 2>/dev/null || echo "")
+
+if [ "$old" != "$new" ]; then
     echo "-----> Using git branch master" &&
-    cd $root &&
-    set_backup_policy $current 7 &&
-    git clone scm $current --recursive --branch master &&
-    cd $current &&
-    git rev-parse HEAD > .git_revision &&
-    git --no-pager log --format="%aN (%h):%n> %s" -n 1 &&
-    ln -sfv $shared/.rvmrc . &&
-    ln -sfv $shared/Procfile . &&
-    ln -sfv $shared/Procfile.local . &&
-    ln -sfv $shared/log . &&
-    ln -sfv $shared/tmp . &&
-    ln -sfv $shared/pids . &&
-    ln -sfv $shared/public/assets public/assets &&
-    ln -sfv $shared/db/files db/files &&
-    cd . &&
-    bundle config set deployment true &&
-    bundle config set path $shared/bundle &&
-    bundle config set without 'development test' &&
-    if [[ "$asset" == "asset" ]]; then
-        bundle exec rake assets:precompile &&
-            bundle exec rake assets:deflate
-    fi &&
-    bin/update_config nginx /etc/nginx production_pi 'nginx -t'
+        cd $root &&
+        set_backup_policy $current 7 &&
+        git clone scm $current --recursive --branch master &&
+        cd $current &&
+        git rev-parse HEAD > .git_revision &&
+        git --no-pager log --format="%aN (%h):%n> %s" -n 1 &&
+        ln -sfv $shared/.rvmrc . &&
+        ln -sfv $shared/Procfile . &&
+        ln -sfv $shared/Procfile.local . &&
+        ln -sfv $shared/log . &&
+        ln -sfv $shared/tmp . &&
+        ln -sfv $shared/pids . &&
+        ln -sfv $shared/public/assets public/assets &&
+        ln -sfv $shared/db/files db/files &&
+        cd . &&
+        bundle config set deployment true &&
+        bundle config set path $shared/bundle &&
+        bundle config set without 'development test' &&
+        if [[ "$asset" == "asset" ]]; then
+            bundle exec rake assets:precompile &&
+                bundle exec rake assets:deflate
+        fi &&
+        bin/update_config nginx /etc/nginx production_pi 'nginx -t'
+
+else
+    echo "no new commit"
+fi
+
