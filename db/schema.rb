@@ -122,6 +122,7 @@ Sequel.migration do
       foreign_key :stock_id, :stocks, key: [:id]
       foreign_key :insider_id, :insiders, key: [:id]
       column :sec_id, "text"
+      column :transaction_code, "text"
     end
     
     create_table(:institution_histories) do

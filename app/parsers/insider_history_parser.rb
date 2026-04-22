@@ -28,6 +28,20 @@ class InsiderHistoryParser < ParserBase
             share_change_count = record["change"] # 整数，正数或负数
             average_price = BigDecimal(record["transactionPrice"].to_s)
             date = Date.strptime(record["transactionDate"], '%Y-%m-%d')
+            transaction_code = record["transactionCode"]
+
+            transaction_code1 =  case transaction_code
+            when "P"
+              "买入(Purchase)"
+            when "A"
+              "公司授予(Award)"
+            when "M"
+              "行权(期权变股票 Exercise)"
+            when "S"
+              "卖出(Sold)"
+            when "F"
+              "卖刚刚授予的股票(F)"
+            end
 
             data1 = {
               date: date,
@@ -37,7 +51,8 @@ class InsiderHistoryParser < ParserBase
               average_price:     average_price,
               share_total_price: share_change_count * average_price,
               stock: stock,
-              insider: insider
+              insider: insider,
+              transaction_code: transaction_code1
             }
 
             if InsiderHistory.find(data1).nil?

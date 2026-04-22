@@ -16,6 +16,8 @@ end
 #  created_at        | timestamp without time zone | NOT NULL
 #  stock_id          | integer                     |
 #  insider_id        | integer                     |
+#  sec_id            | text                        |
+#  transaction_code  | text                        |
 # Indexes:
 #  insiders_pkey | PRIMARY KEY btree (id)
 # Foreign key constraints:
