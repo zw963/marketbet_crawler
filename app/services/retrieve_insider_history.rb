@@ -86,7 +86,8 @@ class RetrieveInsiderHistory < Actor
         '平均价格' => Helpers.number_with_comma(ih.average_price.to_f),
         '交易价格' => Helpers.number_with_comma(ih.share_total_price.to_f),
         '创建时间' => ih.created_at.strftime('%m-%d %H:%M'),
-        '颜色' => ih.number_of_shares.to_i > 0 ? 'green' : 'red'
+        '颜色' => ih.number_of_shares.to_i > 0 ? 'green' : 'red',
+        'TCode' => ih.transaction_code
       }
     end
   end
