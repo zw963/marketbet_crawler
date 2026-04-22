@@ -16,9 +16,9 @@ env:
   FINNHUB_API_KEY: "key"
   # SIDEKIQ_REDIS_URL: "redis://127.0.0.1:6379/0"
 
-processes:
-  jin10_message_crawler:
-     max_respawns: 1000
+# processes:
+#   jin10_message_crawler:
+#      max_respawns: 1000
 
 # used by nginx ERB config.
 nginx:
